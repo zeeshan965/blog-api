@@ -1,3 +1,5 @@
+import { User } from '../user/entity/user.entity';
+
 export default () => ({
   env: process.env.PORT || 'prod',
   port: parseInt(process.env.PORT, 10) || 3000,
@@ -8,7 +10,7 @@ export default () => ({
     username: process.env.DB_USERNAME || 'postgres',
     password: process.env.DB_PASSWORD || '',
     database: process.env.DATABASE || '',
-    entities: ['dist/**/*.entity{.ts,.js}'],
+    entities: [User],
     synchronize: process.env.DB_SYNC === 'true',
     logging: process.env.DB_LOGGING === 'true',
   },
