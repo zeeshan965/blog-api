@@ -24,7 +24,7 @@
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+Blog application built on [Nest](https://github.com/nestjs/nest) framework TypeScript, GraphQL, Postgres Database.
 
 ## Installation
 
@@ -45,29 +45,44 @@ $ npm run start:dev
 $ npm run start:prod
 ```
 
-## Test
-
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+# Config files for manual migration and auto migration using synchronize:true/false
+import configuration from './config/configuration-am';
+import configuration from './config/configuration-mm';
 ```
 
-## Support
+## Ways to configure typeorm
+Inside app.module.ts file we can use any of these ways to configure TypeOrm
+1.
+```javascript
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+TypeOrmModule.forRootAsync({
+  imports: [ConfigModule],
+  useFactory: (config: ConfigService) => config.get('database'),
+  inject: [ConfigService],
+})
+```
+2.
+```javascript
+import { DatabaseConfig } from "./database.config";
 
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
+TypeOrmModule.forRootAsync({
+  imports: [ConfigModule],
+  useClass: DatabaseConfig,
+})
+```
+**Note:** With the above two methods database tables will not get created.
+3.
+```javascript
+TypeOrmModule.forRoot({
+  type: 'postgres',
+  host: 'localhost',
+  port: 5432,
+  username: 'postgres',
+  password: 'root',
+  database: 'blog-api',
+  autoLoadEntities: true,
+  synchronize: true,
+})
+```

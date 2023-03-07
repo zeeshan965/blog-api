@@ -1,6 +1,6 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity('app_users')
+@Entity('bi_users')
 export class User {
   @PrimaryGeneratedColumn()
   id: number;
@@ -10,6 +10,9 @@ export class User {
 
   @Column()
   lastName: string;
+
+  @Column()
+  age: string;
 
   @Column()
   email: string;
