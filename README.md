@@ -86,3 +86,9 @@ TypeOrmModule.forRoot({
   synchronize: true,
 })
 ```
+4. Latest approach of TypeOrm
+```javascript
+import { dataSourceOptions } from './dataSource';
+
+TypeOrmModule.forRoot(dataSourceOptions)
+```
