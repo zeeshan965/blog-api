@@ -1,6 +1,4 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import Configuration from './config/configuration-am';
 //import Configuration from './config/configuration-mm';
@@ -12,12 +10,15 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver } from '@nestjs/apollo';
 import { join } from 'path';
 import { AppResolver } from './app.resolver';
-import { UserModule } from './user/user.module';
 import { dataSourceOptions } from './dataSource';
+import { UserModule } from './user/user.module';
+import { AuthModule } from './user/auth/auth.module';
 dotenv.config();
 
 @Module({
   imports: [
+    UserModule,
+    AuthModule,
     ConfigModule.forRoot({
       isGlobal: true,
       load: [Configuration],
@@ -32,9 +33,7 @@ dotenv.config();
       },
     }),
     TypeOrmModule.forRoot(dataSourceOptions),
-    UserModule,
   ],
-  controllers: [AppController],
-  providers: [AppService, AppResolver],
+  providers: [AppResolver],
 })
 export class AppModule {}

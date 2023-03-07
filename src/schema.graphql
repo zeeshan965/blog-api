@@ -2,6 +2,12 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type LoginResponseDto {
+  status: Int!
+  message: String!
+}
+
 type Query {
   index: String!
+  login(email: String!, password: String!): LoginResponseDto!
 }
