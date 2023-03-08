@@ -1,0 +1,170 @@
+{
+	"info": {
+		"_postman_id": "b7dc2681-ea0f-4946-9825-8a5ad51a53c6",
+		"name": "Blog-API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "26114867"
+	},
+	"item": [
+		{
+			"name": "Rest API Register",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"firstName\": \"{{$randomFirstName}}\",\n    \"lastName\": \"{{$randomLastName}}\",\n    \"email\": \"{{$randomEmail}}\",\n    \"password\": \"Password@123\",\n    \"confirmPassword\": \"Password@123\",\n    \"role\": \"ADMIN\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/user/register",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"user",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Your test name\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    console.log(jsonData);",
+							"    //pm.expect(jsonData.value).to.eql(100);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "query Login($email: String!, $password: String!){\n  login(email: $email, password: $password) {\n  \ttoken\n    message\n    status\n  }\n}",
+						"variables": "{\n  \"email\": \"Keith81@hotmail.com\",\n  \"password\": \"Password@123\"\n}"
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/graphql",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Register",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "query {\n    Register($data: UserRegisterReqDto!) {\n        register(data: $data){\n            status\n            message\n            user {\n                firstName\n                lastName\n                email\n            }\n        }\n    }\n}\n\n# query Register($data: UserRegisterReqDto!){\n#   register(data: $data){\n#     status\n#     message\n#     user{\n#       firstName\n#       lastName\n#       email\n#       isActive\n#       role\n#     }\n#   }\n# }",
+						"variables": "{\n    \"data\": {\n        \"firstName\": \"{{$randomFirstName}}\",\n        \"lastName\": \"{{$randomLastName}}\",\n        \"email\": \"{{$randomEmail}}\",\n        \"password\":\"Password@123\",\n        \"confirmPassword\":\"Password@123\",\n        \"role\": \"ADMIN\"\n    }\n}"
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/graphql",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Rest API Get User By ID",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/user/13",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"user",
+						"13"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get User",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "query getUser{\n  getUser {\n  \tuser {\n        firstName\n        lastName\n        email\n        isActive\n        role\n    }\n    message\n    status\n  }\n}\n\n# query {\n#     getUser{\n#         status\n#         message\n#         user{\n#             firstName\n#         }\n#     }\n# }",
+						"variables": ""
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/graphql",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
