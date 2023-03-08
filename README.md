@@ -92,3 +92,58 @@ import { dataSourceOptions } from './dataSource';
 
 TypeOrmModule.forRoot(dataSourceOptions)
 ```
+
+## Validation
+2 ways to perform form validations
+
+```bash
+1. Globally include in main.ts file
+
+import { ValidationPipe } from '@nestjs/common';
+
+app.useGlobalPipes(
+    new ValidationPipe({
+    whitelist: true,
+  }),
+);
+
+2. To inlcude indiviudally on the request
+**@Body(SETTINGS.VALIDATION_PIPE**
+async register(@Body(SETTINGS.VALIDATION_PIPE) data: UserRegisterReqDto): Promise<UserRegisterResponseDto> {}  
+```
+
+## Exclude properties from the JSON object
+To avoid accidentally leak private columns like password to front end 
+we have 3 ways to do this!
+
+```bash
+1. Through find query explicitly skip those columns
+await this.userRepository.findOne({
+  where: { id: id },
+  select: [
+    'firstName',
+    'lastName',
+    'email',
+    'role',
+    'isActive',
+    'createdAt',
+  ],
+});
+
+2. Through interceptors using Exclude from entity
+@Injectable()
+export class TransformInterceptor implements NestInterceptor {
+  intercept(
+    context: ExecutionContext,
+    call$: Observable<any>,
+  ): Observable<any> {
+    return call$.pipe(map(data => classToPlain(data)));
+  }
+}
+
+3. Override toJsoN method inside entity
+toJSON() {
+  return instanceToPlain(this);
+}
+ 
+```

@@ -1,0 +1,50 @@
+import { User } from '../entity/user.entity';
+import { IsEmail, IsNotEmpty, Length, Matches } from 'class-validator';
+import { Field } from '@nestjs/graphql';
+import { MESSAGES, REGEX } from '../../utils/app.utils';
+
+export class UserDto {
+  private id?: number;
+
+  @IsNotEmpty()
+  @Field(() => String, { name: 'first_name' })
+  firstName: string;
+
+  @IsNotEmpty()
+  @Field(() => String, { name: 'last_name' })
+  lastName: string;
+
+  @IsNotEmpty()
+  @IsEmail()
+  @Field(() => String, { name: 'email' })
+  email: string;
+
+  @IsNotEmpty()
+  @Length(8, 12)
+  @Field(() => String, { name: 'password' })
+  @Matches(REGEX.PASSWORD_RULE, { message: MESSAGES.PASSWORD_RULE_MESSAGE })
+  password: string;
+
+  @IsNotEmpty()
+  @Length(8, 12)
+  @Field(() => String, { name: 'confirm_password' })
+  @Matches(REGEX.PASSWORD_RULE, { message: MESSAGES.PASSWORD_RULE_MESSAGE })
+  confirmPassword: string;
+
+  exportToEntity() {
+    const entity = new User();
+    entity.firstName = this.firstName;
+    entity.lastName = this.lastName;
+    entity.email = this.email;
+    entity.password = this.password;
+    return entity;
+  }
+
+  importFromEntity(entity: User) {
+    this.id = entity.id;
+    this.firstName = entity.firstName;
+    this.lastName = entity.lastName;
+    this.email = entity.email;
+    this.password = entity.password;
+  }
+}

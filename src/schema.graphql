@@ -2,12 +2,32 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type LoginResponseDto {
-  status: Int!
-  message: String!
+type User {
+  id: Int!
+  firstName: String!
+  lastName: String!
+  email: String!
+  password: String!
+  isActive: Boolean!
+  role: String!
+}
+
+type UserLoginResponseDto {
+  status: Float
+  message: String
+  user: User
 }
 
 type Query {
   index: String!
-  login(email: String!, password: String!): LoginResponseDto!
+  register(data: UserRegisterReqDto!): UserLoginResponseDto!
+  login(email: String!, password: String!): UserLoginResponseDto!
+}
+
+input UserRegisterReqDto {
+  first_name: String!
+  last_name: String!
+  email: String!
+  password: String!
+  confirm_password: String!
 }
