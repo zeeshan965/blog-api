@@ -9,11 +9,12 @@
 /* eslint-disable */
 
 export interface UserRegisterReqDto {
-    first_name: string;
-    last_name: string;
+    firstName: string;
+    lastName: string;
     email: string;
     password: string;
-    confirm_password: string;
+    confirmPassword: string;
+    role: string;
 }
 
 export interface User {
@@ -22,20 +23,27 @@ export interface User {
     lastName: string;
     email: string;
     password: string;
-    isActive: boolean;
+    isActive?: Nullable<boolean>;
     role: string;
 }
 
 export interface UserLoginResponseDto {
-    status?: Nullable<number>;
-    message?: Nullable<string>;
-    user?: Nullable<User>;
+    status: number;
+    message: string;
+    token: string;
+}
+
+export interface UserRegisterResponseDto {
+    status: number;
+    message: string;
+    user: User;
 }
 
 export interface IQuery {
     index(): string | Promise<string>;
-    register(data: UserRegisterReqDto): UserLoginResponseDto | Promise<UserLoginResponseDto>;
+    register(data: UserRegisterReqDto): UserRegisterResponseDto | Promise<UserRegisterResponseDto>;
     login(email: string, password: string): UserLoginResponseDto | Promise<UserLoginResponseDto>;
+    getUser(): UserRegisterResponseDto | Promise<UserRegisterResponseDto>;
 }
 
 type Nullable<T> = T | null;

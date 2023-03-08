@@ -55,6 +55,7 @@ export class UserService {
     user.lastName = userRegister.lastName;
     user.email = userRegister.email;
     user.password = userRegister.confirmPassword;
+    user.role = userRegister.role;
 
     return await user.save();
   }

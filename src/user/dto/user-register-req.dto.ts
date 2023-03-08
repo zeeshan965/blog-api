@@ -6,27 +6,31 @@ import { MESSAGES, REGEX } from '../../utils/app.utils';
 @InputType()
 export class UserRegisterReqDto {
   @IsNotEmpty()
-  @Field(() => String, { name: 'first_name' })
+  @Field(() => String)
   firstName: string;
 
   @IsNotEmpty()
-  @Field(() => String, { name: 'last_name' })
+  @Field(() => String)
   lastName: string;
 
   @IsNotEmpty()
   @IsEmail()
-  @Field(() => String, { name: 'email' })
+  @Field(() => String)
   email: string;
 
   @IsNotEmpty()
   @Length(8, 12)
-  @Field(() => String, { name: 'password' })
+  @Field(() => String)
   @Matches(REGEX.PASSWORD_RULE, { message: MESSAGES.PASSWORD_RULE_MESSAGE })
   password: string;
 
   @IsNotEmpty()
   @Length(8, 12)
-  @Field(() => String, { name: 'confirm_password' })
+  @Field(() => String)
   @Matches(REGEX.PASSWORD_RULE, { message: MESSAGES.PASSWORD_RULE_MESSAGE })
   confirmPassword: string;
+
+  @IsNotEmpty()
+  @Field(() => String)
+  role: string;
 }

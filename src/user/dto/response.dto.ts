@@ -2,9 +2,9 @@ import { Field, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
 export class ResponseDto {
-  @Field({ nullable: true })
-  status?: number;
+  @Field(() => Number)
+  status: number;
 
-  @Field({ nullable: true })
-  message?: string;
+  @Field(() => String)
+  message: string;
 }

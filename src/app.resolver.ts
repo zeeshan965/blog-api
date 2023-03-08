@@ -4,9 +4,23 @@ import { AuthGuard } from './user/auth/auth.guard';
 import { User } from './user/entity/user.entity';
 import { UserLoginResponseDto } from './user/dto/user-login-response.dto';
 import { UserRegisterReqDto } from './user/dto/user-register-req.dto';
+import * as jwt from 'jsonwebtoken';
+import { ConfigService } from '@nestjs/config';
+import { JwtGuard } from './user/auth/jwt.guard';
+import { UserRegisterResponseDto } from './user/dto/user-register-response.dto';
+import { UserService } from './user/user.service';
 
 @Resolver(() => String)
 export class AppResolver {
+  /**
+   * @param configService
+   * @param userService
+   */
+  constructor(
+    private configService: ConfigService,
+    private userService: UserService,
+  ) {}
+
   /**
    *
    */
@@ -18,12 +32,13 @@ export class AppResolver {
   /**
    * @param data
    */
-  @Query(() => UserLoginResponseDto)
+  @Query(() => UserRegisterResponseDto)
   async register(
-    @Args('data', { type: () => UserRegisterReqDto })
+    @Args({ name: 'data', type: () => UserRegisterReqDto })
     data: UserRegisterReqDto,
   ) {
-    console.log(data);
+    const user = await this.userService.registerUser(data);
+    return { user: user.toJSON(), message: 'success', status: 200 };
   }
 
   /**
@@ -38,6 +53,26 @@ export class AppResolver {
     @Args({ name: 'password', type: () => String }) password: string,
     @Context('user') user: User,
   ) {
-    return { user: user, message: 'success', status: 200 };
+    const payload = {
+      id: user.id,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      role: user.role,
+    };
+    const token = jwt.sign(payload, this.configService.get('jwt_secret_key'), {
+      expiresIn: this.configService.get('jwt_expiry'),
+    });
+    return { token: token, message: 'success', status: 200 };
+  }
+
+  /**
+   * @param user
+   */
+  @Query(() => UserRegisterResponseDto)
+  @UseGuards(JwtGuard)
+  getUser(@Context('user') user: User) {
+    console.log(user);
+    return { status: 200, message: 'success', user: user };
   }
 }

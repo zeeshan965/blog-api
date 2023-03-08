@@ -1,8 +1,9 @@
 import { User } from '../entity/user.entity';
 import { ResponseDto } from './response.dto';
-import { Field } from '@nestjs/graphql';
+import { Field, ObjectType } from '@nestjs/graphql';
 
+@ObjectType()
 export class UserRegisterResponseDto extends ResponseDto {
-  @Field({ nullable: true })
-  user?: User;
+  @Field(() => User)
+  user: User;
 }

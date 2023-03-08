@@ -9,6 +9,7 @@ import {
 import { GqlExecutionContext } from '@nestjs/graphql';
 import { User } from '../entity/user.entity';
 import { UserService } from '../user.service';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -21,7 +22,7 @@ export class AuthGuard implements CanActivate {
     const ctx = GqlExecutionContext.create(context).getContext();
     const { email, password } = ctx.req.body.variables;
     const user: User = await this.userService.findUserByEmail(email);
-    if (user && user.password === password) {
+    if (user && (await bcrypt.compare(password, user.password))) {
       ctx.user = user;
       return true;
     } else {

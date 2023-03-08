@@ -30,7 +30,8 @@ export class User extends BaseEntity {
   @Field(() => String)
   email: string;
 
-  @Column({ name: 'password', length: 255, nullable: false, select: false })
+  @Exclude()
+  @Column({ name: 'password', length: 255, nullable: false })
   @Field(() => String)
   password: string;
 
@@ -41,10 +42,9 @@ export class User extends BaseEntity {
     nullable: true,
     default: false,
   })
-  @Field(() => Boolean)
+  @Field(() => Boolean, { nullable: true })
   isActive?: boolean;
 
-  @Exclude()
   @Column({ name: 'role', nullable: true })
   @Field(() => String)
   role?: string;

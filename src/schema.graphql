@@ -8,26 +8,34 @@ type User {
   lastName: String!
   email: String!
   password: String!
-  isActive: Boolean!
+  isActive: Boolean
   role: String!
 }
 
 type UserLoginResponseDto {
-  status: Float
-  message: String
-  user: User
+  status: Float!
+  message: String!
+  token: String!
+}
+
+type UserRegisterResponseDto {
+  status: Float!
+  message: String!
+  user: User!
 }
 
 type Query {
   index: String!
-  register(data: UserRegisterReqDto!): UserLoginResponseDto!
+  register(data: UserRegisterReqDto!): UserRegisterResponseDto!
   login(email: String!, password: String!): UserLoginResponseDto!
+  getUser: UserRegisterResponseDto!
 }
 
 input UserRegisterReqDto {
-  first_name: String!
-  last_name: String!
+  firstName: String!
+  lastName: String!
   email: String!
   password: String!
-  confirm_password: String!
+  confirmPassword: String!
+  role: String!
 }
