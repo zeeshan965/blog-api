@@ -25,7 +25,7 @@ type UserRegisterResponseDto {
 }
 
 type Query {
-  index: String!
+  index(username: String!, password: String!): String!
   getUser: UserRegisterResponseDto!
   getAdmin: UserRegisterResponseDto!
   getAuthLoggedUser: UserRegisterResponseDto!

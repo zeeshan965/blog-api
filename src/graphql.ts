@@ -40,7 +40,7 @@ export interface UserRegisterResponseDto {
 }
 
 export interface IQuery {
-    index(): string | Promise<string>;
+    index(username: string, password: string): string | Promise<string>;
     getUser(): UserRegisterResponseDto | Promise<UserRegisterResponseDto>;
     getAdmin(): UserRegisterResponseDto | Promise<UserRegisterResponseDto>;
     getAuthLoggedUser(): UserRegisterResponseDto | Promise<UserRegisterResponseDto>;

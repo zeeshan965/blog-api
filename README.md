@@ -172,5 +172,125 @@ JWTGuard
 will check if user is authorized to access the route
 RoleGuard
 ```
+## Passport(local strategy)
+https://www.passportjs.org/packages/
+```bash
+npm install --save @nestjs/passport passport passport-local
+npm install --save-dev @types/passport-local
+
+//Authenticate a user by verifying their "credentials" (such as username/password)
+
+nest g module auth
+nest g service auth
+nest g module users
+nest g service users
+```
+
+```typescript
+//users/users.service.ts
+
+import { Injectable } from '@nestjs/common';
+
+// This should be a real class/interface representing a user entity
+export type User = any;
+
+@Injectable()
+export class UsersService {
+  private readonly users = [
+    { userId: 1, username: 'john', password: 'changeme' },
+    { userId: 2, username: 'maria', password: 'guess' }
+  ];
+
+  async findOne(username: string): Promise<User | undefined> {
+    return this.users.find(user => user.username === username);
+  }
+}
+```
+```typescript
+//users/users.module.ts
+import { Module } from '@nestjs/common';
+import { UsersService } from './users.service';
+
+@Module({
+  providers: [UsersService],
+  exports: [UsersService],
+})
+export class UsersModule {}
+```
+```typescript
+//auth/auth.service.ts
+import { Injectable } from '@nestjs/common';
+import { UsersService } from '../users/users.service';
+
+@Injectable()
+export class AuthService {
+  constructor(private usersService: UsersService) {}
+
+  async validateUser(username: string, pass: string): Promise<any> {
+    const user = await this.usersService.findOne(username);
+    if (user && user.password === pass) {
+      const { password, ...result } = user;
+      return result;
+    }
+    return null;
+  }
+}
+```
+
+```typescript
+//auth/auth.module.ts
+
+import { Module } from '@nestjs/common';
+import { AuthService } from './auth.service';
+import { UsersModule } from '../users/users.module';
+
+@Module({
+  imports: [UsersModule, PassportModule],
+  providers: [AuthService, LocalStrategy],
+})
+export class AuthModule {}
+
+```
+```typescript
+//auth/local.strategy.ts
+
+import { Strategy } from 'passport-local';
+import { PassportStrategy } from '@nestjs/passport';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { AuthService } from './auth.service';
+
+@Injectable()
+export class LocalStrategy extends PassportStrategy(Strategy) {
+  constructor(private authService: AuthService) {
+    super();
+  }
+
+  async validate(username: string, password: string): Promise<any> {
+    const user = await this.authService.validateUser(username, password);
+    if (!user) {
+      throw new UnauthorizedException();
+    }
+    return user;
+  }
+}
+```
 
 
+## Passport(jwt strategy)
+
+## JWT using jsonwebtoken
+```typescript
+import * as jwt from 'jsonwebtoken';
+
+//to create new token
+//payload will be some user data 
+const payload = {name:'test', email: 'test@test.com'};
+
+jwt_secret_key should be generated key pair using any of the available hashing algo, I choosed 'hs256'
+const token = jwt.sign(payload, 'jwt_secret_key', {
+  expiresIn: '1d',
+});
+
+//to verify token
+jwt.verify(token, 'jwt_secret_key');
+```

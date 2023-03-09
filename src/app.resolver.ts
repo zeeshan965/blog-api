@@ -28,7 +28,10 @@ export class AppResolver {
    */
   @Query(() => String)
   @UseGuards(PassportGuard('local'))
-  index(): string {
+  index(
+    @Args({ name: 'username', type: () => String }) username: string,
+    @Args({ name: 'password', type: () => String }) password: string,
+  ): string {
     return 'Nest JS GQL';
   }
 

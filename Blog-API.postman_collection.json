@@ -7,7 +7,23 @@
 	},
 	"item": [
 		{
-			"name": "Rest API Register",
+			"name": "Register(Rest)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Your test name\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    console.log(jsonData);",
+							"    pm.environment.set(\"email\", jsonData.user.email);",
+							"    pm.environment.set(\"password\", \"Password@123\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -36,7 +52,7 @@
 			"response": []
 		},
 		{
-			"name": "Login",
+			"name": "Register(GraphQL)",
 			"event": [
 				{
 					"listen": "test",
@@ -45,6 +61,49 @@
 							"pm.test(\"Your test name\", function () {",
 							"    var jsonData = pm.response.json();",
 							"    console.log(jsonData);",
+							"    pm.environment.set(\"email\", jsonData.data.register.user.email);",
+							"    pm.environment.set(\"password\", \"Password@123\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation Register($data: UserRegisterReqDto!){\n  register(data: $data){\n    status\n    message\n    user{\n      firstName\n      lastName\n      email\n      isActive\n      role\n    }\n  }\n}\n\n# query {\n#     Register($data: UserRegisterReqDto!) {\n#         register(data: $data){\n#             status\n#             message\n#             user {\n#                 firstName\n#                 lastName\n#                 email\n#             }\n#         }\n#     }\n# }",
+						"variables": "{\n    \"data\": {\n        \"firstName\": \"{{$randomFirstName}}\",\n        \"lastName\": \"{{$randomLastName}}\",\n        \"email\": \"{{$randomEmail}}\",\n        \"password\":\"Password@123\",\n        \"confirmPassword\":\"Password@123\",\n        \"role\": \"NORMAL_USER\"\n    }\n}"
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/graphql",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login(GraphQL)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Your test name\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    console.log(jsonData.data);",
+							"    pm.environment.set(\"token\", jsonData.data.login.token);",
 							"    //pm.expect(jsonData.value).to.eql(100);",
 							"});"
 						],
@@ -58,8 +117,8 @@
 				"body": {
 					"mode": "graphql",
 					"graphql": {
-						"query": "query Login($email: String!, $password: String!){\n  login(email: $email, password: $password) {\n  \ttoken\n    message\n    status\n  }\n}",
-						"variables": "{\n  \"email\": \"Keith81@hotmail.com\",\n  \"password\": \"Password@123\"\n}"
+						"query": "mutation Login($email: String!, $password: String!){\n  login(email: $email, password: $password) {\n  \ttoken\n    message\n    status\n  }\n}",
+						"variables": "{\n  \"email\": \"{{email}}\",\n  \"password\": \"{{password}}\"\n}"
 					}
 				},
 				"url": {
@@ -77,33 +136,7 @@
 			"response": []
 		},
 		{
-			"name": "Register",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "graphql",
-					"graphql": {
-						"query": "query {\n    Register($data: UserRegisterReqDto!) {\n        register(data: $data){\n            status\n            message\n            user {\n                firstName\n                lastName\n                email\n            }\n        }\n    }\n}\n\n# query Register($data: UserRegisterReqDto!){\n#   register(data: $data){\n#     status\n#     message\n#     user{\n#       firstName\n#       lastName\n#       email\n#       isActive\n#       role\n#     }\n#   }\n# }",
-						"variables": "{\n    \"data\": {\n        \"firstName\": \"{{$randomFirstName}}\",\n        \"lastName\": \"{{$randomLastName}}\",\n        \"email\": \"{{$randomEmail}}\",\n        \"password\":\"Password@123\",\n        \"confirmPassword\":\"Password@123\",\n        \"role\": \"ADMIN\"\n    }\n}"
-					}
-				},
-				"url": {
-					"raw": "http://localhost:3000/graphql",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"graphql"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Rest API Get User By ID",
+			"name": "Get User By ID (REST)",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
 			},
@@ -120,7 +153,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:3000/user/13",
+					"raw": "http://localhost:3000/user/1",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -128,14 +161,14 @@
 					"port": "3000",
 					"path": [
 						"user",
-						"13"
+						"1"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "Get User",
+			"name": "Get User (GraphQL)",
 			"request": {
 				"method": "POST",
 				"header": [
@@ -161,6 +194,174 @@
 					"port": "3000",
 					"path": [
 						"graphql"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Logged In Admin (GraphQL)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "{\n  getAdmin{\n    status\n    user{\n      firstName\n      email\n      role\n    }\n    message\n  }\n}",
+						"variables": ""
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/graphql",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Logged In user (GraphQL)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "{\n  getAuthLoggedUser{\n    status\n    user{\n      firstName\n      email\n      role\n    }\n    message\n  }\n}",
+						"variables": ""
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/graphql",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login Passport local strategy  (REST)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\": \"{{email}}\",\n    \"password\": \"{{password}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/user/auth/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"user",
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Index (REST)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\": \"{{email}}\",\n    \"password\": \"{{password}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/user/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"user",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Index (GraphQL)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "# query index($username: String!, $password: String!){\n#   index(username: $username, password: $password) {\n\n#   }\n# }\n{\n  index(username: \"Kameron1@yahoo.com\", password:\"Password@123\")\n}",
+						"variables": "{\n    \"username\": \"{{email}}\",\n    \"password\": \"{{password}}\"\n}"
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/user/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"user",
+						""
 					]
 				}
 			},

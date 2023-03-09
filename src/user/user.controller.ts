@@ -13,7 +13,7 @@ import { SETTINGS } from '../utils/app.utils';
 import { UserRegisterReqDto } from './dto/user-register-req.dto';
 import { UserRegisterResponseDto } from './dto/user-register-response.dto';
 import { UserRegisterResponseInterface } from './interface/user-register-response.interface';
-import { AuthGuard } from '@nestjs/passport';
+import { AuthGuard as PassportGuard } from '@nestjs/passport';
 
 @Controller('user')
 export class UserController {
@@ -26,7 +26,7 @@ export class UserController {
    * All method supported route
    */
   @All('/')
-  @UseGuards(AuthGuard('local'))
+  @UseGuards(PassportGuard('local'))
   getHello(@Request() request): { message: string } {
     return this.userService.getWelcome(request.user);
   }
@@ -53,7 +53,7 @@ export class UserController {
     return { status: 200, message: 'success', user: user };
   }
 
-  @UseGuards(AuthGuard('local'))
+  @UseGuards(PassportGuard('local'))
   @Post('auth/login')
   async login(@Request() req) {
     return req.user;
