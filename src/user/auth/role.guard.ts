@@ -1,13 +1,5 @@
-import {
-  CanActivate,
-  ExecutionContext,
-  HttpException,
-  HttpStatus,
-  Injectable,
-} from '@nestjs/common';
-
+import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { GqlExecutionContext } from '@nestjs/graphql';
-import * as jwt from 'jsonwebtoken';
 
 export const Roles = {
   ADMIN: 'ADMIN',
@@ -27,9 +19,7 @@ export class RoleGuard implements CanActivate {
    */
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const ctx = GqlExecutionContext.create(context).getContext();
-    const {role} = ctx.user;
-    if(role == this.role) return true;
-
-    return false;    
+    const { role } = ctx.user;
+    return role == this.role;
   }
 }

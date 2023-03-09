@@ -52,4 +52,10 @@ export class UserController {
     const user = await this.userService.findUserById(id);
     return { status: 200, message: 'success', user: user };
   }
+
+  @UseGuards(AuthGuard('local'))
+  @Post('auth/login')
+  async login(@Request() req) {
+    return req.user;
+  }
 }

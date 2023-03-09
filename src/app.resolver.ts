@@ -1,6 +1,5 @@
 import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
-import { AuthGuard } from './user/auth/auth.guard';
 import { User } from './user/entity/user.entity';
 import { UserLoginResponseDto } from './user/dto/user-login-response.dto';
 import { UserRegisterReqDto } from './user/dto/user-register-req.dto';
@@ -11,6 +10,7 @@ import { UserRegisterResponseDto } from './user/dto/user-register-response.dto';
 import { UserService } from './user/user.service';
 import { RoleGuard, Roles } from './user/auth/role.guard';
 import { AuthGuard as PassportGuard } from '@nestjs/passport';
+import { AuthGuard } from './user/auth/auth.guard';
 
 @Resolver(() => String)
 export class AppResolver {
