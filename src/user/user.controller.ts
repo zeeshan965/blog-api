@@ -1,9 +1,19 @@
 import { UserService } from './user.service';
-import { All, Body, Controller, Get, Param, Post } from '@nestjs/common';
+import {
+  All,
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Request,
+  UseGuards,
+} from '@nestjs/common';
 import { SETTINGS } from '../utils/app.utils';
 import { UserRegisterReqDto } from './dto/user-register-req.dto';
 import { UserRegisterResponseDto } from './dto/user-register-response.dto';
 import { UserRegisterResponseInterface } from './interface/user-register-response.interface';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('user')
 export class UserController {
@@ -16,8 +26,9 @@ export class UserController {
    * All method supported route
    */
   @All('/')
-  getHello(): { message: string } {
-    return this.userService.getWelcome();
+  @UseGuards(AuthGuard('local'))
+  getHello(@Request() request): { message: string } {
+    return this.userService.getWelcome(request.user);
   }
 
   /**

@@ -26,9 +26,14 @@ type UserRegisterResponseDto {
 
 type Query {
   index: String!
+  getUser: UserRegisterResponseDto!
+  getAdmin: UserRegisterResponseDto!
+  getAuthLoggedUser: UserRegisterResponseDto!
+}
+
+type Mutation {
   register(data: UserRegisterReqDto!): UserRegisterResponseDto!
   login(email: String!, password: String!): UserLoginResponseDto!
-  getUser: UserRegisterResponseDto!
 }
 
 input UserRegisterReqDto {

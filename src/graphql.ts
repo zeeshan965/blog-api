@@ -41,9 +41,14 @@ export interface UserRegisterResponseDto {
 
 export interface IQuery {
     index(): string | Promise<string>;
+    getUser(): UserRegisterResponseDto | Promise<UserRegisterResponseDto>;
+    getAdmin(): UserRegisterResponseDto | Promise<UserRegisterResponseDto>;
+    getAuthLoggedUser(): UserRegisterResponseDto | Promise<UserRegisterResponseDto>;
+}
+
+export interface IMutation {
     register(data: UserRegisterReqDto): UserRegisterResponseDto | Promise<UserRegisterResponseDto>;
     login(email: string, password: string): UserLoginResponseDto | Promise<UserLoginResponseDto>;
-    getUser(): UserRegisterResponseDto | Promise<UserRegisterResponseDto>;
 }
 
 type Nullable<T> = T | null;

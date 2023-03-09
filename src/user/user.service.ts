@@ -16,8 +16,8 @@ export class UserService {
   /**
    * base route
    */
-  getWelcome(): { message: string } {
-    return { message: 'welcome!' };
+  getWelcome(user): { message: string; user?: any } {
+    return { message: 'welcome!', user: user };
   }
 
   /**

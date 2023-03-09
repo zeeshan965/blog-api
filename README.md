@@ -147,3 +147,30 @@ toJSON() {
 }
  
 ```
+
+## DTO's
+DTO classes are being in nest to entertain request data and response data
+```bash
+input type decorator for request data
+@InputType()
+
+object type decorator is being used for responses
+@ObjectType()
+
+field decorator is used to define input field infomation, name, validation, nullable etc. 
+@Field()
+```
+## Guards
+I've made 3 guards for the purpose of authenticate the requests before proceeding to resolver.
+```bash
+will check if user is passing the right login credentials
+AuthGuard
+
+will check if user is logged in and token is valid
+JWTGuard
+
+will check if user is authorized to access the route
+RoleGuard
+```
+
+
