@@ -32,7 +32,7 @@ export class User extends BaseEntity {
 
   @Exclude()
   @Column({ name: 'password', length: 255, nullable: false })
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   password: string;
 
   @Exclude()

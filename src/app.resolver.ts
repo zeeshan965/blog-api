@@ -9,8 +9,8 @@ import { JwtGuard } from './user/auth/jwt.guard';
 import { UserRegisterResponseDto } from './user/dto/user-register-response.dto';
 import { UserService } from './user/user.service';
 import { RoleGuard, Roles } from './user/auth/role.guard';
-import { AuthGuard as PassportGuard } from '@nestjs/passport';
 import { AuthGuard } from './user/auth/auth.guard';
+import { GqlAuthGuard } from './user/auth/gql-auth.guard';
 
 @Resolver(() => String)
 export class AppResolver {
@@ -27,11 +27,7 @@ export class AppResolver {
    *
    */
   @Query(() => String)
-  @UseGuards(PassportGuard('local'))
-  index(
-    @Args({ name: 'username', type: () => String }) username: string,
-    @Args({ name: 'password', type: () => String }) password: string,
-  ): string {
+  index(): string {
     return 'Nest JS GQL';
   }
 
@@ -96,6 +92,23 @@ export class AppResolver {
   @Query(() => UserRegisterResponseDto)
   @UseGuards(JwtGuard, new RoleGuard(Roles.NORMAL_USER))
   getAuthLoggedUser(@Context('user') user: User) {
+    return {
+      status: 200,
+      message: 'this will be a normal user route!',
+      user: user,
+    };
+  }
+
+  /**
+   *
+   */
+  @Mutation(() => UserRegisterResponseDto)
+  @UseGuards(GqlAuthGuard)
+  localLogin(
+    @Args({ name: 'username', type: () => String }) username: string,
+    @Args({ name: 'password', type: () => String }) password: string,
+    @Context('user') user: User,
+  ) {
     return {
       status: 200,
       message: 'this will be a normal user route!',

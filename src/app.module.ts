@@ -13,6 +13,9 @@ import { AppResolver } from './app.resolver';
 import { dataSourceOptions } from './dataSource';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './user/auth/auth.module';
+import { PostModule } from './post/post.module';
+import { AttachmentModule } from './attachment/attachment.module';
+import { CommentsModule } from './comments/comments.module';
 dotenv.config();
 
 @Module({
@@ -33,6 +36,9 @@ dotenv.config();
       },
     }),
     TypeOrmModule.forRoot(dataSourceOptions),
+    PostModule,
+    AttachmentModule,
+    CommentsModule,
   ],
   providers: [AppResolver],
 })

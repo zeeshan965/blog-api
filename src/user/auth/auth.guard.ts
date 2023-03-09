@@ -23,7 +23,7 @@ export class AuthGuard implements CanActivate {
     const { email, password } = ctx.req.body.variables;
     const user: User = await this.userService.findUserByEmail(email);
     if (user && (await bcrypt.compare(password, user.password))) {
-      ctx.user = user;
+      ctx.user = user.toJSON();
       return true;
     } else {
       throw new HttpException('Unauthenticated', HttpStatus.UNAUTHORIZED);

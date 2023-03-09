@@ -7,7 +7,7 @@ type User {
   firstName: String!
   lastName: String!
   email: String!
-  password: String!
+  password: String
   isActive: Boolean
   role: String!
 }
@@ -24,16 +24,46 @@ type UserRegisterResponseDto {
   user: User!
 }
 
+type Post {
+  id: Int!
+  title: String!
+  description: String!
+}
+
+type Attachment {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+type Comment {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
 type Query {
-  index(username: String!, password: String!): String!
+  index: String!
   getUser: UserRegisterResponseDto!
   getAdmin: UserRegisterResponseDto!
   getAuthLoggedUser: UserRegisterResponseDto!
+  post(id: Int!): Post!
+  attachment(id: Int!): Attachment!
+  comments: [Comment!]!
+  comment(id: Int!): Comment!
 }
 
 type Mutation {
   register(data: UserRegisterReqDto!): UserRegisterResponseDto!
   login(email: String!, password: String!): UserLoginResponseDto!
+  localLogin(username: String!, password: String!): UserRegisterResponseDto!
+  createPost(createPostInput: CreatePostInput!): String!
+  updatePost(updatePostInput: UpdatePostInput!): Post!
+  removePost(id: Int!): Post!
+  createAttachment(createAttachmentInput: CreateAttachmentInput!): Attachment!
+  updateAttachment(updateAttachmentInput: UpdateAttachmentInput!): Attachment!
+  removeAttachment(id: Int!): Attachment!
+  createComment(createCommentInput: CreateCommentInput!): Comment!
+  updateComment(updateCommentInput: UpdateCommentInput!): Comment!
+  removeComment(id: Int!): Comment!
 }
 
 input UserRegisterReqDto {
@@ -43,4 +73,37 @@ input UserRegisterReqDto {
   password: String!
   confirmPassword: String!
   role: String!
+}
+
+input CreatePostInput {
+  title: String!
+  description: String!
+}
+
+input UpdatePostInput {
+  title: String
+  description: String
+  id: Int!
+}
+
+input CreateAttachmentInput {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+input UpdateAttachmentInput {
+  """Example field (placeholder)"""
+  exampleField: Int
+  id: Int!
+}
+
+input CreateCommentInput {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+input UpdateCommentInput {
+  """Example field (placeholder)"""
+  exampleField: Int
+  id: Int!
 }
