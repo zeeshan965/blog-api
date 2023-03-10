@@ -347,5 +347,5 @@ providers: [
     useClass: GqlThrottlerGuard,
   },
 ]
-
+// To make throttling work for both rest and gql I used GqlThrottlerGuard guard for both of them.
 ```

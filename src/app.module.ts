@@ -16,8 +16,9 @@ import { AuthModule } from './user/auth/auth.module';
 import { PostModule } from './post/post.module';
 import { AttachmentModule } from './attachment/attachment.module';
 import { CommentsModule } from './comment/comments.module';
-import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
+import { ThrottlerModule } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
+import { GqlThrottlerGuard } from './guard/gql.throttler.guard';
 dotenv.config();
 
 @Module({
@@ -42,6 +43,7 @@ dotenv.config();
       definitions: {
         path: join(process.cwd(), 'src/graphql.ts'),
       },
+      context: ({ req, res }) => ({ req, res }),
     }),
     TypeOrmModule.forRoot(dataSourceOptions),
     UserModule,
@@ -50,6 +52,9 @@ dotenv.config();
     AttachmentModule,
     CommentsModule,
   ],
-  providers: [{ provide: APP_GUARD, useClass: ThrottlerGuard }, AppResolver],
+  providers: [
+    { provide: APP_GUARD, useClass: GqlThrottlerGuard },
+    AppResolver,
+  ],
 })
 export class AppModule {}
