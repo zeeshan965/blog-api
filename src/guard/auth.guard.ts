@@ -8,8 +8,8 @@ import {
 
 import { GqlExecutionContext } from '@nestjs/graphql';
 import * as bcrypt from 'bcrypt';
-import { UserService } from '../user.service';
-import { User } from '../entity/user.entity';
+import { UserService } from '../user/user.service';
+import { User } from '../user/entity/user.entity';
 
 @Injectable()
 export class AuthGuard implements CanActivate {

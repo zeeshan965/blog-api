@@ -275,7 +275,6 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
 }
 ```
 
-
 ## Passport(jwt strategy)
 
 ## JWT using jsonwebtoken
@@ -293,4 +292,60 @@ const token = jwt.sign(payload, 'jwt_secret_key', {
 
 //to verify token
 jwt.verify(token, 'jwt_secret_key');
+```
+
+## Compression
+(Helps minimize request body size) 
+
+**Note:** For high-traffic websites in production, it is strongly recommended to offload compression from the application server - typically in a reverse proxy (e.g., Nginx). In that case, you should not use compression middleware.
+
+```bash
+npm i --save compression
+```
+```typescript
+//inside main.ts file
+import * as compression from 'compression';
+
+app.use(compression());
+
+```
+
+## Throttling
+```bash
+npm i --save @nestjs/throttler
+```
+```typescript
+import { APP_GUARD } from '@nestjs/core';
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
+
+ThrottlerModule.forRootAsync({
+  imports: [ConfigModule],
+  inject: [ConfigService],
+  useFactory: (config: ConfigService) => ({
+    ttl: config.get('THROTTLE_TTL'),
+    limit: config.get('THROTTLE_LIMIT'),
+  }),
+})
+providers: [
+  {
+    provide: APP_GUARD,
+    useClass: ThrottlerGuard,
+  },
+]
+//For graphql create new guard
+@Injectable()
+export class GqlThrottlerGuard extends ThrottlerGuard {
+  getRequestResponse(context: ExecutionContext) {
+    const gqlCtx = GqlExecutionContext.create(context);
+    const ctx = gqlCtx.getContext();
+    return { req: ctx.req, res: ctx.res };
+  }
+}
+providers: [
+  {
+    provide: APP_GUARD,
+    useClass: GqlThrottlerGuard,
+  },
+]
+
 ```

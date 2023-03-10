@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import Configuration from './config/configuration-am';
 //import Configuration from './config/configuration-mm';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -15,13 +15,21 @@ import { UserModule } from './user/user.module';
 import { AuthModule } from './user/auth/auth.module';
 import { PostModule } from './post/post.module';
 import { AttachmentModule } from './attachment/attachment.module';
-import { CommentsModule } from './comments/comments.module';
+import { CommentsModule } from './comment/comments.module';
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
+import { APP_GUARD } from '@nestjs/core';
 dotenv.config();
 
 @Module({
   imports: [
-    UserModule,
-    AuthModule,
+    ThrottlerModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) => ({
+        ttl: config.get('throttle_tl'),
+        limit: config.get('throttle_limit'),
+      }),
+    }),
     ConfigModule.forRoot({
       isGlobal: true,
       load: [Configuration],
@@ -36,10 +44,12 @@ dotenv.config();
       },
     }),
     TypeOrmModule.forRoot(dataSourceOptions),
+    UserModule,
+    AuthModule,
     PostModule,
     AttachmentModule,
     CommentsModule,
   ],
-  providers: [AppResolver],
+  providers: [{ provide: APP_GUARD, useClass: ThrottlerGuard }, AppResolver],
 })
 export class AppModule {}

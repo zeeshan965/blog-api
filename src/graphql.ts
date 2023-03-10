@@ -56,16 +56,16 @@ export interface User {
     role: string;
 }
 
-export interface UserLoginResponseDto {
-    status: number;
-    message: string;
-    token: string;
-}
-
 export interface UserRegisterResponseDto {
     status: number;
     message: string;
     user: User;
+}
+
+export interface UserLoginResponseDto {
+    status: number;
+    message: string;
+    token: string;
 }
 
 export interface Post {

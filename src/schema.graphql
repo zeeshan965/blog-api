@@ -12,16 +12,16 @@ type User {
   role: String!
 }
 
-type UserLoginResponseDto {
-  status: Float!
-  message: String!
-  token: String!
-}
-
 type UserRegisterResponseDto {
   status: Float!
   message: String!
   user: User!
+}
+
+type UserLoginResponseDto {
+  status: Float!
+  message: String!
+  token: String!
 }
 
 type Post {
