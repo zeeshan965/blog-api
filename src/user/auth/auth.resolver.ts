@@ -11,12 +11,14 @@ import { RoleGuard, Roles } from '../../guard/role.guard';
 import { GqlAuthGuard } from '../../guard/gql-auth.guard';
 import { ConfigService } from '@nestjs/config';
 import { UserService } from '../user.service';
+import { AuthService } from './auth.service';
 
 @Resolver(() => User)
 export class AuthResolver {
   constructor(
     private configService: ConfigService,
     private userService: UserService,
+    private authService: AuthService,
   ) {}
 
   /**
@@ -88,7 +90,9 @@ export class AuthResolver {
   }
 
   /**
-   *
+   * @param username
+   * @param password
+   * @param user
    */
   @Mutation(() => UserRegisterResponseDto)
   @UseGuards(GqlAuthGuard)
@@ -102,5 +106,18 @@ export class AuthResolver {
       message: 'this will be a normal user route!',
       user: user,
     };
+  }
+
+  /**
+   *
+   */
+  @Mutation(() => UserRegisterResponseDto)
+  @UseGuards(GqlAuthGuard)
+  jwtLogin(
+    @Args({ name: 'username', type: () => String }) username: string,
+    @Args({ name: 'password', type: () => String }) password: string,
+    @Context('user') user: User,
+  ) {
+    return this.authService.login(user);
   }
 }

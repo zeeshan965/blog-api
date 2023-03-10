@@ -14,13 +14,18 @@ import { UserRegisterReqDto } from './dto/user-register-req.dto';
 import { UserRegisterResponseDto } from './dto/user-register-response.dto';
 import { UserRegisterResponseInterface } from './interface/user-register-response.interface';
 import { AuthGuard as PassportGuard } from '@nestjs/passport';
+import { AuthService } from './auth/auth.service';
 
 @Controller('user')
 export class UserController {
   /**
    * @param userService
+   * @param authService
    */
-  constructor(private userService: UserService) {}
+  constructor(
+    private userService: UserService,
+    private authService: AuthService,
+  ) {}
 
   /**
    * All method supported route
@@ -56,6 +61,6 @@ export class UserController {
   @UseGuards(PassportGuard('local'))
   @Post('auth/login')
   async login(@Request() req) {
-    return req.user;
+    return this.authService.login(req.user);
   }
 }

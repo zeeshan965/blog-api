@@ -276,6 +276,26 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
 ```
 
 ## Passport(jwt strategy)
+```typescript
+//inside auth module imports array include below
+imports: [
+  PassportModule,
+  JwtModule.registerAsync({
+    imports: [ConfigModule],
+    inject: [ConfigService],
+    useFactory: async (config: ConfigService) => ({
+      secret: config.get('jwt_secret_key'),
+      signOptions: {
+        expiresIn: config.get('jwt_expiry'),
+      },
+    }),
+  })
+]
+
+import { JwtService } from '@nestjs/jwt';
+this.jwtService.sign(payload);
+
+```
 
 ## JWT using jsonwebtoken
 ```typescript
@@ -348,4 +368,12 @@ providers: [
   },
 ]
 // To make throttling work for both rest and gql I used GqlThrottlerGuard guard for both of them.
+```
+## Circular Dependency
+https://docs.nestjs.com/fundamentals/circular-dependency
+```typescript
+  //inside auth module
+  forwardRef(() => UserModule), 
+  //inside user module
+  forwardRef(() => AuthModule)
 ```

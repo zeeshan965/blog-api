@@ -4,6 +4,9 @@ import { Field, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
 export class UserRegisterResponseDto extends ResponseDto {
-  @Field(() => User)
-  user: User;
+  @Field(() => User, { nullable: true })
+  user?: User;
+
+  @Field(() => String, { nullable: true })
+  token?: string;
 }

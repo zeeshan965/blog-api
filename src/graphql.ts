@@ -59,7 +59,8 @@ export interface User {
 export interface UserRegisterResponseDto {
     status: number;
     message: string;
-    user: User;
+    user?: Nullable<User>;
+    token?: Nullable<string>;
 }
 
 export interface UserLoginResponseDto {
@@ -97,6 +98,7 @@ export interface IMutation {
     register(data: UserRegisterReqDto): UserRegisterResponseDto | Promise<UserRegisterResponseDto>;
     login(email: string, password: string): UserLoginResponseDto | Promise<UserLoginResponseDto>;
     localLogin(username: string, password: string): UserRegisterResponseDto | Promise<UserRegisterResponseDto>;
+    jwtLogin(username: string, password: string): UserRegisterResponseDto | Promise<UserRegisterResponseDto>;
     createPost(createPostInput: CreatePostInput): string | Promise<string>;
     updatePost(updatePostInput: UpdatePostInput): Post | Promise<Post>;
     removePost(id: number): Post | Promise<Post>;
