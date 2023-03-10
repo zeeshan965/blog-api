@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "04a827ba-5117-4ee6-9418-57a11a06d7da",
+		"_postman_id": "029a4842-5909-443f-a589-94c80294c318",
 		"name": "Blog-API",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "9565425"
+		"_exporter_id": "26114867"
 	},
 	"item": [
 		{
@@ -381,6 +381,38 @@
 					"mode": "graphql",
 					"graphql": {
 						"query": "# mutation localLogin($username: String!, $password: String!){\n#   localLogin(username: $username, password: $password){\n#     status\n#     message\n#     user{\n#       firstName\n#       lastName\n#       email\n#       role\n#     }\n#   }\n# }\n\nmutation {\n    localLogin(username: \"{{email}}\", password: \"{{password}}\"){\n        status\n        message\n        user{\n            firstName\n            lastName\n            email\n            role\n            password\n        }\n    }\n}\n",
+						"variables": "{\n    \"username\": \"{{email}}\",\n    \"password\": \"{{password}}\"\n}"
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/graphql",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "jwtLogin (GraphQL)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation {\n    jwtLogin(username: \"{{email}}\", password: \"{{password}}\"){\n        status\n        message\n        token\n    }\n}\n",
 						"variables": "{\n    \"username\": \"{{email}}\",\n    \"password\": \"{{password}}\"\n}"
 					}
 				},
