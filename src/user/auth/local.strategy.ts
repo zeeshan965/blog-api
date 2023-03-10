@@ -7,15 +7,15 @@ import {
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy } from 'passport-local';
 import { User } from '../entity/user.entity';
-import { UserService } from '../user.service';
 import * as bcrypt from 'bcrypt';
+import { AuthService } from './auth.service';
 
 @Injectable()
 export class LocalStrategy extends PassportStrategy(Strategy) {
   /**
-   * @param userService
+   * @param authService
    */
-  constructor(private userService: UserService) {
+  constructor(private authService: AuthService) {
     super();
   }
 
@@ -25,12 +25,12 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
    * @param password
    */
   async validate(username: string, password: string): Promise<any> {
-    const user: User = await this.userService.findUserByEmail(username);
+    const user: User | null = await this.authService.validateUser(
+      username,
+      password,
+    );
+
     if (!user) throw new UnauthorizedException();
-    if (await bcrypt.compare(password, user.password)) {
-      return user.toJSON();
-    } else {
-      throw new HttpException('Unauthenticated', HttpStatus.UNAUTHORIZED);
-    }
+    return user;
   }
 }
