@@ -3,6 +3,6 @@ import { CommentsService } from './comments.service';
 import { CommentsResolver } from './comments.resolver';
 
 @Module({
-  providers: [CommentsResolver, CommentsService]
+  providers: [CommentsResolver, CommentsService],
 })
 export class CommentsModule {}

@@ -28,15 +28,6 @@ export interface UpdatePostInput {
     id: number;
 }
 
-export interface CreateAttachmentInput {
-    exampleField: number;
-}
-
-export interface UpdateAttachmentInput {
-    exampleField?: Nullable<number>;
-    id: number;
-}
-
 export interface CreateCommentInput {
     exampleField: number;
 }
@@ -46,8 +37,31 @@ export interface UpdateCommentInput {
     id: number;
 }
 
+export interface Comment {
+    id: number;
+    createdAt: DateTime;
+    updatedAt?: Nullable<DateTime>;
+    message: string;
+}
+
+export interface Post {
+    id: number;
+    createdAt: DateTime;
+    updatedAt?: Nullable<DateTime>;
+    title: string;
+    description: string;
+    published: string;
+    publishedAt: string;
+    slug: string;
+    trashed: string;
+    postMedia: string;
+    postMediaType: string;
+}
+
 export interface User {
     id: number;
+    createdAt: DateTime;
+    updatedAt?: Nullable<DateTime>;
     firstName: string;
     lastName: string;
     email: string;
@@ -69,27 +83,12 @@ export interface UserLoginResponseDto {
     token: string;
 }
 
-export interface Post {
-    id: number;
-    title: string;
-    description: string;
-}
-
-export interface Attachment {
-    exampleField: number;
-}
-
-export interface Comment {
-    exampleField: number;
-}
-
 export interface IQuery {
     index(): string | Promise<string>;
     getUser(): UserRegisterResponseDto | Promise<UserRegisterResponseDto>;
     getAdmin(): UserRegisterResponseDto | Promise<UserRegisterResponseDto>;
     getAuthLoggedUser(): UserRegisterResponseDto | Promise<UserRegisterResponseDto>;
     post(id: number): Post | Promise<Post>;
-    attachment(id: number): Attachment | Promise<Attachment>;
     comments(): Comment[] | Promise<Comment[]>;
     comment(id: number): Comment | Promise<Comment>;
 }
@@ -102,12 +101,10 @@ export interface IMutation {
     createPost(createPostInput: CreatePostInput): string | Promise<string>;
     updatePost(updatePostInput: UpdatePostInput): Post | Promise<Post>;
     removePost(id: number): Post | Promise<Post>;
-    createAttachment(createAttachmentInput: CreateAttachmentInput): Attachment | Promise<Attachment>;
-    updateAttachment(updateAttachmentInput: UpdateAttachmentInput): Attachment | Promise<Attachment>;
-    removeAttachment(id: number): Attachment | Promise<Attachment>;
     createComment(createCommentInput: CreateCommentInput): Comment | Promise<Comment>;
     updateComment(updateCommentInput: UpdateCommentInput): Comment | Promise<Comment>;
     removeComment(id: number): Comment | Promise<Comment>;
 }
 
+export type DateTime = any;
 type Nullable<T> = T | null;

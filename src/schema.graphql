@@ -2,8 +2,36 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type Comment {
+  id: Int!
+  createdAt: DateTime!
+  updatedAt: DateTime
+  message: String!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Post {
+  id: Int!
+  createdAt: DateTime!
+  updatedAt: DateTime
+  title: String!
+  description: String!
+  published: String!
+  publishedAt: String!
+  slug: String!
+  trashed: String!
+  postMedia: String!
+  postMediaType: String!
+}
+
 type User {
   id: Int!
+  createdAt: DateTime!
+  updatedAt: DateTime
   firstName: String!
   lastName: String!
   email: String!
@@ -25,29 +53,12 @@ type UserLoginResponseDto {
   token: String!
 }
 
-type Post {
-  id: Int!
-  title: String!
-  description: String!
-}
-
-type Attachment {
-  """Example field (placeholder)"""
-  exampleField: Int!
-}
-
-type Comment {
-  """Example field (placeholder)"""
-  exampleField: Int!
-}
-
 type Query {
   index: String!
   getUser: UserRegisterResponseDto!
   getAdmin: UserRegisterResponseDto!
   getAuthLoggedUser: UserRegisterResponseDto!
   post(id: Int!): Post!
-  attachment(id: Int!): Attachment!
   comments: [Comment!]!
   comment(id: Int!): Comment!
 }
@@ -60,9 +71,6 @@ type Mutation {
   createPost(createPostInput: CreatePostInput!): String!
   updatePost(updatePostInput: UpdatePostInput!): Post!
   removePost(id: Int!): Post!
-  createAttachment(createAttachmentInput: CreateAttachmentInput!): Attachment!
-  updateAttachment(updateAttachmentInput: UpdateAttachmentInput!): Attachment!
-  removeAttachment(id: Int!): Attachment!
   createComment(createCommentInput: CreateCommentInput!): Comment!
   updateComment(updateCommentInput: UpdateCommentInput!): Comment!
   removeComment(id: Int!): Comment!
@@ -85,17 +93,6 @@ input CreatePostInput {
 input UpdatePostInput {
   title: String
   description: String
-  id: Int!
-}
-
-input CreateAttachmentInput {
-  """Example field (placeholder)"""
-  exampleField: Int!
-}
-
-input UpdateAttachmentInput {
-  """Example field (placeholder)"""
-  exampleField: Int
   id: Int!
 }
 

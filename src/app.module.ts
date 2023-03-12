@@ -14,11 +14,11 @@ import { dataSourceOptions } from './dataSource';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './user/auth/auth.module';
 import { PostModule } from './post/post.module';
-import { AttachmentModule } from './attachment/attachment.module';
-import { CommentsModule } from './comment/comments.module';
+import { CommentsModule } from './post/comment/comments.module';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
 import { GqlThrottlerGuard } from './guard/gql.throttler.guard';
+import { CategoryModule } from './post/category/category.module';
 dotenv.config();
 
 @Module({
@@ -49,12 +49,9 @@ dotenv.config();
     UserModule,
     AuthModule,
     PostModule,
-    AttachmentModule,
     CommentsModule,
+    CategoryModule,
   ],
-  providers: [
-    { provide: APP_GUARD, useClass: GqlThrottlerGuard },
-    AppResolver,
-  ],
+  providers: [{ provide: APP_GUARD, useClass: GqlThrottlerGuard }, AppResolver],
 })
 export class AppModule {}

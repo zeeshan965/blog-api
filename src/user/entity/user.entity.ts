@@ -1,23 +1,14 @@
-import {
-  BaseEntity,
-  BeforeInsert,
-  Column,
-  CreateDateColumn,
-  Entity,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
-import { Field, Int, ObjectType } from '@nestjs/graphql';
+import { BeforeInsert, Column, Entity, OneToMany } from 'typeorm';
+import { Field, ObjectType } from '@nestjs/graphql';
 import * as bcrypt from 'bcrypt';
 import { Exclude, instanceToPlain } from 'class-transformer';
+import { AbstractEntity } from '../../utils/abstract-entity';
+import { Post } from '../../post/entities/post.entity';
+import { Comment } from '../../post/comment/entities/comment.entity';
 
 @Entity('users')
 @ObjectType()
-export class User extends BaseEntity {
-  @Exclude()
-  @PrimaryGeneratedColumn()
-  @Field(() => Int)
-  id: number;
-
+export class User extends AbstractEntity {
   @Column({ name: 'first_name', length: 191, nullable: false })
   @Field(() => String)
   firstName: string;
@@ -49,13 +40,11 @@ export class User extends BaseEntity {
   @Field(() => String)
   role?: string;
 
-  @Exclude()
-  @CreateDateColumn({ name: 'created_at' })
-  createdAt: Date;
+  @OneToMany(() => Post, (post) => post.author)
+  posts?: Post[];
 
-  @Exclude()
-  @CreateDateColumn({ name: 'updated_at' })
-  updatedAt: Date;
+  @OneToMany(() => Comment, (comment) => comment.author)
+  comments?: Comment[];
 
   @BeforeInsert()
   async setPassword(password: string) {
