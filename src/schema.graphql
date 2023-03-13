@@ -20,7 +20,7 @@ type Post {
   updatedAt: DateTime
   title: String!
   description: String!
-  published: String!
+  published: Boolean!
   publishedAt: DateTime!
   slug: String!
   trashed: String!
@@ -28,22 +28,22 @@ type Post {
   postMediaType: String!
 }
 
-type User {
-  id: Int!
-  createdAt: DateTime!
-  updatedAt: DateTime
-  firstName: String!
-  lastName: String!
-  email: String!
+type UserJwtPayloadDto {
+  id: Int
+  firstName: String
+  lastName: String
+  email: String
+  role: String
   password: String
   isActive: Boolean
-  role: String!
+  createdAt: DateTime
+  updatedAt: DateTime
 }
 
 type UserRegisterResponseDto {
   status: Float!
   message: String!
-  user: User
+  user: UserJwtPayloadDto
   token: String
 }
 
@@ -51,6 +51,12 @@ type UserLoginResponseDto {
   status: Float!
   message: String!
   token: String!
+}
+
+type PostResponseDto {
+  status: Float!
+  message: String!
+  post: Post
 }
 
 type Query {
@@ -71,7 +77,7 @@ type Mutation {
   localStrategyGetUser(username: String!, password: String!): UserRegisterResponseDto!
   jwtLogin(username: String!, password: String!): UserRegisterResponseDto!
   updateAvatar(userUpdateProfileReqDto: UserUpdateProfileReqDto!): String!
-  createPost(createPostInput: CreatePostInput!): String!
+  createPost(createPostInput: CreatePostInput!): PostResponseDto!
   updatePost(updatePostInput: UpdatePostInput!): Post!
   removePost(id: Int!): Post!
   createComment(createCommentInput: CreateCommentInput!): Comment!

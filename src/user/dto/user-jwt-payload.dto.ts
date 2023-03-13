@@ -1,6 +1,6 @@
-import { Field, InputType, Int } from '@nestjs/graphql';
+import { Field, Int, ObjectType } from '@nestjs/graphql';
 
-@InputType()
+@ObjectType()
 export class UserJwtPayloadDto {
   @Field(() => Int, { nullable: true })
   id: number;
@@ -15,5 +15,17 @@ export class UserJwtPayloadDto {
   email: string;
 
   @Field(() => String, { nullable: true })
-  role: string;
+  role?: string;
+
+  @Field(() => String, { nullable: true })
+  password?: string;
+
+  @Field(() => Boolean, { nullable: true })
+  isActive?: boolean;
+
+  @Field(() => Date, { nullable: true })
+  createdAt?: Date;
+
+  @Field(() => Date, { nullable: true })
+  updatedAt?: Date;
 }

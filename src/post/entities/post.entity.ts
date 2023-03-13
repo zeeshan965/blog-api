@@ -13,6 +13,7 @@ import { User } from '../../user/entity/user.entity';
 import { Comment } from '../comment/entities/comment.entity';
 import { Category } from '../category/entities/category.entity';
 import * as slugify from 'slug';
+import { instanceToPlain } from 'class-transformer';
 
 export enum PostMedia {
   IMAGE = 'image',
@@ -30,8 +31,8 @@ export class Post extends AbstractEntity {
   @Field(() => String)
   description: string;
 
-  @Column({ name: 'published', type: 'int', default: 0 })
-  @Field(() => String)
+  @Column({ name: 'published', type: 'boolean', default: false })
+  @Field(() => Boolean)
   published: boolean;
 
   @Column({ name: 'published_at', type: 'timestamp', nullable: true })
@@ -80,5 +81,9 @@ export class Post extends AbstractEntity {
   @BeforeInsert()
   setPublishedAt() {
     this.publishedAt = this.published ? new Date() : null;
+  }
+
+  toJSON() {
+    return instanceToPlain(this);
   }
 }

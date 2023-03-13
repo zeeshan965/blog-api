@@ -7,23 +7,18 @@ import { Post } from '../../post/entities/post.entity';
 import { Comment } from '../../post/comment/entities/comment.entity';
 
 @Entity('users')
-@ObjectType()
 export class User extends AbstractEntity {
   @Column({ name: 'first_name', length: 191, nullable: false })
-  @Field(() => String)
   firstName: string;
 
   @Column({ name: 'last_name', length: 191, nullable: false })
-  @Field(() => String)
   lastName: string;
 
   @Column({ name: 'email', unique: true, length: 191, nullable: false })
-  @Field(() => String)
   email: string;
 
   @Exclude()
   @Column({ name: 'password', length: 255, nullable: false })
-  @Field(() => String, { nullable: true })
   password: string;
 
   @Exclude()
@@ -33,11 +28,9 @@ export class User extends AbstractEntity {
     nullable: true,
     default: false,
   })
-  @Field(() => Boolean, { nullable: true })
   isActive?: boolean;
 
   @Column({ name: 'role', nullable: true })
-  @Field(() => String)
   role?: string;
 
   @OneToMany(() => Post, (post) => post.author)

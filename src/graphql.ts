@@ -56,7 +56,7 @@ export interface Post {
     updatedAt?: Nullable<DateTime>;
     title: string;
     description: string;
-    published: string;
+    published: boolean;
     publishedAt: DateTime;
     slug: string;
     trashed: string;
@@ -64,22 +64,22 @@ export interface Post {
     postMediaType: string;
 }
 
-export interface User {
-    id: number;
-    createdAt: DateTime;
-    updatedAt?: Nullable<DateTime>;
-    firstName: string;
-    lastName: string;
-    email: string;
+export interface UserJwtPayloadDto {
+    id?: Nullable<number>;
+    firstName?: Nullable<string>;
+    lastName?: Nullable<string>;
+    email?: Nullable<string>;
+    role?: Nullable<string>;
     password?: Nullable<string>;
     isActive?: Nullable<boolean>;
-    role: string;
+    createdAt?: Nullable<DateTime>;
+    updatedAt?: Nullable<DateTime>;
 }
 
 export interface UserRegisterResponseDto {
     status: number;
     message: string;
-    user?: Nullable<User>;
+    user?: Nullable<UserJwtPayloadDto>;
     token?: Nullable<string>;
 }
 
@@ -87,6 +87,12 @@ export interface UserLoginResponseDto {
     status: number;
     message: string;
     token: string;
+}
+
+export interface PostResponseDto {
+    status: number;
+    message: string;
+    post?: Nullable<Post>;
 }
 
 export interface IQuery {
@@ -107,7 +113,7 @@ export interface IMutation {
     localStrategyGetUser(username: string, password: string): UserRegisterResponseDto | Promise<UserRegisterResponseDto>;
     jwtLogin(username: string, password: string): UserRegisterResponseDto | Promise<UserRegisterResponseDto>;
     updateAvatar(userUpdateProfileReqDto: UserUpdateProfileReqDto): string | Promise<string>;
-    createPost(createPostInput: CreatePostInput): string | Promise<string>;
+    createPost(createPostInput: CreatePostInput): PostResponseDto | Promise<PostResponseDto>;
     updatePost(updatePostInput: UpdatePostInput): Post | Promise<Post>;
     removePost(id: number): Post | Promise<Post>;
     createComment(createCommentInput: CreateCommentInput): Comment | Promise<Comment>;

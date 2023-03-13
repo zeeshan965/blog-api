@@ -5,6 +5,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '../user/entity/user.entity';
 import { Repository } from 'typeorm';
 import { Post } from './entities/post.entity';
+import { UserJwtPayloadDto } from '../user/dto/user-jwt-payload.dto';
 
 @Injectable()
 export class PostService {
@@ -14,13 +15,14 @@ export class PostService {
 
   /**
    * @param createPostInput
+   * @param user
    */
-  async create(createPostInput: CreatePostInput) {
-    console.log(createPostInput);
+  async create(createPostInput: CreatePostInput, user: User) {
     const post = new Post();
     post.title = createPostInput.title;
     post.description = createPostInput.description;
     post.published = createPostInput.published;
+    post.author = user;
 
     return await post.save();
   }

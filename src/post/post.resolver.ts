@@ -7,19 +7,22 @@ import { UseGuards } from '@nestjs/common';
 import { GqlJwtAuthGuard } from '../guard/gql-jwt-auth.guard';
 import { CurrentUser } from '../utils/current-user.decorator';
 import { UserRegisterResponseDto } from '../user/dto/user-register-response.dto';
+import { UserJwtPayloadDto } from '../user/dto/user-jwt-payload.dto';
+import { User } from '../user/entity/user.entity';
+import { PostResponseDto } from './dto/post-response.dto';
 
 @Resolver(() => Post)
 @UseGuards(GqlJwtAuthGuard)
 export class PostResolver {
   constructor(private readonly postService: PostService) {}
 
-  @Mutation(() => String)
-  createPost(
-    @CurrentUser() user: UserRegisterResponseDto,
+  @Mutation(() => PostResponseDto)
+  async createPost(
+    @CurrentUser() user: User,
     @Args('createPostInput') createPostInput: CreatePostInput,
   ) {
-    console.log(user);
-    return this.postService.create(createPostInput);
+    const post = await this.postService.create(createPostInput, user);
+    return { post: post };
   }
 
   @Query(() => [Post], { name: 'post' })
