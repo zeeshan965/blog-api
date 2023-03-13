@@ -3,21 +3,15 @@ import { GqlExecutionContext } from '@nestjs/graphql';
 import { ExecutionContext, Injectable } from '@nestjs/common';
 
 /**
- * This guard will transform GQL request to normal request so that passport local strategy can work with GraphQL
+ * This guard will transform GQL request to normal request so that passport jwt strategy can work with GraphQL
  */
 @Injectable()
-export class GqlAuthGuard extends AuthGuard('local') {
-  constructor() {
-    super();
-  }
-
+export class GqlJwtAuthGuard extends AuthGuard('jwt') {
   /**
    * @param context
    */
   getRequest(context: ExecutionContext) {
     const ctx = GqlExecutionContext.create(context);
-    const request = ctx.getContext();
-    request.body = ctx.getArgs();
-    return request;
+    return ctx.getContext().req;
   }
 }

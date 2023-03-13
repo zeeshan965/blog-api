@@ -96,8 +96,10 @@ export interface IQuery {
 export interface IMutation {
     register(data: UserRegisterReqDto): UserRegisterResponseDto | Promise<UserRegisterResponseDto>;
     login(email: string, password: string): UserLoginResponseDto | Promise<UserLoginResponseDto>;
-    localLogin(username: string, password: string): UserRegisterResponseDto | Promise<UserRegisterResponseDto>;
+    localStrategyLogin(username: string, password: string): UserRegisterResponseDto | Promise<UserRegisterResponseDto>;
+    localStrategyGetUser(username: string, password: string): UserRegisterResponseDto | Promise<UserRegisterResponseDto>;
     jwtLogin(username: string, password: string): UserRegisterResponseDto | Promise<UserRegisterResponseDto>;
+    jwtStrategyGetUser(): UserRegisterResponseDto | Promise<UserRegisterResponseDto>;
     createPost(createPostInput: CreatePostInput): string | Promise<string>;
     updatePost(updatePostInput: UpdatePostInput): Post | Promise<Post>;
     removePost(id: number): Post | Promise<Post>;

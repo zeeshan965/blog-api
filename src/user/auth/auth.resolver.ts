@@ -2,25 +2,32 @@ import { Resolver, Query, Mutation, Args, Context } from '@nestjs/graphql';
 import { UserRegisterResponseDto } from '../dto/user-register-response.dto';
 import { UserRegisterReqDto } from '../dto/user-register-req.dto';
 import { UserLoginResponseDto } from '../dto/user-login-response.dto';
-import { UseGuards } from '@nestjs/common';
+import { Request, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '../../guard/auth.guard';
 import { User } from '../entity/user.entity';
 import * as jwt from 'jsonwebtoken';
 import { JwtGuard } from '../../guard/jwt.guard';
 import { RoleGuard, Roles } from '../../guard/role.guard';
-import { GqlAuthGuard } from '../../guard/gql-auth.guard';
+import { GqlLocalAuthGuard } from '../../guard/gql-local-auth.guard';
 import { ConfigService } from '@nestjs/config';
 import { UserService } from '../user.service';
 import { AuthService } from './auth.service';
+import { GqlJwtAuthGuard } from '../../guard/gql-jwt-auth.guard';
 
 @Resolver(() => User)
 export class AuthResolver {
+  /**
+   * @param configService
+   * @param userService
+   * @param authService
+   */
   constructor(
     private configService: ConfigService,
     private userService: UserService,
     private authService: AuthService,
   ) {}
 
+  /** -------------------------------------------- Normal Register Route --------------------------------------------- */
   /**
    * @param data
    */
@@ -32,7 +39,9 @@ export class AuthResolver {
     const user = await this.userService.registerUser(data);
     return { user: user.toJSON(), message: 'success', status: 200 };
   }
+  /** ------------------------------------------ End Normal Register Route ------------------------------------------- */
 
+  /** ------------------------------------------- Login Using Jsonwebtoken ------------------------------------------- */
   /**
    * @param email
    * @param password
@@ -57,7 +66,9 @@ export class AuthResolver {
     });
     return { token: token, message: 'success', status: 200 };
   }
+  /** ----------------------------------------- End Login Using Jsonwebtoken ------------------------------------------ */
 
+  /** ---------------------------------------- Jsonwebtoken & Role Base Routes ---------------------------------------- */
   /**
    * @param user
    */
@@ -89,14 +100,15 @@ export class AuthResolver {
     };
   }
 
+  /** -------------------------------------- Login Using Passport Local Strategy -------------------------------------- */
   /**
    * @param username
    * @param password
    * @param user
    */
   @Mutation(() => UserRegisterResponseDto)
-  @UseGuards(GqlAuthGuard)
-  localLogin(
+  @UseGuards(GqlLocalAuthGuard)
+  localStrategyLogin(
     @Args({ name: 'username', type: () => String }) username: string,
     @Args({ name: 'password', type: () => String }) password: string,
     @Context('user') user: User,
@@ -109,10 +121,29 @@ export class AuthResolver {
   }
 
   /**
-   *
+   * @param username
+   * @param password
+   * @param user
    */
   @Mutation(() => UserRegisterResponseDto)
-  @UseGuards(GqlAuthGuard)
+  @UseGuards(GqlLocalAuthGuard)
+  localStrategyGetUser(
+    @Args({ name: 'username', type: () => String }) username: string,
+    @Args({ name: 'password', type: () => String }) password: string,
+    @Context('user') user: User,
+  ) {
+    return { user: user };
+  }
+  /** ------------------------------------ End Login Using Passport Local Strategy ------------------------------------ */
+
+  /** ----------------------------------- Login Using Passport Local, JWT Strategy ------------------------------------ */
+  /**
+   * @param username
+   * @param password
+   * @param user
+   */
+  @Mutation(() => UserRegisterResponseDto)
+  @UseGuards(GqlLocalAuthGuard)
   jwtLogin(
     @Args({ name: 'username', type: () => String }) username: string,
     @Args({ name: 'password', type: () => String }) password: string,
@@ -120,4 +151,21 @@ export class AuthResolver {
   ) {
     return this.authService.login(user);
   }
+  /** --------------------------------- End Login Using Passport Local, JWT Strategy ---------------------------------- */
+
+  /** --------------------------------------- Login Using Passport JWT Strategy --------------------------------------- */
+  /**
+   * @param req
+   */
+  @Mutation(() => UserRegisterResponseDto)
+  @UseGuards(GqlJwtAuthGuard)
+  jwtStrategyGetUser(@Request() req) {
+    console.log(req.user);
+    return {
+      user: {
+        email: 'zsda@asd.ca',
+      },
+    };
+  }
+  /** ------------------------------------- End Login Using Passport JWT Strategy ------------------------------------- */
 }

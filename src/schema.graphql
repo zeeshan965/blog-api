@@ -66,8 +66,10 @@ type Query {
 type Mutation {
   register(data: UserRegisterReqDto!): UserRegisterResponseDto!
   login(email: String!, password: String!): UserLoginResponseDto!
-  localLogin(username: String!, password: String!): UserRegisterResponseDto!
+  localStrategyLogin(username: String!, password: String!): UserRegisterResponseDto!
+  localStrategyGetUser(username: String!, password: String!): UserRegisterResponseDto!
   jwtLogin(username: String!, password: String!): UserRegisterResponseDto!
+  jwtStrategyGetUser: UserRegisterResponseDto!
   createPost(createPostInput: CreatePostInput!): String!
   updatePost(updatePostInput: UpdatePostInput!): Post!
   removePost(id: Int!): Post!
