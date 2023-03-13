@@ -3,13 +3,22 @@ import { PostService } from './post.service';
 import { Post } from './entities/post.entity';
 import { CreatePostInput } from './dto/create-post.input';
 import { UpdatePostInput } from './dto/update-post.input';
+import { UseGuards } from '@nestjs/common';
+import { GqlJwtAuthGuard } from '../guard/gql-jwt-auth.guard';
+import { CurrentUser } from '../utils/current-user.decorator';
+import { UserRegisterResponseDto } from '../user/dto/user-register-response.dto';
 
 @Resolver(() => Post)
+@UseGuards(GqlJwtAuthGuard)
 export class PostResolver {
   constructor(private readonly postService: PostService) {}
 
   @Mutation(() => String)
-  createPost(@Args('createPostInput') createPostInput: CreatePostInput) {
+  createPost(
+    @CurrentUser() user: UserRegisterResponseDto,
+    @Args('createPostInput') createPostInput: CreatePostInput,
+  ) {
+    console.log(user);
     return this.postService.create(createPostInput);
   }
 

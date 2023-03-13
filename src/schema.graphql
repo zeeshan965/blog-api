@@ -21,7 +21,7 @@ type Post {
   title: String!
   description: String!
   published: String!
-  publishedAt: String!
+  publishedAt: DateTime!
   slug: String!
   trashed: String!
   postMedia: String!
@@ -70,6 +70,7 @@ type Mutation {
   localStrategyLogin(username: String!, password: String!): UserRegisterResponseDto!
   localStrategyGetUser(username: String!, password: String!): UserRegisterResponseDto!
   jwtLogin(username: String!, password: String!): UserRegisterResponseDto!
+  updateAvatar(userUpdateProfileReqDto: UserUpdateProfileReqDto!): String!
   createPost(createPostInput: CreatePostInput!): String!
   updatePost(updatePostInput: UpdatePostInput!): Post!
   removePost(id: Int!): Post!
@@ -87,14 +88,20 @@ input UserRegisterReqDto {
   role: String!
 }
 
+input UserUpdateProfileReqDto {
+  profile_image: String!
+}
+
 input CreatePostInput {
   title: String!
   description: String!
+  published: Boolean! = false
 }
 
 input UpdatePostInput {
   title: String
   description: String
+  published: Boolean = false
   id: Int!
 }
 

@@ -2,7 +2,7 @@ import { Resolver, Query, Mutation, Args, Context } from '@nestjs/graphql';
 import { UserRegisterResponseDto } from '../dto/user-register-response.dto';
 import { UserRegisterReqDto } from '../dto/user-register-req.dto';
 import { UserLoginResponseDto } from '../dto/user-login-response.dto';
-import { Request, UseGuards } from '@nestjs/common';
+import { Req, Request, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '../../guard/auth.guard';
 import { User } from '../entity/user.entity';
 import * as jwt from 'jsonwebtoken';
@@ -13,7 +13,9 @@ import { ConfigService } from '@nestjs/config';
 import { UserService } from '../user.service';
 import { AuthService } from './auth.service';
 import { GqlJwtAuthGuard } from '../../guard/gql-jwt-auth.guard';
-import { CurrentUser } from "../../utils/current-user.decorator";
+import { CurrentUser } from '../../utils/current-user.decorator';
+import { UserJwtPayloadDto } from '../dto/user-jwt-payload.dto';
+import { UserUpdateProfileReqDto } from '../dto/user-update-profile-req.dto';
 
 @Resolver(() => User)
 export class AuthResolver {
@@ -154,12 +156,32 @@ export class AuthResolver {
   }
   /** --------------------------------- End Login Using Passport Local, JWT Strategy ---------------------------------- */
 
-  /** --------------------------------------- Login Using Passport JWT Strategy --------------------------------------- */
-
+  /** ------------------------------------- Protected routes Passport JWT Strategy ------------------------------------ */
+  /**
+   * @param user
+   */
   @Query(() => UserRegisterResponseDto)
   @UseGuards(GqlJwtAuthGuard)
-  jwtStrategyGetUser(@CurrentUser() user: UserRegisterResponseDto) {
+  jwtStrategyGetUser(@CurrentUser() user: UserJwtPayloadDto) {
     return { status: 200, message: 'success', user: user };
   }
-  /** ------------------------------------- End Login Using Passport JWT Strategy ------------------------------------- */
+
+  /**
+   * @param user
+   * @param userUpdateProfileReqDto
+   */
+  @Mutation(() => String)
+  @UseGuards(GqlJwtAuthGuard)
+  updateAvatar(
+    @CurrentUser() user: UserJwtPayloadDto,
+    @Args({
+      name: 'userUpdateProfileReqDto',
+      type: () => UserUpdateProfileReqDto,
+    })
+    userUpdateProfileReqDto: UserUpdateProfileReqDto,
+  ) {
+    console.log(userUpdateProfileReqDto.profile_image);
+    return 'success';
+  }
+  /** ----------------------------------- End Protected routes Passport JWT Strategy ---------------------------------- */
 }

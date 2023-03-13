@@ -1,7 +1,6 @@
-import { Field, InputType, Int, ObjectType } from '@nestjs/graphql';
+import { Field, InputType, Int } from '@nestjs/graphql';
 
 @InputType()
-@ObjectType()
 export class UserJwtPayloadDto {
   @Field(() => Int, { nullable: true })
   id: number;
