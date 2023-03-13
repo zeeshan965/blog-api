@@ -13,6 +13,7 @@ import { ConfigService } from '@nestjs/config';
 import { UserService } from '../user.service';
 import { AuthService } from './auth.service';
 import { GqlJwtAuthGuard } from '../../guard/gql-jwt-auth.guard';
+import { CurrentUser } from "../../utils/current-user.decorator";
 
 @Resolver(() => User)
 export class AuthResolver {
@@ -154,18 +155,11 @@ export class AuthResolver {
   /** --------------------------------- End Login Using Passport Local, JWT Strategy ---------------------------------- */
 
   /** --------------------------------------- Login Using Passport JWT Strategy --------------------------------------- */
-  /**
-   * @param req
-   */
-  @Mutation(() => UserRegisterResponseDto)
+
+  @Query(() => UserRegisterResponseDto)
   @UseGuards(GqlJwtAuthGuard)
-  jwtStrategyGetUser(@Request() req) {
-    console.log(req.user);
-    return {
-      user: {
-        email: 'zsda@asd.ca',
-      },
-    };
+  jwtStrategyGetUser(@CurrentUser() user: UserRegisterResponseDto) {
+    return { status: 200, message: 'success', user: user };
   }
   /** ------------------------------------- End Login Using Passport JWT Strategy ------------------------------------- */
 }

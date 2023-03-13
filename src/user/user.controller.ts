@@ -15,6 +15,7 @@ import { UserRegisterResponseDto } from './dto/user-register-response.dto';
 import { UserRegisterResponseInterface } from './interface/user-register-response.interface';
 import { AuthGuard as PassportGuard } from '@nestjs/passport';
 import { AuthService } from './auth/auth.service';
+import { GqlJwtAuthGuard } from "../guard/gql-jwt-auth.guard";
 
 @Controller('user')
 export class UserController {
@@ -33,6 +34,15 @@ export class UserController {
   @All('/')
   @UseGuards(PassportGuard('local'))
   getHello(@Request() request): { message: string } {
+    return this.userService.getWelcome(request.user);
+  }
+
+  /**
+   * All method supported route
+   */
+  @All('/getPassportJwtUser')
+  @UseGuards(GqlJwtAuthGuard)
+  getPassportJwtUser(@Request() request): { message: string } {
     return this.userService.getWelcome(request.user);
   }
 

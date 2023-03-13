@@ -58,6 +58,7 @@ type Query {
   getUser: UserRegisterResponseDto!
   getAdmin: UserRegisterResponseDto!
   getAuthLoggedUser: UserRegisterResponseDto!
+  jwtStrategyGetUser: UserRegisterResponseDto!
   post(id: Int!): Post!
   comments: [Comment!]!
   comment(id: Int!): Comment!
@@ -69,7 +70,6 @@ type Mutation {
   localStrategyLogin(username: String!, password: String!): UserRegisterResponseDto!
   localStrategyGetUser(username: String!, password: String!): UserRegisterResponseDto!
   jwtLogin(username: String!, password: String!): UserRegisterResponseDto!
-  jwtStrategyGetUser: UserRegisterResponseDto!
   createPost(createPostInput: CreatePostInput!): String!
   updatePost(updatePostInput: UpdatePostInput!): Post!
   removePost(id: Int!): Post!

@@ -88,6 +88,7 @@ export interface IQuery {
     getUser(): UserRegisterResponseDto | Promise<UserRegisterResponseDto>;
     getAdmin(): UserRegisterResponseDto | Promise<UserRegisterResponseDto>;
     getAuthLoggedUser(): UserRegisterResponseDto | Promise<UserRegisterResponseDto>;
+    jwtStrategyGetUser(): UserRegisterResponseDto | Promise<UserRegisterResponseDto>;
     post(id: number): Post | Promise<Post>;
     comments(): Comment[] | Promise<Comment[]>;
     comment(id: number): Comment | Promise<Comment>;
@@ -99,7 +100,6 @@ export interface IMutation {
     localStrategyLogin(username: string, password: string): UserRegisterResponseDto | Promise<UserRegisterResponseDto>;
     localStrategyGetUser(username: string, password: string): UserRegisterResponseDto | Promise<UserRegisterResponseDto>;
     jwtLogin(username: string, password: string): UserRegisterResponseDto | Promise<UserRegisterResponseDto>;
-    jwtStrategyGetUser(): UserRegisterResponseDto | Promise<UserRegisterResponseDto>;
     createPost(createPostInput: CreatePostInput): string | Promise<string>;
     updatePost(updatePostInput: UpdatePostInput): Post | Promise<Post>;
     removePost(id: number): Post | Promise<Post>;
