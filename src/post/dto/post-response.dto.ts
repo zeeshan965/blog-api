@@ -6,5 +6,4 @@ import { ResponseDto } from '../../user/dto/response.dto';
 export class PostResponseDto extends ResponseDto {
   @Field(() => Post, { nullable: true })
   post?: Post;
-
 }

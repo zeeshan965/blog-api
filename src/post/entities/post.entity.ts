@@ -13,7 +13,8 @@ import { User } from '../../user/entity/user.entity';
 import { Comment } from '../comment/entities/comment.entity';
 import { Category } from '../category/entities/category.entity';
 import * as slugify from 'slug';
-import { instanceToPlain } from 'class-transformer';
+import { Exclude, instanceToPlain } from 'class-transformer';
+import { UserJwtPayloadDto } from '../../user/dto/user-jwt-payload.dto';
 
 export enum PostMedia {
   IMAGE = 'image',
@@ -36,20 +37,21 @@ export class Post extends AbstractEntity {
   published: boolean;
 
   @Column({ name: 'published_at', type: 'timestamp', nullable: true })
-  @Field(() => Date)
+  @Field(() => Date, { nullable: true })
   publishedAt?: Date;
 
   @Column({ name: 'slug', length: 50, nullable: true })
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   slug: string;
 
+  @Exclude()
   @Column({ name: 'trashed', type: 'timestamp', nullable: true })
-  @Field(() => String)
-  trashed: string;
+  @Field(() => Date, { nullable: true })
+  trashed?: Date;
 
   @Column({ name: 'post_media', length: 255, nullable: true })
-  @Field(() => String)
-  postMedia: string;
+  @Field(() => String, { nullable: true })
+  postMedia?: string;
 
   @Column({
     name: 'post_media_type',
@@ -57,9 +59,10 @@ export class Post extends AbstractEntity {
     enum: PostMedia,
     default: PostMedia.IMAGE,
   })
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   postMediaType: string;
 
+  @Field(() => UserJwtPayloadDto, { nullable: true })
   @ManyToOne(() => User, (user) => user.posts)
   author?: User;
 

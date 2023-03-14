@@ -14,20 +14,6 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
-type Post {
-  id: Int!
-  createdAt: DateTime!
-  updatedAt: DateTime
-  title: String!
-  description: String!
-  published: Boolean!
-  publishedAt: DateTime!
-  slug: String!
-  trashed: String!
-  postMedia: String!
-  postMediaType: String!
-}
-
 type UserJwtPayloadDto {
   id: Int
   firstName: String
@@ -40,22 +26,37 @@ type UserJwtPayloadDto {
   updatedAt: DateTime
 }
 
+type Post {
+  id: Int!
+  createdAt: DateTime!
+  updatedAt: DateTime
+  title: String!
+  description: String!
+  published: Boolean!
+  publishedAt: DateTime
+  slug: String
+  trashed: DateTime
+  postMedia: String
+  postMediaType: String
+  author: UserJwtPayloadDto
+}
+
 type UserRegisterResponseDto {
-  status: Float!
-  message: String!
+  status: Float
+  message: String
   user: UserJwtPayloadDto
   token: String
 }
 
 type UserLoginResponseDto {
-  status: Float!
-  message: String!
+  status: Float
+  message: String
   token: String!
 }
 
 type PostResponseDto {
-  status: Float!
-  message: String!
+  status: Float
+  message: String
   post: Post
 }
 
@@ -78,7 +79,7 @@ type Mutation {
   jwtLogin(username: String!, password: String!): UserRegisterResponseDto!
   updateAvatar(userUpdateProfileReqDto: UserUpdateProfileReqDto!): String!
   createPost(createPostInput: CreatePostInput!): PostResponseDto!
-  updatePost(updatePostInput: UpdatePostInput!): Post!
+  updatePost(updatePostInput: UpdatePostInput!): PostResponseDto!
   removePost(id: Int!): Post!
   createComment(createCommentInput: CreateCommentInput!): Comment!
   updateComment(updateCommentInput: UpdateCommentInput!): Comment!
@@ -109,6 +110,7 @@ input UpdatePostInput {
   description: String
   published: Boolean = false
   id: Int!
+  slug: String!
 }
 
 input CreateCommentInput {

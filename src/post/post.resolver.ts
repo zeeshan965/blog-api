@@ -14,15 +14,22 @@ import { PostResponseDto } from './dto/post-response.dto';
 @Resolver(() => Post)
 @UseGuards(GqlJwtAuthGuard)
 export class PostResolver {
+  /**
+   * @param postService
+   */
   constructor(private readonly postService: PostService) {}
 
+  /**
+   * @param user
+   * @param createPostInput
+   */
   @Mutation(() => PostResponseDto)
   async createPost(
     @CurrentUser() user: User,
     @Args('createPostInput') createPostInput: CreatePostInput,
-  ) {
+  ): Promise<PostResponseDto> {
     const post = await this.postService.create(createPostInput, user);
-    return { post: post };
+    return { message: 'success!', status: 200, post: post };
   }
 
   @Query(() => [Post], { name: 'post' })
@@ -35,9 +42,12 @@ export class PostResolver {
     return this.postService.findOne(id);
   }
 
-  @Mutation(() => Post)
+  /**
+   * @param updatePostInput
+   */
+  @Mutation(() => PostResponseDto)
   updatePost(@Args('updatePostInput') updatePostInput: UpdatePostInput) {
-    return this.postService.update(updatePostInput.id, updatePostInput);
+    return this.postService.update(updatePostInput);
   }
 
   @Mutation(() => Post)

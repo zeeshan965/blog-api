@@ -5,7 +5,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '../user/entity/user.entity';
 import { Repository } from 'typeorm';
 import { Post } from './entities/post.entity';
-import { UserJwtPayloadDto } from '../user/dto/user-jwt-payload.dto';
 
 @Injectable()
 export class PostService {
@@ -18,13 +17,36 @@ export class PostService {
    * @param user
    */
   async create(createPostInput: CreatePostInput, user: User) {
-    const post = new Post();
-    post.title = createPostInput.title;
-    post.description = createPostInput.description;
-    post.published = createPostInput.published;
-    post.author = user;
+    /** TODO: Alternate ways to create new post, But hooks will only work with save() method.
+     * return this.postRepository.insert({ ...createPostInput, author: user });
+     * const post = this.postRepository.create({ ...createPostInput, author: user }); */
+    const post = this.postRepository.create({
+      ...createPostInput,
+      author: user,
+    });
+
+    // const post = new Post();
+    // post.title = createPostInput.title;
+    // post.description = createPostInput.description;
+    // post.published = createPostInput.published;
+    // post.author = user;
+    // post.save();
 
     return await post.save();
+  }
+
+  /**
+   * @param updatePostInput
+   */
+  async update(updatePostInput: UpdatePostInput) {
+    const { id, slug, ...result } = updatePostInput;
+    //const data2 = await this.postRepository.findOne({ where: { id: id } });
+    /*const post = await this.postRepository.findOne({
+      where: { slug: slug },
+    });
+    post.title = updatePostInput.title;
+    post.save();*/
+    return await this.postRepository.update({ slug: slug }, { ...result });
   }
 
   findAll() {
@@ -33,10 +55,6 @@ export class PostService {
 
   findOne(id: number) {
     return `This action returns a #${id} post`;
-  }
-
-  update(id: number, updatePostInput: UpdatePostInput) {
-    return `This action updates a #${id} post`;
   }
 
   remove(id: number) {
