@@ -6,10 +6,10 @@ import { UpdatePostInput } from './dto/update-post.input';
 import { UseGuards } from '@nestjs/common';
 import { GqlJwtAuthGuard } from '../guard/gql-jwt-auth.guard';
 import { CurrentUser } from '../utils/current-user.decorator';
-import { UserRegisterResponseDto } from '../user/dto/user-register-response.dto';
-import { UserJwtPayloadDto } from '../user/dto/user-jwt-payload.dto';
 import { User } from '../user/entity/user.entity';
 import { PostResponseDto } from './dto/post-response.dto';
+import GraphQLUpload from 'graphql-upload/GraphQLUpload';
+import { join } from 'path';
 
 @Resolver(() => Post)
 @UseGuards(GqlJwtAuthGuard)
@@ -53,5 +53,21 @@ export class PostResolver {
   @Mutation(() => Post)
   removePost(@Args('id', { type: () => Int }) id: number) {
     return this.postService.remove(id);
+  }
+
+  @Mutation(() => String)
+  async uploadFile(
+    @Args({ name: 'file', type: () => GraphQLUpload })
+    file: Promise<Express.Multer.File>,
+  ): Promise<boolean> {
+    const { createReadStream, filename } = await file;
+    const stream = createReadStream();
+    const path = join(__dirname, '..', '..', 'uploads', filename);
+    return new Promise((resolve, reject) =>
+      stream
+        .pipe(createWriteStream(path))
+        .on('finish', () => resolve(true))
+        .on('error', () => reject(false)),
+    );
   }
 }

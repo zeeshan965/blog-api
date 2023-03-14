@@ -7,6 +7,7 @@ import {
   OneToMany,
   JoinTable,
   BeforeInsert,
+  BeforeUpdate,
 } from 'typeorm';
 import { AbstractEntity } from '../../utils/abstract-entity';
 import { User } from '../../user/entity/user.entity';
@@ -83,6 +84,13 @@ export class Post extends AbstractEntity {
 
   @BeforeInsert()
   setPublishedAt() {
+    console.log('-----------------');
+    this.publishedAt = this.published ? new Date() : null;
+  }
+
+  @BeforeUpdate()
+  update() {
+    console.log('-----------------');
     this.publishedAt = this.published ? new Date() : null;
   }
 

@@ -17,10 +17,6 @@ export interface UserRegisterReqDto {
     role: string;
 }
 
-export interface UserUpdateProfileReqDto {
-    profile_image: string;
-}
-
 export interface CreatePostInput {
     title: string;
     description: string;
@@ -114,7 +110,6 @@ export interface IMutation {
     localStrategyLogin(username: string, password: string): UserRegisterResponseDto | Promise<UserRegisterResponseDto>;
     localStrategyGetUser(username: string, password: string): UserRegisterResponseDto | Promise<UserRegisterResponseDto>;
     jwtLogin(username: string, password: string): UserRegisterResponseDto | Promise<UserRegisterResponseDto>;
-    updateAvatar(userUpdateProfileReqDto: UserUpdateProfileReqDto): string | Promise<string>;
     createPost(createPostInput: CreatePostInput): PostResponseDto | Promise<PostResponseDto>;
     updatePost(updatePostInput: UpdatePostInput): PostResponseDto | Promise<PostResponseDto>;
     removePost(id: number): Post | Promise<Post>;

@@ -170,7 +170,7 @@ export class AuthResolver {
    * @param user
    * @param userUpdateProfileReqDto
    */
-  @Mutation(() => String)
+  /*@Mutation(() => String)
   @UseGuards(GqlJwtAuthGuard)
   updateAvatar(
     @CurrentUser() user: UserJwtPayloadDto,
@@ -182,6 +182,6 @@ export class AuthResolver {
   ) {
     console.log(userUpdateProfileReqDto.profile_image);
     return 'success';
-  }
+  }*/
   /** ----------------------------------- End Protected routes Passport JWT Strategy ---------------------------------- */
 }

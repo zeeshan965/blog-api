@@ -5,6 +5,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '../user/entity/user.entity';
 import { Repository } from 'typeorm';
 import { Post } from './entities/post.entity';
+import { FileUpload } from 'graphql-upload/Upload';
 
 @Injectable()
 export class PostService {
@@ -42,10 +43,12 @@ export class PostService {
     const { id, slug, ...result } = updatePostInput;
     //const data2 = await this.postRepository.findOne({ where: { id: id } });
     /*const post = await this.postRepository.findOne({
-      where: { slug: slug },
-    });
-    post.title = updatePostInput.title;
-    post.save();*/
+      where: { slug: updatePostInput.slug },
+    });*/
+    /*post.title = updatePostInput.title;
+    post.description = updatePostInput.description;
+    post.published = updatePostInput.published;
+    return post.save();*/
     return await this.postRepository.update({ slug: slug }, { ...result });
   }
 
@@ -59,5 +62,21 @@ export class PostService {
 
   remove(id: number) {
     return `This action removes a #${id} post`;
+  }
+
+  async upload(file: FileUpload): Promise<string> {
+    const { createReadStream, filename } = file;
+
+    const stream = createReadStream();
+    const path = `./uploads/${filename}`;
+
+    await new Promise((resolve, reject) =>
+      stream
+        .pipe(createWriteStream(path))
+        .on('finish', resolve)
+        .on('error', reject),
+    );
+
+    return `http://localhost:3000/${path}`;
   }
 }
