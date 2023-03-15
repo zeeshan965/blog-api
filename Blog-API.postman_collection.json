@@ -75,7 +75,7 @@
 				"body": {
 					"mode": "graphql",
 					"graphql": {
-						"query": "mutation Register($data: UserRegisterReqDto!){\n  register(data: $data){\n    status\n    message\n    user{\n      firstName\n      lastName\n      email\n      isActive\n      role\n    }\n  }\n}\n\n# query {\n#     Register($data: UserRegisterReqDto!) {\n#         register(data: $data){\n#             status\n#             message\n#             user {\n#                 firstName\n#                 lastName\n#                 email\n#             }\n#         }\n#     }\n# }",
+						"query": "mutation Register($data: UserRegisterReqDto!){\n  register(data: $data){\n    status\n    message\n    user{\n      firstName\n      lastName\n      email\n      isActive\n      role\n      password\n    }\n  }\n}\n\n# query {\n#     Register($data: UserRegisterReqDto!) {\n#         register(data: $data){\n#             status\n#             message\n#             user {\n#                 firstName\n#                 lastName\n#                 email\n#             }\n#         }\n#     }\n# }",
 						"variables": "{\n    \"data\": {\n        \"firstName\": \"{{$randomFirstName}}\",\n        \"lastName\": \"{{$randomLastName}}\",\n        \"email\": \"{{$randomEmail}}\",\n        \"password\":\"Password@123\",\n        \"confirmPassword\":\"Password@123\",\n        \"role\": \"NORMAL_USER\"\n    }\n}"
 					}
 				},
@@ -335,6 +335,41 @@
 			"response": []
 		},
 		{
+			"name": "Index  Passport JWT (REST)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\": \"{{email}}\",\n    \"password\": \"{{password}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/user/getPassportJwtUser",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"user",
+						"getPassportJwtUser"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Index (GraphQL)",
 			"request": {
 				"method": "POST",
@@ -367,7 +402,7 @@
 			"response": []
 		},
 		{
-			"name": "localLogin (GraphQL)",
+			"name": "localStrategyLogin (GraphQL)",
 			"request": {
 				"method": "POST",
 				"header": [
@@ -380,7 +415,39 @@
 				"body": {
 					"mode": "graphql",
 					"graphql": {
-						"query": "# mutation localLogin($username: String!, $password: String!){\n#   localLogin(username: $username, password: $password){\n#     status\n#     message\n#     user{\n#       firstName\n#       lastName\n#       email\n#       role\n#     }\n#   }\n# }\n\nmutation {\n    localLogin(username: \"{{email}}\", password: \"{{password}}\"){\n        status\n        message\n        user{\n            firstName\n            lastName\n            email\n            role\n            password\n        }\n    }\n}\n",
+						"query": "# mutation localStrategyLogin($username: String!, $password: String!){\n#   localStrategyLogin(username: $username, password: $password){\n#     status\n#     message\n#     user{\n#       firstName\n#       lastName\n#       email\n#       role\n#     }\n#   }\n# }\n\nmutation {\n    localStrategyLogin(username: \"{{email}}\", password: \"{{password}}\"){\n        status\n        message\n        user{\n            firstName\n            lastName\n            email\n            role\n            password\n        }\n    }\n}\n",
+						"variables": "{\n    \"username\": \"{{email}}\",\n    \"password\": \"{{password}}\"\n}"
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/graphql",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localStrategyGetUser (GraphQL)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "# mutation localStrategyGetUser($username: String!, $password: String!){\n#   localStrategyGetUser(username: $username, password: $password){\n#     status\n#     message\n#     user{\n#       firstName\n#       lastName\n#       email\n#       role\n#     }\n#   }\n# }\n\nmutation {\n    localStrategyGetUser(username: \"{{email}}\", password: \"{{password}}\"){\n        user{\n            firstName\n            lastName\n            email\n            role\n            password\n        }\n    }\n}\n",
 						"variables": "{\n    \"username\": \"{{email}}\",\n    \"password\": \"{{password}}\"\n}"
 					}
 				},
@@ -431,7 +498,7 @@
 			"response": []
 		},
 		{
-			"name": "Create Post",
+			"name": "jwtStrategyGetUser (GraphQL)",
 			"request": {
 				"method": "POST",
 				"header": [
@@ -444,9 +511,281 @@
 				"body": {
 					"mode": "graphql",
 					"graphql": {
-						"query": "mutation createPost($createPostInput: CreatePostInput!){\n  createPost(createPostInput: $createPostInput)\n}",
-						"variables": "{\n    \"createPostInput\": {\n      \"title\": \"post 1\",\n      \"description\": \"its a great post\"\n    }\n}"
+						"query": "# query jwtStrategyGetUser{\n#   jwtStrategyGetUser{\n#     status\n#     message\n#     user{\n#       firstName\n#       lastName\n#       email\n#       role\n#     }\n#   }\n# }\n\nquery {\n    jwtStrategyGetUser {\n        status\n        message\n        user{\n            firstName\n            lastName\n            email\n            role\n        }\n    }\n}\n",
+						"variables": ""
 					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/graphql",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Post (GQL)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation createPost($createPostInput: CreatePostInput!){\n    createPost(createPostInput: $createPostInput) {\n        status\n        message\n        post {\n            id\n            title\n            description\n            published\n            publishedAt\n            slug\n            postMediaType\n            postMedia\n            trashed\n            author {\n                id\n                firstName\n                lastName\n                email\n                isActive\n            }\n        }\n    }\n}",
+						"variables": "{\n    \"createPostInput\": {\n      \"title\": \"{{$randomJobTitle}}\",\n      \"description\": \"{{$randomLoremParagraph}}\",\n      \"published\": true\n    }\n}"
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/graphql",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Post (GQL)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation updatePost($updatePostInput: UpdatePostInput!){\n    updatePost(updatePostInput: $updatePostInput) {\n        post {\n            id\n            title\n            description\n            published\n            publishedAt\n            slug\n            postMediaType\n            postMedia\n            trashed\n            author {\n                id\n                firstName\n                lastName\n                email\n                isActive\n            }\n        }\n    }\n}",
+						"variables": "{\n    \"updatePostInput\": {\n      \"id\": 64,\n      \"slug\": \"global-accounts-planner-jv0nnr\",\n      \"title\": \"updating title {{$randomFileName}}\",\n      \"description\": \"updating description 1\",\n      \"published\": true\n    }\n}"
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/graphql",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Post (GQL)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "query findAll {\n    findAll {\n        status\n        message\n        posts {\n            title\n            description\n            published\n            publishedAt\n            slug\n            postMediaType\n            postMedia\n            trashed\n            author {\n                id\n                firstName\n                lastName\n                email\n                isActive\n                createdAt\n                updatedAt\n            }\n        }\n    }\n}\n\n# query {\n#     findAll\n# }",
+						"variables": ""
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/graphql",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Post (GQL)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "query findOne($id: Int!) {\n    findOne(id: $id) {\n        status\n        message\n        post {\n            title\n            description\n            published\n            publishedAt\n            slug\n            postMediaType\n            postMedia\n            trashed\n            author {\n                id\n                firstName\n                lastName\n                email\n                isActive\n                createdAt\n                updatedAt\n            }\n        }\n    }\n}\n\n# query {\n#     findAll\n# }",
+						"variables": "{\n    \"id\": 64\n}"
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/graphql",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Post (GQL)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation removePost($id: Int!){\n    removePost(id: $id) {\n        status\n        message\n        deleted\n    }\n}",
+						"variables": "{\n    \"id\": 63\n}"
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/graphql",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Search Posts (GQL)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation createPost($createPostInput: CreatePostInput!){\n  createPost(createPostInput: $createPostInput) {\n      post {\n          title\n          description\n          published\n          publishedAt\n          slug\n          postMediaType\n          postMedia\n          author {\n              id\n              firstName\n              lastName\n              email\n              isActive\n              role\n          }\n      }\n  }\n}",
+						"variables": "{\n    \"createPostInput\": {\n      \"title\": \"{{$randomJobTitle}}\",\n      \"description\": \"{{$randomLoremParagraph}}\",\n      \"published\": true\n    }\n}"
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/graphql",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Profile Image Upload",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "operations",
+							"value": "{\"query\": \"mutation ($file: Upload!) { uploadFile(file: $file) }\", \"variables\": {\"file\": null}}",
+							"type": "text"
+						},
+						{
+							"key": "map",
+							"value": "{\"0\": [\"variables.file\"]}",
+							"type": "text"
+						},
+						{
+							"key": "0",
+							"type": "file",
+							"src": "/home/zeeshan-iqbaal/Pictures/Screenshots/Screenshot from 2023-03-13 18-50-40.png"
+						}
+					]
 				},
 				"url": {
 					"raw": "http://localhost:3000/graphql",

@@ -14,13 +14,6 @@ import {
 @EventSubscriber()
 export class AppGlobalSubscriber implements EntitySubscriberInterface {
   /**
-   * Indicates that this subscriber only listen to Post events.
-   */
-  /*listenTo() {
-    return Post;
-  }*/
-
-  /**
    * Called after entity is loaded.
    */
   afterLoad(entity: any) {
@@ -28,10 +21,10 @@ export class AppGlobalSubscriber implements EntitySubscriberInterface {
   }
 
   /**
-   * Called before post insertion.
+   * Called before entity insertion.
    */
   beforeInsert(event: InsertEvent<any>) {
-    console.log(`BEFORE POST INSERTED: `);
+    console.log(`BEFORE ENTITY INSERTED: `);
   }
 
   /**
@@ -45,7 +38,8 @@ export class AppGlobalSubscriber implements EntitySubscriberInterface {
    * Called before entity update.
    */
   beforeUpdate(event: UpdateEvent<any>) {
-    console.log(`BEFORE ENTITY UPDATED: 123`);
+    event.entity.updatedAt = new Date();
+    console.log(`BEFORE ENTITY UPDATED: `);
   }
 
   /**

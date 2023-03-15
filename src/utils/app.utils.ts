@@ -1,4 +1,4 @@
-import { HttpStatus, ValidationPipe } from '@nestjs/common';
+import { HttpStatus, ValidationPipe, SetMetadata } from '@nestjs/common';
 
 const PASSWORD_RULE =
   /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/;
@@ -21,3 +21,5 @@ export const MESSAGES = {
 export const SETTINGS = {
   VALIDATION_PIPE,
 };
+
+export const isAdmin = (...roles: any) => SetMetadata('role', roles);

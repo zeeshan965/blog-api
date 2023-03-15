@@ -1,6 +1,7 @@
 import {
   EntitySubscriberInterface,
   EventSubscriber,
+  InsertEvent,
   UpdateEvent,
 } from 'typeorm';
 import { Post } from '../entities/post.entity';
@@ -18,6 +19,12 @@ export class PostSubscriber implements EntitySubscriberInterface<Post> {
    * Called before post update.
    */
   beforeUpdate(event: UpdateEvent<Post>) {
-    console.log(`BEFORE POST UPDATE: lol`);
+    event.entity.publishedAt = event.entity.published ? new Date() : null;
+    console.log(`BEFORE POST UPDATE: `);
+  }
+
+  beforeInsert(event: InsertEvent<Post>) {
+    event.entity.publishedAt = event.entity.published ? new Date() : null;
+    console.log(`BEFORE POST INSERT: `);
   }
 }

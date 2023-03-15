@@ -378,11 +378,109 @@ https://docs.nestjs.com/fundamentals/circular-dependency
   forwardRef(() => AuthModule)
 ```
 
+## Custom Decorators
+https://docs.nestjs.com/custom-decorators
+```typescript
+import { createParamDecorator, ExecutionContext } from '@nestjs/common';
+import { GqlExecutionContext } from '@nestjs/graphql';
+
+export const CurrentUser = createParamDecorator(
+  (data: unknown, context: ExecutionContext) => {
+    const ctx = GqlExecutionContext.create(context);
+    return ctx.getContext().req.user;
+  },
+);
+//to call above decorator
+@CurrentUser() user
+
+//Another way of doing it
+//https://docs.nestjs.com/fundamentals/execution-context#reflection-and-metadata
+import { SetMetadata } from '@nestjs/common';
+export const Roles = (...roles: any) => SetMetadata('role', roles);
+// Use it like this in controller, service, resolver etc.
+@Roles('role', [])
+const roles = this.reflector.get<string[]>('roles', context.getHandler());
+
+```
+
 ## TypeOrm
 TypeORM is an ORM that can run in NodeJS, Browser, Cordova, PhoneGap, Ionic, React Native, NativeScript, Expo, and Electron platforms and can be used with TypeScript and JavaScript (ES5, ES6, ES7, ES8). 
 Its goal is to always support the latest JavaScript features and provide additional features that help you to develop any kind of application that uses databases - from small applications with a few tables to large scale enterprise applications with multiple databases.
 
-## Relations
+### Insertion
+```typescript
+//this way typeorm will trigger Subscriber events not the hooks mentioned in the entity file.
+// And this will return Promise<InsertResult> which holds the inserted data in raw format.
+// But not applicable in my case as I'm sending post entity in return to my resolver file.
+return this.postRepository.insert({ ...createPostInput, author: user });
+
+//this way typeorm will trigger Subscriber events & hooks mentioned in the entity file because we're calling save() method
+//create() will create the DeepPartial of our entity so we can save it using save method.
+const post = this.postRepository.create({ ...createPostInput, author: user });
+return post.save();
+
+//The most clean and object oriented way, controls in your hand. It will call hooks wherever they are written since we're calling save()
+const post = new Post();
+post.title = createPostInput.title;
+post.description = createPostInput.description;
+post.published = createPostInput.published;
+post.author = user;
+post.save();
+```
+
+### Updates
+```typescript
+//this way it will call Subscriber events not the hooks mentioned in entity file
+// Only make 1 update query to DB. Most efficeint way but it will not return post object
+const { id, slug, ...updates } = updatePostInput;
+return await this.postRepository.update({ slug: slug }, { ...updates });
+
+// This way it will call Subscriber events not the hooks mentioned in entity file
+// It will make 2 DB calls one for getting data second for updating data.
+// But this update will work only with ID if ID exists it will update otherwise will keep inserting new record.
+const { id, slug, ...updates } = updatePostInput;
+return this.postRepository.save({ id: id, author: user, ...updates });
+
+//Another way of doing it, But this will do 3 DB calls two for Select and one for the update. But it will trigger entity hooks.
+// Not a good approach since it increasing DB calls for one operation.
+const foundEntity = await this.postRepository.findOne({
+  where: { slug: slug },
+});
+return await this.postRepository.save(Object.assign(foundEntity, updates));
+
+//Alternate way of 2nd solution 
+const foundEntity = await this.postRepository.findOne({
+  where: { slug: slug },
+});
+Object.entries(result).forEach(([key, value]) => {
+  foundEntity[key] = value;
+});
+return await this.postRepository.save(foundEntity);
+```
+
+### Fetch Data
+```typescript
+//Not sure why but its giving me data in plainObject that exclude the keys which are not meant to be sent to client e.g, password.
+return this.postRepository.find({
+  relations: { author: true },
+});
+
+// For single record
+return this.postRepository.findOneOrFail({ where: { id: id } });
+```
+
+### Remove Data
+```typescript
+//remove data from DB, It will return Promise<DeleteResult> and it will tell us if the delete is success or not. 
+this.postRepository.delete(id);
+
+//Alternate ways
+this.postRepository.remove();
+this.postRepository.softRemove();
+this.postRepository.softDelete();
+```
+
+### Relations
 It's pretty much similar to Eloquent (Laravel) & Doctrine ORM (Symfony). Syntax and naming conventions are very much similar.
 You can define relations inside entity classes.
 Available relations:
@@ -433,7 +531,7 @@ entity.author = user;
 entity.save();
 ```
 
-## Hooks/Listeners
+### Hooks/Listeners
 Any of your entities can have methods with custom logic that listen to specific entity events. You must mark those methods with special decorators depending on what event you want to listen to.
 **Note:** Do not make any database calls within a listener, opt for subscribers instead.
 

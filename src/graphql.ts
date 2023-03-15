@@ -91,6 +91,8 @@ export interface PostResponseDto {
     status?: Nullable<number>;
     message?: Nullable<string>;
     post?: Nullable<Post>;
+    posts?: Nullable<Post[]>;
+    deleted?: Nullable<boolean>;
 }
 
 export interface IQuery {
@@ -99,7 +101,9 @@ export interface IQuery {
     getAdmin(): UserRegisterResponseDto | Promise<UserRegisterResponseDto>;
     getAuthLoggedUser(): UserRegisterResponseDto | Promise<UserRegisterResponseDto>;
     jwtStrategyGetUser(): UserRegisterResponseDto | Promise<UserRegisterResponseDto>;
-    post(id: number): Post | Promise<Post>;
+    findAll(): PostResponseDto | Promise<PostResponseDto>;
+    findOne(id: number): PostResponseDto | Promise<PostResponseDto>;
+    post(): Post[] | Promise<Post[]>;
     comments(): Comment[] | Promise<Comment[]>;
     comment(id: number): Comment | Promise<Comment>;
 }
@@ -112,7 +116,7 @@ export interface IMutation {
     jwtLogin(username: string, password: string): UserRegisterResponseDto | Promise<UserRegisterResponseDto>;
     createPost(createPostInput: CreatePostInput): PostResponseDto | Promise<PostResponseDto>;
     updatePost(updatePostInput: UpdatePostInput): PostResponseDto | Promise<PostResponseDto>;
-    removePost(id: number): Post | Promise<Post>;
+    removePost(id: number): PostResponseDto | Promise<PostResponseDto>;
     createComment(createCommentInput: CreateCommentInput): Comment | Promise<Comment>;
     updateComment(updateCommentInput: UpdateCommentInput): Comment | Promise<Comment>;
     removeComment(id: number): Comment | Promise<Comment>;

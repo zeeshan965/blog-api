@@ -58,6 +58,8 @@ type PostResponseDto {
   status: Float
   message: String
   post: Post
+  posts: [Post!]
+  deleted: Boolean
 }
 
 type Query {
@@ -66,7 +68,9 @@ type Query {
   getAdmin: UserRegisterResponseDto!
   getAuthLoggedUser: UserRegisterResponseDto!
   jwtStrategyGetUser: UserRegisterResponseDto!
-  post(id: Int!): Post!
+  findAll: PostResponseDto!
+  findOne(id: Int!): PostResponseDto!
+  post: [Post!]!
   comments: [Comment!]!
   comment(id: Int!): Comment!
 }
@@ -79,7 +83,7 @@ type Mutation {
   jwtLogin(username: String!, password: String!): UserRegisterResponseDto!
   createPost(createPostInput: CreatePostInput!): PostResponseDto!
   updatePost(updatePostInput: UpdatePostInput!): PostResponseDto!
-  removePost(id: Int!): Post!
+  removePost(id: Int!): PostResponseDto!
   createComment(createCommentInput: CreateCommentInput!): Comment!
   updateComment(updateCommentInput: UpdateCommentInput!): Comment!
   removeComment(id: Int!): Comment!

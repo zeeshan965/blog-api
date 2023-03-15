@@ -30,27 +30,39 @@ export class PostResolver {
     return { message: 'success!', status: 200, post: post };
   }
 
-  @Query(() => [Post], { name: 'post' })
-  findAll() {
-    return this.postService.findAll();
-  }
-
-  @Query(() => Post, { name: 'post' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
-    return this.postService.findOne(id);
-  }
-
   /**
    * @param updatePostInput
    */
   @Mutation(() => PostResponseDto)
-  updatePost(@Args('updatePostInput') updatePostInput: UpdatePostInput) {
-    return this.postService.update(updatePostInput);
+  async updatePost(@Args('updatePostInput') updatePostInput: UpdatePostInput) {
+    const post = await this.postService.update(updatePostInput);
+    return { message: 'success!', status: 200, post: post };
   }
 
-  @Mutation(() => Post)
-  removePost(@Args('id', { type: () => Int }) id: number) {
-    return this.postService.remove(id);
+  /**
+   * @param id
+   */
+  @Mutation(() => PostResponseDto)
+  async removePost(@Args('id', { type: () => Int }) id: number) {
+    const post = await this.postService.remove(id);
+    return { message: 'success!', status: 200, deleted: post.affected };
+  }
+
+  @Query(() => PostResponseDto)
+  async findAll() {
+    const posts: Post[] = await this.postService.findAll();
+    return { message: 'success!', status: 200, posts: posts };
+  }
+
+  @Query(() => PostResponseDto)
+  async findOne(@Args('id', { type: () => Int }) id: number) {
+    const post: Post = await this.postService.findOne(id);
+    return { message: 'success!', status: 200, post: post };
+  }
+
+  @Query(() => [Post], { name: 'post' })
+  searchPost() {
+    return this.postService.findAll();
   }
 
   /*@Mutation(() => String)

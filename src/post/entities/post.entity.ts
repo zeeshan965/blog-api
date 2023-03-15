@@ -85,19 +85,21 @@ export class Post extends AbstractEntity {
 
   @BeforeInsert()
   setPublishedAt() {
-    console.log('-----------------');
+    // will not triggered from insert() method
+    console.log('inside before insert');
     this.publishedAt = this.published ? new Date() : null;
   }
 
   @BeforeUpdate()
   async update() {
-    console.log('-----------------');
-    this.publishedAt = this.published ? new Date() : null;
+    // will not work with update() method
+    console.log('inside before update');
   }
 
   @AfterUpdate()
   afterUpdate() {
-    console.log(12131);
+    // will not work with update() method
+    console.log('inside after update');
   }
 
   toJSON() {

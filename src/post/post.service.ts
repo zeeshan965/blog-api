@@ -8,6 +8,9 @@ import { Post } from './entities/post.entity';
 
 @Injectable()
 export class PostService {
+  /**
+   * @param postRepository
+   */
   constructor(
     @InjectRepository(Post) public readonly postRepository: Repository<Post>,
   ) {}
@@ -16,7 +19,7 @@ export class PostService {
    * @param createPostInput
    * @param user
    */
-  async create(createPostInput: CreatePostInput, user: User) {
+  create(createPostInput: CreatePostInput, user: User): Promise<Post> {
     /** TODO: Alternate ways to create new post, But hooks will only work with save() method.
      * return this.postRepository.insert({ ...createPostInput, author: user });
      * const post = this.postRepository.create({ ...createPostInput, author: user }); */
@@ -32,38 +35,54 @@ export class PostService {
     // post.author = user;
     // post.save();
 
-    return await post.save();
+    return post.save();
   }
 
   /**
    * @param updatePostInput
    */
-  async update(updatePostInput: UpdatePostInput) {
+  async update(updatePostInput: UpdatePostInput): Promise<Post> {
     const { id, slug, ...updates } = updatePostInput;
-    const foundEntity = await this.postRepository.findOne({
+    const post = await this.postRepository.findOneOrFail({
       where: { slug: slug },
+      relations: { author: true },
     });
-    return await this.postRepository.save(Object.assign(foundEntity, updates));
-    //return await this.postRepository.update({ slug: slug }, { ...result });
+    return this.postRepository.save(Object.assign(post, updates));
 
-    /*const foundEntity = await this.postRepository.findOne({
-      where: { slug: slug },
-    });
-    Object.entries(result).forEach(([key, value]) => {
-      foundEntity[key] = value;
-    });
-    return await this.postRepository.save(foundEntity);*/
+    /*return this.postRepository.save({
+      id: id,
+      slug: slug,
+      author: user,
+      ...updates,
+    });*/
   }
 
-  findAll() {
-    return `This action returns all post`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} post`;
-  }
-
+  /**
+   * @param id
+   */
   remove(id: number) {
-    return `This action removes a #${id} post`;
+    return this.postRepository.delete(id);
+  }
+
+  /**
+   *
+   */
+  findAll(): Promise<Post[]> {
+    return this.postRepository.find({
+      relations: { author: true },
+    });
+  }
+
+  /**
+   * @param id
+   */
+  findOne(id: number) {
+    return this.postRepository.findOneOrFail({
+      where: { id: id },
+      relations: {
+        author: true,
+        comments: true,
+      },
+    });
   }
 }
