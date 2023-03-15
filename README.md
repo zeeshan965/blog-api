@@ -377,3 +377,88 @@ https://docs.nestjs.com/fundamentals/circular-dependency
   //inside user module
   forwardRef(() => AuthModule)
 ```
+
+## TypeOrm
+TypeORM is an ORM that can run in NodeJS, Browser, Cordova, PhoneGap, Ionic, React Native, NativeScript, Expo, and Electron platforms and can be used with TypeScript and JavaScript (ES5, ES6, ES7, ES8). 
+Its goal is to always support the latest JavaScript features and provide additional features that help you to develop any kind of application that uses databases - from small applications with a few tables to large scale enterprise applications with multiple databases.
+
+## Relations
+It's pretty much similar to Eloquent (Laravel) & Doctrine ORM (Symfony). Syntax and naming conventions are very much similar.
+You can define relations inside entity classes.
+Available relations:
+```bash
+@OneToMany A.K.A hasMany()
+@ManyToOne A.K.A belongsTo()
+@ManyToMany A.K.A hasMany() & belongsToMany()
+```
+
+```typescript
+// Country - capital city: Each country has exactly one capital city. Each capital city is the capital of exactly one country.
+@OneToOne(() => Capital, (capital) => capital.city)
+capital?: Capital;
+
+// In this example, A single author can do multiple posts
+@OneToMany(() => Post, (post) => post.author)
+posts?: Post[];
+
+// In this example a post belongs to a single author
+@ManyToOne(() => User, (user) => user.posts)
+author?: User;
+
+// Many-to-many is a relation where A contains multiple instances of B, and B contains multiple instances of A. 
+// Let's take for example Post and Category entities. 
+// A post can have multiple categories, and each category can have multiple posts.
+@ManyToMany(() => Post, (post) => post.categories)
+posts: Post[]
+
+@ManyToMany(() => Category, (category) => category.posts)
+@JoinTable()
+categories: Category[]
+```
+**Note:** To be able to trigger typeorm hooks only use save() method as per their documentation otherwise hooks will not trigger.
+```typescript
+//Alternate ways to create new post, But hooks will only work with save() method.
+this.postRepository.insert({ ...createPostInput, author: user }); //will not trigger hooks
+
+//will trigger hooks
+const post = this.postRepository.create({ ...createPostInput, author: user });
+post.save();
+
+//Another way of doing it.
+const entity = new Post();
+entity.title = createPostInput.title;
+entity.description = createPostInput.description;
+entity.published = createPostInput.published;
+entity.author = user;
+entity.save();
+```
+
+## Hooks/Listeners
+Any of your entities can have methods with custom logic that listen to specific entity events. You must mark those methods with special decorators depending on what event you want to listen to.
+**Note:** Do not make any database calls within a listener, opt for subscribers instead.
+
+```typescript
+import {
+  AfterInsert,
+  AfterLoad,
+  AfterRecover,
+  AfterRemove,
+  AfterSoftRemove,
+  AfterUpdate,
+  BeforeInsert, BeforeRecover, BeforeRemove,
+  BeforeUpdate
+} from "typeorm";
+
+@AfterLoad()
+@AfterInsert()
+@AfterUpdate()
+@AfterRemove()
+@AfterRecover()
+@AfterSoftRemove()
+@BeforeInsert()
+@BeforeUpdate()
+@BeforeRecover()
+@BeforeRemove()
+@BeforeSoftRemove()
+
+```

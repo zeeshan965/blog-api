@@ -24,7 +24,7 @@ export class UserService {
    * @param email
    */
   async findUserByEmail(email: string) {
-    return await this.userRepository.findOne({
+    return await this.userRepository.findOneOrFail({
       where: { email: email },
     });
   }
@@ -33,7 +33,7 @@ export class UserService {
    * @param id
    */
   async findUserById(id: number) {
-    return await this.userRepository.findOne({
+    return await this.userRepository.findOneOrFail({
       where: { id: id },
       select: [
         'firstName',

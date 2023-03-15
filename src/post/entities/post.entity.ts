@@ -8,6 +8,7 @@ import {
   JoinTable,
   BeforeInsert,
   BeforeUpdate,
+  AfterUpdate,
 } from 'typeorm';
 import { AbstractEntity } from '../../utils/abstract-entity';
 import { User } from '../../user/entity/user.entity';
@@ -89,9 +90,14 @@ export class Post extends AbstractEntity {
   }
 
   @BeforeUpdate()
-  update() {
+  async update() {
     console.log('-----------------');
     this.publishedAt = this.published ? new Date() : null;
+  }
+
+  @AfterUpdate()
+  afterUpdate() {
+    console.log(12131);
   }
 
   toJSON() {

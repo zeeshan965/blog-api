@@ -8,8 +8,6 @@ import { GqlJwtAuthGuard } from '../guard/gql-jwt-auth.guard';
 import { CurrentUser } from '../utils/current-user.decorator';
 import { User } from '../user/entity/user.entity';
 import { PostResponseDto } from './dto/post-response.dto';
-import GraphQLUpload from 'graphql-upload/GraphQLUpload';
-import { join } from 'path';
 
 @Resolver(() => Post)
 @UseGuards(GqlJwtAuthGuard)
@@ -55,7 +53,7 @@ export class PostResolver {
     return this.postService.remove(id);
   }
 
-  @Mutation(() => String)
+  /*@Mutation(() => String)
   async uploadFile(
     @Args({ name: 'file', type: () => GraphQLUpload })
     file: Promise<Express.Multer.File>,
@@ -69,5 +67,5 @@ export class PostResolver {
         .on('finish', () => resolve(true))
         .on('error', () => reject(false)),
     );
-  }
+  }*/
 }
