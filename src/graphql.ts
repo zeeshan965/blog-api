@@ -43,27 +43,16 @@ export interface UpdatePostInput {
 }
 
 export interface CreateCommentInput {
-    exampleField: number;
+    message: string;
+    postId?: Nullable<number>;
+    parentId?: Nullable<string>;
 }
 
 export interface UpdateCommentInput {
-    exampleField?: Nullable<number>;
+    message?: Nullable<string>;
+    postId?: Nullable<number>;
+    parentId?: Nullable<string>;
     id: number;
-}
-
-export interface Comment {
-    id: number;
-    createdAt: DateTime;
-    updatedAt?: Nullable<DateTime>;
-    message: string;
-}
-
-export interface Category {
-    id: number;
-    createdAt: DateTime;
-    updatedAt?: Nullable<DateTime>;
-    title?: Nullable<string>;
-    description?: Nullable<string>;
 }
 
 export interface UserJwtPayloadDto {
@@ -76,6 +65,25 @@ export interface UserJwtPayloadDto {
     isActive?: Nullable<boolean>;
     createdAt?: Nullable<DateTime>;
     updatedAt?: Nullable<DateTime>;
+}
+
+export interface Comment {
+    id: number;
+    createdAt: DateTime;
+    updatedAt?: Nullable<DateTime>;
+    message?: Nullable<string>;
+    author?: Nullable<UserJwtPayloadDto>;
+    likes?: Nullable<number>;
+    dislikes?: Nullable<number>;
+    parent?: Nullable<Comment>;
+}
+
+export interface Category {
+    id: number;
+    createdAt: DateTime;
+    updatedAt?: Nullable<DateTime>;
+    title?: Nullable<string>;
+    description?: Nullable<string>;
 }
 
 export interface Post {
@@ -116,6 +124,14 @@ export interface PostResponseDto {
     posts?: Nullable<Post[]>;
 }
 
+export interface CommentResponseDto {
+    status?: Nullable<number>;
+    message?: Nullable<string>;
+    deleted?: Nullable<boolean>;
+    comment?: Nullable<Comment>;
+    comments?: Nullable<Comment[]>;
+}
+
 export interface CategoryResponseDto {
     status?: Nullable<number>;
     message?: Nullable<string>;
@@ -135,8 +151,7 @@ export interface IQuery {
     post(): Post[] | Promise<Post[]>;
     findAllPosts(): PostResponseDto | Promise<PostResponseDto>;
     findOnePost(id: number): PostResponseDto | Promise<PostResponseDto>;
-    comments(): Comment[] | Promise<Comment[]>;
-    comment(id: number): Comment | Promise<Comment>;
+    findOneComment(id: number): CommentResponseDto | Promise<CommentResponseDto>;
 }
 
 export interface IMutation {
@@ -151,9 +166,9 @@ export interface IMutation {
     createPost(createPostInput: CreatePostInput): PostResponseDto | Promise<PostResponseDto>;
     updatePost(updatePostInput: UpdatePostInput): PostResponseDto | Promise<PostResponseDto>;
     removePost(id: number): PostResponseDto | Promise<PostResponseDto>;
-    createComment(createCommentInput: CreateCommentInput): Comment | Promise<Comment>;
-    updateComment(updateCommentInput: UpdateCommentInput): Comment | Promise<Comment>;
-    removeComment(id: number): Comment | Promise<Comment>;
+    createComment(createCommentInput: CreateCommentInput): CommentResponseDto | Promise<CommentResponseDto>;
+    updateComment(updateCommentInput: UpdateCommentInput): CommentResponseDto | Promise<CommentResponseDto>;
+    removeComment(id: number): CommentResponseDto | Promise<CommentResponseDto>;
 }
 
 export type DateTime = any;

@@ -3,40 +3,62 @@ import { CommentsService } from './comments.service';
 import { Comment } from './entities/comment.entity';
 import { CreateCommentInput } from './dto/create-comment.input';
 import { UpdateCommentInput } from './dto/update-comment.input';
+import { CommentResponseDto } from './dto/comment-response.dto';
+import { UseGuards } from '@nestjs/common';
+import { GqlJwtAuthGuard } from '../../guard/gql-jwt-auth.guard';
+import { CurrentUser } from '../../utils/current-user.decorator';
+import { User } from '../../user/entity/user.entity';
 
 @Resolver(() => Comment)
+@UseGuards(GqlJwtAuthGuard)
 export class CommentsResolver {
+  /**
+   * @param commentsService
+   */
   constructor(private readonly commentsService: CommentsService) {}
 
-  @Mutation(() => Comment)
-  createComment(
+  /**
+   * @param user
+   * @param createCommentInput
+   */
+  @Mutation(() => CommentResponseDto)
+  async createComment(
+    @CurrentUser() user: User,
     @Args('createCommentInput') createCommentInput: CreateCommentInput,
   ) {
-    return this.commentsService.create(createCommentInput);
+    const comment = await this.commentsService.create(createCommentInput, user);
+    console.log(comment);
+    return { message: 'success!', status: 200, comment: comment };
   }
 
-  @Query(() => [Comment], { name: 'comments' })
-  findAll() {
-    return this.commentsService.findAll();
-  }
-
-  @Query(() => Comment, { name: 'comment' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
-    return this.commentsService.findOne(id);
-  }
-
-  @Mutation(() => Comment)
-  updateComment(
+  /**
+   * @param updateCommentInput
+   */
+  @Mutation(() => CommentResponseDto)
+  async updateComment(
     @Args('updateCommentInput') updateCommentInput: UpdateCommentInput,
   ) {
-    return this.commentsService.update(
-      updateCommentInput.id,
-      updateCommentInput,
-    );
+    const comment = await this.commentsService.update(updateCommentInput);
+    if (!(comment instanceof Comment)) return { ...comment };
+
+    return { message: 'success!', status: 200, comment: comment };
   }
 
-  @Mutation(() => Comment)
-  removeComment(@Args('id', { type: () => Int }) id: number) {
-    return this.commentsService.remove(id);
+  /**
+   * @param id
+   */
+  @Mutation(() => CommentResponseDto)
+  async removeComment(@Args('id', { type: () => Int }) id: number) {
+    const comment = await this.commentsService.remove(id);
+    return { message: 'success!', status: 200, deleted: comment.affected };
+  }
+
+  /**
+   * @param id
+   */
+  @Query(() => CommentResponseDto)
+  async findOneComment(@Args('id', { type: () => Int }) id: number) {
+    const comment: Comment = await this.commentsService.findOne(id);
+    return { message: 'success!', status: 200, comment: comment };
   }
 }
