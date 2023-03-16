@@ -61,4 +61,20 @@ export class CommentsResolver {
     const comment: Comment = await this.commentsService.findOne(id);
     return { message: 'success!', status: 200, comment: comment };
   }
+
+  /**
+   * @param postId
+   */
+  @Query(() => CommentResponseDto)
+  async getPostComments(@Args('postId', { type: () => Int }) postId: number) {
+    const comments: Comment[] = await this.commentsService.getPostComments(
+      postId,
+    );
+    return {
+      message: 'success!',
+      status: 200,
+      total: comments.length,
+      comments: comments,
+    };
+  }
 }

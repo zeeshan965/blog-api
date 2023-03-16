@@ -11,7 +11,7 @@ import {
   UpdateEvent,
 } from 'typeorm';
 
-@EventSubscriber()
+// @EventSubscriber()
 export class AppGlobalSubscriber implements EntitySubscriberInterface {
   /**
    * Called after entity is loaded.

@@ -1,5 +1,5 @@
 import { ObjectType, Field, Int } from '@nestjs/graphql';
-import { Column, Entity, ManyToOne } from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 import { AbstractEntity } from '../../../utils/abstract-entity';
 import { Post } from '../../entities/post.entity';
 import { User } from '../../../user/entity/user.entity';
@@ -24,10 +24,17 @@ export class Comment extends AbstractEntity {
   @Field(() => Int, { nullable: true })
   dislikes?: number;
 
+  @Field(() => Post, { nullable: true })
   @ManyToOne(() => Post, (post) => post.comments)
   post?: Post;
 
-  @ManyToOne(() => Comment,(parent) => parent.id, { nullable: true })
   @Field(() => Comment, { nullable: true })
+  @ManyToOne(() => Comment, (comment) => comment.childComment, {
+    nullable: true,
+  })
   parent: Comment;
+
+  @Field(() => Comment, { nullable: true })
+  @OneToMany(() => Comment, (comment) => comment.parent, { nullable: false })
+  childComment: Comment[];
 }

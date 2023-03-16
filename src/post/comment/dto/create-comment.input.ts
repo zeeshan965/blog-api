@@ -11,7 +11,6 @@ export class CreateCommentInput {
   @Field(() => Int, { nullable: true })
   postId: number;
 
-  @IsNotEmpty()
-  @Field({ nullable: true })
-  parentId?: string;
+  @Field(() => Int, { nullable: true })
+  parentId?: number;
 }

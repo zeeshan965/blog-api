@@ -65,7 +65,7 @@ export class Post extends AbstractEntity {
   postMediaType: string;
 
   @Field(() => UserJwtPayloadDto, { nullable: true })
-  @ManyToOne(() => User, (user) => user.posts)
+  @ManyToOne(() => User, (user) => user.posts, { eager: true })
   author?: User;
 
   @OneToMany(() => Comment, (comment) => comment.post)

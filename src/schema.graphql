@@ -27,7 +27,9 @@ type Comment {
   author: UserJwtPayloadDto
   likes: Int
   dislikes: Int
+  post: Post
   parent: Comment
+  childComment: Comment
 }
 
 type Category {
@@ -82,6 +84,7 @@ type CommentResponseDto {
   deleted: Boolean
   comment: Comment
   comments: [Comment!]
+  total: Int
 }
 
 type CategoryResponseDto {
@@ -104,6 +107,7 @@ type Query {
   findAllPosts: PostResponseDto!
   findOnePost(id: Int!): PostResponseDto!
   findOneComment(id: Int!): CommentResponseDto!
+  getPostComments(postId: Int!): CommentResponseDto!
 }
 
 type Mutation {
@@ -160,12 +164,12 @@ input UpdatePostInput {
 input CreateCommentInput {
   message: String!
   postId: Int
-  parentId: String
+  parentId: Int
 }
 
 input UpdateCommentInput {
   message: String
   postId: Int
-  parentId: String
+  parentId: Int
   id: Int!
 }

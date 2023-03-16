@@ -7,6 +7,650 @@
 	},
 	"item": [
 		{
+			"name": "Posts",
+			"item": [
+				{
+					"name": "Create Post (GQL)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation createPost($createPostInput: CreatePostInput!){\n    createPost(createPostInput: $createPostInput) {\n        status\n        message\n        post {\n            id\n            title\n            description\n            published\n            publishedAt\n            slug\n            postMediaType\n            postMedia\n            trashed\n            author {\n                id\n                firstName\n                lastName\n                email\n                isActive\n            }\n        }\n    }\n}",
+								"variables": "{\n    \"createPostInput\": {\n      \"title\": \"{{$randomJobTitle}}\",\n      \"description\": \"{{$randomLoremParagraph}}\",\n      \"published\": true\n    }\n}"
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/graphql",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Post (GQL)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation updatePost($updatePostInput: UpdatePostInput!){\n    updatePost(updatePostInput: $updatePostInput) {\n        post {\n            id\n            title\n            description\n            published\n            publishedAt\n            slug\n            postMediaType\n            postMedia\n            trashed\n            author {\n                id\n                firstName\n                lastName\n                email\n                isActive\n            }\n        }\n    }\n}",
+								"variables": "{\n    \"updatePostInput\": {\n      \"id\": 64,\n      \"slug\": \"global-accounts-planner-jv0nnr\",\n      \"title\": \"updating title {{$randomFileName}}\",\n      \"description\": \"updating description 1\",\n      \"published\": true\n    }\n}"
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/graphql",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Post (GQL)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query findAllPosts {\n    findAllPosts {\n        status\n        message\n        posts {\n            title\n            description\n            published\n            publishedAt\n            slug\n            postMediaType\n            postMedia\n            trashed\n            author {\n                id\n                firstName\n                lastName\n                email\n                isActive\n                createdAt\n                updatedAt\n            }\n        }\n    }\n}\n\n# query {\n#     findAll\n# }",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/graphql",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Post (GQL)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query findOnePost($id: Int!) {\n    findOnePost(id: $id) {\n        status\n        message\n        post {\n            title\n            description\n            published\n            publishedAt\n            slug\n            postMediaType\n            postMedia\n            trashed\n            author {\n                id\n                firstName\n                lastName\n                email\n                isActive\n                createdAt\n                updatedAt\n            }\n        }\n    }\n}\n\n# query {\n#     findAll\n# }",
+								"variables": "{\n    \"id\": 64\n}"
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/graphql",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Post (GQL)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation removePost($id: Int!){\n    removePost(id: $id) {\n        status\n        message\n        deleted\n    }\n}",
+								"variables": "{\n    \"id\": 63\n}"
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/graphql",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Search Posts (GQL)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation createPost($createPostInput: CreatePostInput!){\n  createPost(createPostInput: $createPostInput) {\n      post {\n          title\n          description\n          published\n          publishedAt\n          slug\n          postMediaType\n          postMedia\n          author {\n              id\n              firstName\n              lastName\n              email\n              isActive\n              role\n          }\n      }\n  }\n}",
+								"variables": "{\n    \"createPostInput\": {\n      \"title\": \"{{$randomJobTitle}}\",\n      \"description\": \"{{$randomLoremParagraph}}\",\n      \"published\": true\n    }\n}"
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/graphql",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Categories",
+			"item": [
+				{
+					"name": "Create Category (GQL)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation createCategory($createCategoryInput: CreateCategoryInput!){\n    createCategory(createCategoryInput: $createCategoryInput) {\n        status\n        message\n        category {\n            id\n            title\n            description\n            createdAt\n        }\n    }\n}",
+								"variables": "{\n    \"createCategoryInput\": {\n      \"title\": \"{{$randomFirstName}}\",\n      \"description\": \"{{$randomLoremParagraph}}\"\n    }\n}"
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/graphql",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Category (GQL)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation updateCategory($updateCategoryInput: UpdateCategoryInput!){\n    updateCategory(updateCategoryInput: $updateCategoryInput) {\n        status\n        message\n        category {\n            title\n            description\n        }\n    }\n}",
+								"variables": "{\n    \"updateCategoryInput\": {\n      \"id\": 6,\n      \"title\": \"IT\",\n      \"description\": \"updating description 1\"\n    }\n}"
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/graphql",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Category (GQL)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation removeCategory($id: Int!){\n    removeCategory(id: $id) {\n        status\n        message\n        deleted\n    }\n}",
+								"variables": "{\n    \"id\": 2\n}"
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/graphql",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Categories (GQL)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query findAllCategories {\n    findAllCategories {\n        status\n        message\n        categories {\n            title\n            description\n        }\n    }\n}\n\n# query {\n#     findAll\n# }",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/graphql",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Category (GQL)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query findOneCategory($id: Int!) {\n    findOneCategory(id: $id) {\n        status\n        message\n        category {\n            title\n            description\n            createdAt\n            updatedAt\n        }\n    }\n}\n\n# query {\n#     findAll\n# }",
+								"variables": "{\n    \"id\": 6\n}"
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/graphql",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Search Category (GQL)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation createPost($createPostInput: CreatePostInput!){\n  createPost(createPostInput: $createPostInput) {\n      post {\n          title\n          description\n          published\n          publishedAt\n          slug\n          postMediaType\n          postMedia\n          author {\n              id\n              firstName\n              lastName\n              email\n              isActive\n              role\n          }\n      }\n  }\n}",
+								"variables": "{\n    \"createPostInput\": {\n      \"title\": \"{{$randomJobTitle}}\",\n      \"description\": \"{{$randomLoremParagraph}}\",\n      \"published\": true\n    }\n}"
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/graphql",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Comments",
+			"item": [
+				{
+					"name": "Create Comment (GQL)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation createComment($createCommentInput: CreateCommentInput!){\n    createComment(createCommentInput: $createCommentInput) {\n        status\n        message\n        comment {\n            id\n            message\n            createdAt\n            post {\n                title\n                description\n                published\n                author{\n                    id\n                    firstName\n                    lastName\n                    email\n                }\n            }\n            author {\n                id\n                firstName\n                lastName\n                email\n            }\n        }\n    }\n}",
+								"variables": "{\n    \"createCommentInput\": {\n      \"message\": \"{{$randomLoremSentences}}\",\n      \"postId\": 64\n    }\n}"
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/graphql",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Comment (GQL)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation updateComment($updateCommentInput: UpdateCommentInput!){\n    updateComment(updateCommentInput: $updateCommentInput) {\n        status\n        message\n        comment {\n            id\n            message\n            post {\n                id\n                title\n            }\n            author {\n                id\n                firstName\n                lastName\n                email\n            }\n        }\n    }\n}",
+								"variables": "{\n    \"updateCommentInput\": {\n      \"id\": 10,\n      \"message\": \"IT\"\n    }\n}"
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/graphql",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Category (GQL) Copy",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation removeComment($id: Int!){\n    removeComment(id: $id) {\n        status\n        message\n        deleted\n    }\n}",
+								"variables": "{\n    \"id\": 24\n}"
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/graphql",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Comment (GQL)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query findOneComment($id: Int!) {\n    findOneComment(id: $id) {\n        status\n        message\n        comment {\n            id\n            message\n            post {\n                id\n                title\n                description\n            }\n            author {\n                id\n                firstName\n                lastName\n                email\n            }\n        }\n    }\n}\n\n# query {\n#     findAll\n# }",
+								"variables": "{\n    \"id\": 11\n}"
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/graphql",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Post Comments (GQL)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query getPostComments($postId: Int!) {\n    getPostComments(postId: $postId) {\n        status\n        message\n        total\n        comments {\n            id\n            message\n            childComment {\n                message\n            }\n        }\n    }\n}\n\n# query {\n#     findAll\n# }",
+								"variables": "{\n    \"postId\": 64\n}"
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/graphql",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "Register(Rest)",
 			"event": [
 				{
@@ -513,228 +1157,6 @@
 					"graphql": {
 						"query": "# query jwtStrategyGetUser{\n#   jwtStrategyGetUser{\n#     status\n#     message\n#     user{\n#       firstName\n#       lastName\n#       email\n#       role\n#     }\n#   }\n# }\n\nquery {\n    jwtStrategyGetUser {\n        status\n        message\n        user{\n            firstName\n            lastName\n            email\n            role\n        }\n    }\n}\n",
 						"variables": ""
-					}
-				},
-				"url": {
-					"raw": "http://localhost:3000/graphql",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"graphql"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Create Post (GQL)",
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Authorization",
-						"value": "Bearer {{token}}",
-						"type": "text"
-					},
-					{
-						"key": "Content-Type",
-						"value": "application/json",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "graphql",
-					"graphql": {
-						"query": "mutation createPost($createPostInput: CreatePostInput!){\n    createPost(createPostInput: $createPostInput) {\n        status\n        message\n        post {\n            id\n            title\n            description\n            published\n            publishedAt\n            slug\n            postMediaType\n            postMedia\n            trashed\n            author {\n                id\n                firstName\n                lastName\n                email\n                isActive\n            }\n        }\n    }\n}",
-						"variables": "{\n    \"createPostInput\": {\n      \"title\": \"{{$randomJobTitle}}\",\n      \"description\": \"{{$randomLoremParagraph}}\",\n      \"published\": true\n    }\n}"
-					}
-				},
-				"url": {
-					"raw": "http://localhost:3000/graphql",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"graphql"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Update Post (GQL)",
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Authorization",
-						"value": "Bearer {{token}}",
-						"type": "text"
-					},
-					{
-						"key": "Content-Type",
-						"value": "application/json",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "graphql",
-					"graphql": {
-						"query": "mutation updatePost($updatePostInput: UpdatePostInput!){\n    updatePost(updatePostInput: $updatePostInput) {\n        post {\n            id\n            title\n            description\n            published\n            publishedAt\n            slug\n            postMediaType\n            postMedia\n            trashed\n            author {\n                id\n                firstName\n                lastName\n                email\n                isActive\n            }\n        }\n    }\n}",
-						"variables": "{\n    \"updatePostInput\": {\n      \"id\": 64,\n      \"slug\": \"global-accounts-planner-jv0nnr\",\n      \"title\": \"updating title {{$randomFileName}}\",\n      \"description\": \"updating description 1\",\n      \"published\": true\n    }\n}"
-					}
-				},
-				"url": {
-					"raw": "http://localhost:3000/graphql",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"graphql"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Get All Post (GQL)",
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Authorization",
-						"value": "Bearer {{token}}",
-						"type": "text"
-					},
-					{
-						"key": "Content-Type",
-						"value": "application/json",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "graphql",
-					"graphql": {
-						"query": "query findAll {\n    findAll {\n        status\n        message\n        posts {\n            title\n            description\n            published\n            publishedAt\n            slug\n            postMediaType\n            postMedia\n            trashed\n            author {\n                id\n                firstName\n                lastName\n                email\n                isActive\n                createdAt\n                updatedAt\n            }\n        }\n    }\n}\n\n# query {\n#     findAll\n# }",
-						"variables": ""
-					}
-				},
-				"url": {
-					"raw": "http://localhost:3000/graphql",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"graphql"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Get Post (GQL)",
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Authorization",
-						"value": "Bearer {{token}}",
-						"type": "text"
-					},
-					{
-						"key": "Content-Type",
-						"value": "application/json",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "graphql",
-					"graphql": {
-						"query": "query findOne($id: Int!) {\n    findOne(id: $id) {\n        status\n        message\n        post {\n            title\n            description\n            published\n            publishedAt\n            slug\n            postMediaType\n            postMedia\n            trashed\n            author {\n                id\n                firstName\n                lastName\n                email\n                isActive\n                createdAt\n                updatedAt\n            }\n        }\n    }\n}\n\n# query {\n#     findAll\n# }",
-						"variables": "{\n    \"id\": 64\n}"
-					}
-				},
-				"url": {
-					"raw": "http://localhost:3000/graphql",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"graphql"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Delete Post (GQL)",
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Authorization",
-						"value": "Bearer {{token}}",
-						"type": "text"
-					},
-					{
-						"key": "Content-Type",
-						"value": "application/json",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "graphql",
-					"graphql": {
-						"query": "mutation removePost($id: Int!){\n    removePost(id: $id) {\n        status\n        message\n        deleted\n    }\n}",
-						"variables": "{\n    \"id\": 63\n}"
-					}
-				},
-				"url": {
-					"raw": "http://localhost:3000/graphql",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"graphql"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Search Posts (GQL)",
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Authorization",
-						"value": "Bearer {{token}}",
-						"type": "text"
-					},
-					{
-						"key": "Content-Type",
-						"value": "application/json",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "graphql",
-					"graphql": {
-						"query": "mutation createPost($createPostInput: CreatePostInput!){\n  createPost(createPostInput: $createPostInput) {\n      post {\n          title\n          description\n          published\n          publishedAt\n          slug\n          postMediaType\n          postMedia\n          author {\n              id\n              firstName\n              lastName\n              email\n              isActive\n              role\n          }\n      }\n  }\n}",
-						"variables": "{\n    \"createPostInput\": {\n      \"title\": \"{{$randomJobTitle}}\",\n      \"description\": \"{{$randomLoremParagraph}}\",\n      \"published\": true\n    }\n}"
 					}
 				},
 				"url": {

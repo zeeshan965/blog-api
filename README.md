@@ -489,10 +489,11 @@ Available relations:
 @ManyToOne A.K.A belongsTo()
 @ManyToMany A.K.A hasMany() & belongsToMany()
 ```
-
+**Note:** Circular eager relations are disallowed. If both parent and child has eager true then we need to remove it from one side of the relation. 
+e.g, Comment#post contains "eager: true", and its inverse side Post#comments contains "eager: true" as well. Remove "eager: true" from one side of the relation.
 ```typescript
 // Country - capital city: Each country has exactly one capital city. Each capital city is the capital of exactly one country.
-@OneToOne(() => Capital, (capital) => capital.city)
+@OneToOne(() => Capital, (capital) => capital.city, {}) //{} for options
 capital?: Capital;
 
 // In this example, A single author can do multiple posts

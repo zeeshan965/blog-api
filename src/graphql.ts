@@ -45,13 +45,13 @@ export interface UpdatePostInput {
 export interface CreateCommentInput {
     message: string;
     postId?: Nullable<number>;
-    parentId?: Nullable<string>;
+    parentId?: Nullable<number>;
 }
 
 export interface UpdateCommentInput {
     message?: Nullable<string>;
     postId?: Nullable<number>;
-    parentId?: Nullable<string>;
+    parentId?: Nullable<number>;
     id: number;
 }
 
@@ -75,7 +75,9 @@ export interface Comment {
     author?: Nullable<UserJwtPayloadDto>;
     likes?: Nullable<number>;
     dislikes?: Nullable<number>;
+    post?: Nullable<Post>;
     parent?: Nullable<Comment>;
+    childComment?: Nullable<Comment>;
 }
 
 export interface Category {
@@ -130,6 +132,7 @@ export interface CommentResponseDto {
     deleted?: Nullable<boolean>;
     comment?: Nullable<Comment>;
     comments?: Nullable<Comment[]>;
+    total?: Nullable<number>;
 }
 
 export interface CategoryResponseDto {
@@ -152,6 +155,7 @@ export interface IQuery {
     findAllPosts(): PostResponseDto | Promise<PostResponseDto>;
     findOnePost(id: number): PostResponseDto | Promise<PostResponseDto>;
     findOneComment(id: number): CommentResponseDto | Promise<CommentResponseDto>;
+    getPostComments(postId: number): CommentResponseDto | Promise<CommentResponseDto>;
 }
 
 export interface IMutation {

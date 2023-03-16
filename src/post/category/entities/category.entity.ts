@@ -14,6 +14,6 @@ export class Category extends AbstractEntity {
   @Field(() => String, { nullable: true })
   description: string;
 
-  @ManyToMany(() => Post, (post) => post.categories)
+  @ManyToMany(() => Post, (post) => post.categories, { onDelete: 'RESTRICT' })
   posts: Post[];
 }
