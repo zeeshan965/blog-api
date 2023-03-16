@@ -70,6 +70,7 @@ export class CommentsResolver {
     const comments: Comment[] = await this.commentsService.getPostComments(
       postId,
     );
+    console.log(comments[0].replies);
     return {
       message: 'success!',
       status: 200,

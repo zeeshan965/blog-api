@@ -89,14 +89,6 @@ export class CommentsService {
    * @param postId
    */
   async getPostComments(postId: number): Promise<Comment[]> {
-    // const comments = await this.commentRepository
-    //   .createQueryBuilder('comments')
-    //   .andWhere('comments.parentId IS NULL')
-    //   .innerJoinAndSelect('comments.childComment', 'parent')
-    //   .leftJoinAndSelect('parent.childComment', 'addon')
-    //   .limit(1)
-    //   .getMany();
-    // console.log(comments[0]);
     return this.commentRepository.find({
       where: {
         post: {
@@ -106,9 +98,8 @@ export class CommentsService {
           id: IsNull(),
         },
       },
-      relations: {
-        parent: true,
-        childComment: true,
+      order: {
+        id: 'ASC',
       },
     });
   }

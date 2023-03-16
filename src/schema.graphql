@@ -29,7 +29,7 @@ type Comment {
   dislikes: Int
   post: Post
   parent: Comment
-  childComment: Comment
+  replies: [Comment!]
 }
 
 type Category {

@@ -77,7 +77,7 @@ export interface Comment {
     dislikes?: Nullable<number>;
     post?: Nullable<Post>;
     parent?: Nullable<Comment>;
-    childComment?: Nullable<Comment>;
+    replies?: Nullable<Comment[]>;
 }
 
 export interface Category {
