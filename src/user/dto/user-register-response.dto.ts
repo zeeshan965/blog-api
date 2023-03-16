@@ -1,5 +1,5 @@
 import { User } from '../entity/user.entity';
-import { ResponseDto } from './response.dto';
+import { ResponseDto } from '../../utils/response.dto';
 import { Field, ObjectType } from '@nestjs/graphql';
 import { UserJwtPayloadDto } from './user-jwt-payload.dto';
 

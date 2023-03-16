@@ -48,9 +48,9 @@ dotenv.config();
     TypeOrmModule.forRoot(dataSourceOptions),
     UserModule,
     AuthModule,
+    CategoryModule,
     PostModule,
     CommentsModule,
-    CategoryModule,
   ],
   providers: [{ provide: APP_GUARD, useClass: GqlThrottlerGuard }, AppResolver],
 })

@@ -17,6 +17,17 @@ export interface UserRegisterReqDto {
     role: string;
 }
 
+export interface CreateCategoryInput {
+    title: string;
+    description: string;
+}
+
+export interface UpdateCategoryInput {
+    title?: Nullable<string>;
+    description?: Nullable<string>;
+    id: number;
+}
+
 export interface CreatePostInput {
     title: string;
     description: string;
@@ -45,6 +56,14 @@ export interface Comment {
     createdAt: DateTime;
     updatedAt?: Nullable<DateTime>;
     message: string;
+}
+
+export interface Category {
+    id: number;
+    createdAt: DateTime;
+    updatedAt?: Nullable<DateTime>;
+    title?: Nullable<string>;
+    description?: Nullable<string>;
 }
 
 export interface UserJwtPayloadDto {
@@ -77,6 +96,7 @@ export interface Post {
 export interface UserRegisterResponseDto {
     status?: Nullable<number>;
     message?: Nullable<string>;
+    deleted?: Nullable<boolean>;
     user?: Nullable<UserJwtPayloadDto>;
     token?: Nullable<string>;
 }
@@ -84,15 +104,24 @@ export interface UserRegisterResponseDto {
 export interface UserLoginResponseDto {
     status?: Nullable<number>;
     message?: Nullable<string>;
+    deleted?: Nullable<boolean>;
     token: string;
 }
 
 export interface PostResponseDto {
     status?: Nullable<number>;
     message?: Nullable<string>;
+    deleted?: Nullable<boolean>;
     post?: Nullable<Post>;
     posts?: Nullable<Post[]>;
+}
+
+export interface CategoryResponseDto {
+    status?: Nullable<number>;
+    message?: Nullable<string>;
     deleted?: Nullable<boolean>;
+    category?: Nullable<Category>;
+    categories?: Nullable<Category[]>;
 }
 
 export interface IQuery {
@@ -101,9 +130,11 @@ export interface IQuery {
     getAdmin(): UserRegisterResponseDto | Promise<UserRegisterResponseDto>;
     getAuthLoggedUser(): UserRegisterResponseDto | Promise<UserRegisterResponseDto>;
     jwtStrategyGetUser(): UserRegisterResponseDto | Promise<UserRegisterResponseDto>;
-    findAll(): PostResponseDto | Promise<PostResponseDto>;
-    findOne(id: number): PostResponseDto | Promise<PostResponseDto>;
+    findAllCategories(): CategoryResponseDto | Promise<CategoryResponseDto>;
+    findOneCategory(id: number): CategoryResponseDto | Promise<CategoryResponseDto>;
     post(): Post[] | Promise<Post[]>;
+    findAllPosts(): PostResponseDto | Promise<PostResponseDto>;
+    findOnePost(id: number): PostResponseDto | Promise<PostResponseDto>;
     comments(): Comment[] | Promise<Comment[]>;
     comment(id: number): Comment | Promise<Comment>;
 }
@@ -114,6 +145,9 @@ export interface IMutation {
     localStrategyLogin(username: string, password: string): UserRegisterResponseDto | Promise<UserRegisterResponseDto>;
     localStrategyGetUser(username: string, password: string): UserRegisterResponseDto | Promise<UserRegisterResponseDto>;
     jwtLogin(username: string, password: string): UserRegisterResponseDto | Promise<UserRegisterResponseDto>;
+    createCategory(createCategoryInput: CreateCategoryInput): CategoryResponseDto | Promise<CategoryResponseDto>;
+    updateCategory(updateCategoryInput: UpdateCategoryInput): CategoryResponseDto | Promise<CategoryResponseDto>;
+    removeCategory(id: number): CategoryResponseDto | Promise<CategoryResponseDto>;
     createPost(createPostInput: CreatePostInput): PostResponseDto | Promise<PostResponseDto>;
     updatePost(updatePostInput: UpdatePostInput): PostResponseDto | Promise<PostResponseDto>;
     removePost(id: number): PostResponseDto | Promise<PostResponseDto>;

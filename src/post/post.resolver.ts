@@ -48,18 +48,27 @@ export class PostResolver {
     return { message: 'success!', status: 200, deleted: post.affected };
   }
 
+  /**
+   *
+   */
   @Query(() => PostResponseDto)
-  async findAll() {
+  async findAllPosts() {
     const posts: Post[] = await this.postService.findAll();
     return { message: 'success!', status: 200, posts: posts };
   }
 
+  /**
+   * @param id
+   */
   @Query(() => PostResponseDto)
-  async findOne(@Args('id', { type: () => Int }) id: number) {
+  async findOnePost(@Args('id', { type: () => Int }) id: number) {
     const post: Post = await this.postService.findOne(id);
     return { message: 'success!', status: 200, post: post };
   }
 
+  /**
+   *
+   */
   @Query(() => [Post], { name: 'post' })
   searchPost() {
     return this.postService.findAll();

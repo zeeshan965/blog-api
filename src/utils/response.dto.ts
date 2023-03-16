@@ -7,4 +7,7 @@ export class ResponseDto {
 
   @Field(() => String, { nullable: true })
   message: string;
+
+  @Field(() => Boolean, { nullable: true })
+  deleted?: boolean;
 }

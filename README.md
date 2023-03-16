@@ -536,6 +536,12 @@ Any of your entities can have methods with custom logic that listen to specific 
 **Note:** Do not make any database calls within a listener, opt for subscribers instead.
 
 ```typescript
+// Entity base hooks, Meaning you can define the below hooks inside your entites like this:
+/*@BeforeUpdate()
+async someFunction() {
+  console.log('inside before update');
+}*/
+
 import {
   AfterInsert,
   AfterLoad,
@@ -559,4 +565,42 @@ import {
 @BeforeRemove()
 @BeforeSoftRemove()
 
+```
+
+### Subscribers
+We can define global subscriber as well as module base subscriber
+
+```typescript
+//Global Subscriber
+@EventSubscriber()
+export class AppGlobalSubscriber implements EntitySubscriberInterface {
+  afterLoad(entity: any) { console.log(`AFTER ENTITY LOADED: `, entity); }
+  beforeInsert(event: InsertEvent<any>) { console.log(`BEFORE ENTITY INSERTED: `); }
+  afterInsert(event: InsertEvent<any>) { console.log(`AFTER ENTITY INSERTED: `); }
+  beforeUpdate(event: UpdateEvent<any>) { console.log(`BEFORE ENTITY UPDATED: `); }
+  afterUpdate(event: UpdateEvent<any>) { console.log(`AFTER ENTITY UPDATED: `); }
+  beforeRemove(event: RemoveEvent<any>) { console.log(`BEFORE ENTITY WITH ID ${event.entityId} REMOVED: `, event.entity); }
+  afterRemove(event: RemoveEvent<any>) { console.log(`AFTER ENTITY WITH ID ${event.entityId} REMOVED: `, event.entity); }
+  beforeSoftRemove(event: SoftRemoveEvent<any>) { console.log(`BEFORE ENTITY WITH ID ${event.entityId} SOFT REMOVED: `, event.entity); }
+  afterSoftRemove(event: SoftRemoveEvent<any>) { console.log(`AFTER ENTITY WITH ID ${event.entityId} SOFT REMOVED: `, event.entity); }
+  beforeRecover(event: RecoverEvent<any>) { console.log(`BEFORE ENTITY WITH ID ${event.entityId} RECOVERED: `, event.entity); }
+  afterRecover(event: RecoverEvent<any>) { console.log(`AFTER ENTITY WITH ID ${event.entityId} RECOVERED: `, event.entity); }
+  beforeTransactionStart(event: TransactionStartEvent) { console.log(`BEFORE TRANSACTION STARTED: `); }
+  afterTransactionStart(event: TransactionStartEvent) { console.log(`AFTER TRANSACTION STARTED: `); }
+  beforeTransactionCommit(event: TransactionCommitEvent) { console.log(`BEFORE TRANSACTION COMMITTED: `); }
+  afterTransactionCommit(event: TransactionCommitEvent) { console.log(`AFTER TRANSACTION COMMITTED: `); }
+  beforeTransactionRollback(event: TransactionRollbackEvent) { console.log(`BEFORE TRANSACTION ROLLBACK: `); }
+  afterTransactionRollback(event: TransactionRollbackEvent) { console.log(`AFTER TRANSACTION ROLLBACK: `); }
+}
+
+//Module Subscriber
+export class PostSubscriber implements EntitySubscriberInterface<Post> {
+  listenTo() {
+    return Post;
+  }
+
+  beforeUpdate(event: UpdateEvent<Post>) {
+    console.log(`BEFORE POST UPDATE: `);
+  }
+}
 ```

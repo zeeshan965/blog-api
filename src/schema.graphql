@@ -14,6 +14,14 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+type Category {
+  id: Int!
+  createdAt: DateTime!
+  updatedAt: DateTime
+  title: String
+  description: String
+}
+
 type UserJwtPayloadDto {
   id: Int
   firstName: String
@@ -44,6 +52,7 @@ type Post {
 type UserRegisterResponseDto {
   status: Float
   message: String
+  deleted: Boolean
   user: UserJwtPayloadDto
   token: String
 }
@@ -51,15 +60,24 @@ type UserRegisterResponseDto {
 type UserLoginResponseDto {
   status: Float
   message: String
+  deleted: Boolean
   token: String!
 }
 
 type PostResponseDto {
   status: Float
   message: String
+  deleted: Boolean
   post: Post
   posts: [Post!]
+}
+
+type CategoryResponseDto {
+  status: Float
+  message: String
   deleted: Boolean
+  category: Category
+  categories: [Category!]
 }
 
 type Query {
@@ -68,9 +86,11 @@ type Query {
   getAdmin: UserRegisterResponseDto!
   getAuthLoggedUser: UserRegisterResponseDto!
   jwtStrategyGetUser: UserRegisterResponseDto!
-  findAll: PostResponseDto!
-  findOne(id: Int!): PostResponseDto!
+  findAllCategories: CategoryResponseDto!
+  findOneCategory(id: Int!): CategoryResponseDto!
   post: [Post!]!
+  findAllPosts: PostResponseDto!
+  findOnePost(id: Int!): PostResponseDto!
   comments: [Comment!]!
   comment(id: Int!): Comment!
 }
@@ -81,6 +101,9 @@ type Mutation {
   localStrategyLogin(username: String!, password: String!): UserRegisterResponseDto!
   localStrategyGetUser(username: String!, password: String!): UserRegisterResponseDto!
   jwtLogin(username: String!, password: String!): UserRegisterResponseDto!
+  createCategory(createCategoryInput: CreateCategoryInput!): CategoryResponseDto!
+  updateCategory(updateCategoryInput: UpdateCategoryInput!): CategoryResponseDto!
+  removeCategory(id: Int!): CategoryResponseDto!
   createPost(createPostInput: CreatePostInput!): PostResponseDto!
   updatePost(updatePostInput: UpdatePostInput!): PostResponseDto!
   removePost(id: Int!): PostResponseDto!
@@ -96,6 +119,17 @@ input UserRegisterReqDto {
   password: String!
   confirmPassword: String!
   role: String!
+}
+
+input CreateCategoryInput {
+  title: String!
+  description: String!
+}
+
+input UpdateCategoryInput {
+  title: String
+  description: String
+  id: Int!
 }
 
 input CreatePostInput {
