@@ -29,10 +29,10 @@ export class Comment extends AbstractEntity {
   post?: Post;
 
   @Field(() => Comment, { nullable: true })
-  @ManyToOne(() => Comment, { nullable: true })
+  @ManyToOne(() => Comment, (comment) => comment.replies, { nullable: true })
   parent: Comment;
 
   @Field(() => [Comment], { nullable: true })
   @OneToMany(() => Comment, (comment) => comment.parent)
-  replies: Promise<Comment[]>;
+  replies: Comment[];
 }

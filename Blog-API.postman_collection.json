@@ -501,6 +501,43 @@
 					"response": []
 				},
 				{
+					"name": "Create Reply Comment (GQL)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation createComment($createCommentInput: CreateCommentInput!){\n    createComment(createCommentInput: $createCommentInput) {\n        status\n        message\n        comment {\n            id\n            message\n            createdAt\n            post {\n                title\n                description\n                published\n                author{\n                    id\n                    firstName\n                    lastName\n                    email\n                }\n            }\n            author {\n                id\n                firstName\n                lastName\n                email\n            }\n        }\n    }\n}",
+								"variables": "{\n    \"createCommentInput\": {\n      \"message\": \"{{$randomLoremSentences}}\",\n      \"postId\": 64,\n      \"parentId\": 4\n    }\n}"
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/graphql",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Update Comment (GQL)",
 					"request": {
 						"method": "POST",
@@ -630,7 +667,7 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "query getPostComments($postId: Int!) {\n    getPostComments(postId: $postId) {\n        status\n        message\n        total\n        comments {\n            id\n            message\n            childComment {\n                message\n            }\n        }\n    }\n}\n\n# query {\n#     findAll\n# }",
+								"query": "query getPostComments($postId: Int!) {\n    getPostComments(postId: $postId) {\n        status\n        message\n        total\n        comments {\n            id\n            replies {\n                id\n                replies {\n                    id\n                    replies {\n                        id\n                        replies {\n                            id\n                            replies {\n                                id\n                            }\n                        }\n                    }\n                }\n            }\n            reply {\n                id\n            }\n        }\n    }\n}\n\n# query {\n#     findAll\n# }",
 								"variables": "{\n    \"postId\": 64\n}"
 							}
 						},

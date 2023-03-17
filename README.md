@@ -488,9 +488,47 @@ Available relations:
 @OneToMany A.K.A hasMany()
 @ManyToOne A.K.A belongsTo()
 @ManyToMany A.K.A hasMany() & belongsToMany()
+
+//Self relations A.K.A Self Joins:
+@ManyToOne(() => Comment, { nullable: true })
+parent: Comment;
+
+@OneToMany(() => Comment, (comment) => comment.parent)
+replies: Comment[];
 ```
+```typescript
+// Some examples to use self relations
+//comment.entity.ts
+import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
+
+@ManyToOne(() => Comment, { nullable: true })
+parent: Comment;
+
+@OneToMany(() => Comment, (comment) => comment.parent)
+replies: Comment[];
+
+//comment.service.ts
+this.commentRepository.find({
+  where: { parent: { id: IsNull() } },
+  relations: { replies: { replies: { replies: true } } },
+  order: { id: 'ASC' },
+});
+
+//comment.resolver.ts
+import { ResolveField, Parent } from '@nestjs/graphql';
+
+@ResolveField(() => [Comment])
+async reply(@Parent() comment: Comment): Promise<Comment[]> {
+  return this.commentRepository.find({
+    where: { parent: Equal(comment?.id) },
+    order: { createdAt: 'DESC' },
+  });
+}
+```
+
 **Note:** Circular eager relations are disallowed. If both parent and child has eager true then we need to remove it from one side of the relation. 
 e.g, Comment#post contains "eager: true", and its inverse side Post#comments contains "eager: true" as well. Remove "eager: true" from one side of the relation.
+
 ```typescript
 // Country - capital city: Each country has exactly one capital city. Each capital city is the capital of exactly one country.
 @OneToOne(() => Capital, (capital) => capital.city, {}) //{} for options

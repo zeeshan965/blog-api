@@ -30,6 +30,7 @@ type Comment {
   post: Post
   parent: Comment
   replies: [Comment!]
+  reply: [Comment!]!
 }
 
 type Category {

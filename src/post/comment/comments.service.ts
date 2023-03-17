@@ -33,6 +33,11 @@ export class CommentsService {
       author: user,
       post: post,
     });
+    if (createCommentInput.parentId) {
+      comment.parent = await Comment.findOne({
+        where: { id: Equal(createCommentInput.parentId) },
+      });
+    }
 
     return comment.save();
   }
@@ -88,19 +93,23 @@ export class CommentsService {
   /**
    * @param postId
    */
-  async getPostComments(postId: number): Promise<Comment[]> {
+  getPostComments(postId: number): Promise<Comment[]> {
     return this.commentRepository.find({
-      where: {
-        post: {
-          id: postId,
-        },
-        parent: {
-          id: IsNull(),
-        },
-      },
-      order: {
-        id: 'ASC',
-      },
+      where: { post: { id: postId }, parent: { id: IsNull() } },
+      relations: { replies: { replies: { replies: { replies: true } } } },
+      order: { id: 'ASC' },
+    });
+  }
+
+  /**
+   * Fetch replies
+   * @param comment
+   * @returns replies
+   */
+  async fetchReplies(comment: Comment): Promise<Comment[]> {
+    return await this.commentRepository.find({
+      where: { parent: Equal(comment?.id) },
+      order: { createdAt: 'DESC' },
     });
   }
 }

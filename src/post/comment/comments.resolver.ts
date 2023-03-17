@@ -1,4 +1,12 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
+import {
+  Resolver,
+  Query,
+  Mutation,
+  Args,
+  Int,
+  ResolveField,
+  Parent,
+} from '@nestjs/graphql';
 import { CommentsService } from './comments.service';
 import { Comment } from './entities/comment.entity';
 import { CreateCommentInput } from './dto/create-comment.input';
@@ -70,12 +78,22 @@ export class CommentsResolver {
     const comments: Comment[] = await this.commentsService.getPostComments(
       postId,
     );
-    console.log(comments[0].replies);
+
     return {
       message: 'success!',
       status: 200,
       total: comments.length,
       comments: comments,
     };
+  }
+
+  /**
+   * Resolves field
+   * @param comment
+   * @returns reply
+   */
+  @ResolveField(() => [Comment])
+  async reply(@Parent() comment: Comment): Promise<Comment[]> {
+    return await this.commentsService.fetchReplies(comment);
   }
 }
