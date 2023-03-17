@@ -40,6 +40,7 @@ export interface UpdatePostInput {
     published?: Nullable<boolean>;
     id: number;
     slug: string;
+    categories?: Nullable<number[]>;
 }
 
 export interface CreateCommentInput {
@@ -127,6 +128,14 @@ export interface PostResponseDto {
     posts?: Nullable<Post[]>;
 }
 
+export interface CategoryResponseDto {
+    status?: Nullable<number>;
+    message?: Nullable<string>;
+    deleted?: Nullable<boolean>;
+    category?: Nullable<Category>;
+    categories?: Nullable<Category[]>;
+}
+
 export interface CommentResponseDto {
     status?: Nullable<number>;
     message?: Nullable<string>;
@@ -134,14 +143,6 @@ export interface CommentResponseDto {
     comment?: Nullable<Comment>;
     comments?: Nullable<Comment[]>;
     total?: Nullable<number>;
-}
-
-export interface CategoryResponseDto {
-    status?: Nullable<number>;
-    message?: Nullable<string>;
-    deleted?: Nullable<boolean>;
-    category?: Nullable<Category>;
-    categories?: Nullable<Category[]>;
 }
 
 export interface IQuery {

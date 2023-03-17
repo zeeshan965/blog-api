@@ -3,16 +3,20 @@ import { CreatePostInput } from './dto/create-post.input';
 import { UpdatePostInput } from './dto/update-post.input';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '../user/entity/user.entity';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { Post } from './entities/post.entity';
+import { Category } from './category/entities/category.entity';
 
 @Injectable()
 export class PostService {
   /**
    * @param postRepository
+   * @param categoryRepository
    */
   constructor(
     @InjectRepository(Post) public readonly postRepository: Repository<Post>,
+    @InjectRepository(Category)
+    public readonly categoryRepository: Repository<Category>,
   ) {}
 
   /**
@@ -47,6 +51,14 @@ export class PostService {
       where: { slug: slug },
       relations: { author: true },
     });
+    if (updatePostInput.categories) {
+      post.categories = await this.categoryRepository.find({
+        where: {
+          id: In(updatePostInput.categories),
+        },
+      });
+    }
+
     return this.postRepository.save(Object.assign(post, updates));
 
     /*return this.postRepository.save({

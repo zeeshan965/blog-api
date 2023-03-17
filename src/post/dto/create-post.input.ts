@@ -1,4 +1,4 @@
-import { InputType, Field } from '@nestjs/graphql';
+import { InputType, Field, Int } from '@nestjs/graphql';
 import { IsEnum, IsNotEmpty } from 'class-validator';
 import { PostMedia } from '../entities/post.entity';
 
@@ -15,6 +15,8 @@ export class CreatePostInput {
   @Field(() => Boolean, { defaultValue: false })
   published?: boolean;
 
+  @Field(() => [Int], { nullable: true })
+  categories?: number[];
   // @IsNotEmpty()
   // @Field(() => String)
   // postMedia: string;

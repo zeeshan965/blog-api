@@ -79,6 +79,14 @@ type PostResponseDto {
   posts: [Post!]
 }
 
+type CategoryResponseDto {
+  status: Float
+  message: String
+  deleted: Boolean
+  category: Category
+  categories: [Category!]
+}
+
 type CommentResponseDto {
   status: Float
   message: String
@@ -86,14 +94,6 @@ type CommentResponseDto {
   comment: Comment
   comments: [Comment!]
   total: Int
-}
-
-type CategoryResponseDto {
-  status: Float
-  message: String
-  deleted: Boolean
-  category: Category
-  categories: [Category!]
 }
 
 type Query {
@@ -160,6 +160,7 @@ input UpdatePostInput {
   published: Boolean = false
   id: Int!
   slug: String!
+  categories: [Int!]
 }
 
 input CreateCommentInput {
