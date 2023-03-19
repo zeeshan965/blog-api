@@ -30,6 +30,10 @@ Blog application built on [Nest](https://github.com/nestjs/nest) framework TypeS
 
 ```bash
 $ npm install
+- copy .env.example file and create .env file
+- configure DB credentials
+- configure JWT
+- Import the postman collections from root directory, Currently GQL and Rest endpoints are included in the postman collection.
 ```
 
 ## Running the app

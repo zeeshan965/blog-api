@@ -32,15 +32,16 @@ export interface CreatePostInput {
     title: string;
     description: string;
     published: boolean;
+    categories?: Nullable<number[]>;
 }
 
 export interface UpdatePostInput {
     title?: Nullable<string>;
     description?: Nullable<string>;
     published?: Nullable<boolean>;
+    categories?: Nullable<number[]>;
     id: number;
     slug: string;
-    categories?: Nullable<number[]>;
 }
 
 export interface CreateCommentInput {
@@ -156,6 +157,7 @@ export interface IQuery {
     post(): Post[] | Promise<Post[]>;
     findAllPosts(): PostResponseDto | Promise<PostResponseDto>;
     findOnePost(id: number): PostResponseDto | Promise<PostResponseDto>;
+    searchPost(search: string): PostResponseDto | Promise<PostResponseDto>;
     findOneComment(id: number): CommentResponseDto | Promise<CommentResponseDto>;
     getPostComments(postId: number): CommentResponseDto | Promise<CommentResponseDto>;
 }

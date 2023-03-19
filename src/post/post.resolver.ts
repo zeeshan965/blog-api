@@ -67,11 +67,15 @@ export class PostResolver {
   }
 
   /**
-   *
+   * @param search
    */
-  @Query(() => [Post], { name: 'post' })
-  searchPost() {
-    return this.postService.findAll();
+  @Query(() => PostResponseDto)
+  async searchPost(
+    @Args({ name: 'search', type: () => String, defaultValue: '' })
+    search: string,
+  ) {
+    const posts: Post[] = await this.postService.findAll(search);
+    return { message: 'success!', status: 200, posts: posts };
   }
 
   /*@Mutation(() => String)

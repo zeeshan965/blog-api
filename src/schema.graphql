@@ -107,6 +107,7 @@ type Query {
   post: [Post!]!
   findAllPosts: PostResponseDto!
   findOnePost(id: Int!): PostResponseDto!
+  searchPost(search: String! = ""): PostResponseDto!
   findOneComment(id: Int!): CommentResponseDto!
   getPostComments(postId: Int!): CommentResponseDto!
 }
@@ -152,15 +153,16 @@ input CreatePostInput {
   title: String!
   description: String!
   published: Boolean! = false
+  categories: [Int!]
 }
 
 input UpdatePostInput {
   title: String
   description: String
   published: Boolean = false
+  categories: [Int!]
   id: Int!
   slug: String!
-  categories: [Int!]
 }
 
 input CreateCommentInput {

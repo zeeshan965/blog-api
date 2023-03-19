@@ -3,7 +3,7 @@ import { CreatePostInput } from './dto/create-post.input';
 import { UpdatePostInput } from './dto/update-post.input';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '../user/entity/user.entity';
-import { In, Repository } from 'typeorm';
+import { In, Like, Repository } from 'typeorm';
 import { Post } from './entities/post.entity';
 import { Category } from './category/entities/category.entity';
 
@@ -23,14 +23,20 @@ export class PostService {
    * @param createPostInput
    * @param user
    */
-  create(createPostInput: CreatePostInput, user: User): Promise<Post> {
+  async create(createPostInput: CreatePostInput, user: User): Promise<Post> {
     /** TODO: Alternate ways to create new post, But hooks will only work with save() method.
      * return this.postRepository.insert({ ...createPostInput, author: user });
      * const post = this.postRepository.create({ ...createPostInput, author: user }); */
+    const { categories, ...data } = createPostInput;
     const post = this.postRepository.create({
-      ...createPostInput,
+      ...data,
       author: user,
     });
+    if (categories && categories.length > 0) {
+      post.categories = await this.categoryRepository.find({
+        where: { id: In(categories) },
+      });
+    }
 
     // const post = new Post();
     // post.title = createPostInput.title;
@@ -77,9 +83,20 @@ export class PostService {
   }
 
   /**
-   *
+   * @param search
    */
-  findAll(): Promise<Post[]> {
+  async findAll(search?: string): Promise<Post[]> {
+    if (search && search != '') {
+      const posts = await this.postRepository
+        .createQueryBuilder('p')
+        .where('lower(p.title) like :search', {
+          search: '%' + search + '%',
+        })
+        //.orWhere()
+        .getMany();
+      console.log(posts);
+      return posts;
+    }
     return this.postRepository.find({
       relations: { author: true },
     });
