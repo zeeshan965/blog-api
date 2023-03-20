@@ -29,7 +29,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "mutation createPost($createPostInput: CreatePostInput!){\n    createPost(createPostInput: $createPostInput) {\n        status\n        message\n        post {\n            id\n            title\n            description\n            published\n            publishedAt\n            slug\n            postMediaType\n            postMedia\n            trashed\n            author {\n                id\n                firstName\n                lastName\n                email\n                isActive\n            }\n        }\n    }\n}",
-								"variables": "{\n    \"createPostInput\": {\n      \"title\": \"{{$randomJobTitle}}\",\n      \"description\": \"{{$randomLoremParagraph}}\",\n      \"published\": true\n    }\n}"
+								"variables": "{\n    \"createPostInput\": {\n      \"title\": \"{{$randomJobTitle}}\",\n      \"description\": \"{{$randomLoremParagraph}}\",\n      \"published\": true,\n      \"categories\": [1,3]\n    }\n}"
 							}
 						},
 						"url": {
@@ -213,8 +213,45 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "mutation createPost($createPostInput: CreatePostInput!){\n  createPost(createPostInput: $createPostInput) {\n      post {\n          title\n          description\n          published\n          publishedAt\n          slug\n          postMediaType\n          postMedia\n          author {\n              id\n              firstName\n              lastName\n              email\n              isActive\n              role\n          }\n      }\n  }\n}",
-								"variables": "{\n    \"createPostInput\": {\n      \"title\": \"{{$randomJobTitle}}\",\n      \"description\": \"{{$randomLoremParagraph}}\",\n      \"published\": true\n    }\n}"
+								"query": "query searchPost($search: String!){\n    searchPost(search: $search) {\n        status\n        message\n        total\n        posts {\n            id\n            title\n            description\n            published\n            publishedAt\n            slug\n            postMediaType\n            postMedia\n            author {\n                id\n                firstName\n                lastName\n                email\n                isActive\n                role\n            }\n        }\n    }\n}",
+								"variables": "{\n    \"search\": \"direct\"\n}"
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/graphql",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Paginate Posts (GQL)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query list($page: Int!, $limit: Int!){\n    list(page: $page, limit: $limit) {\n        status\n        message\n        total\n        posts {\n            id\n            title\n            description\n            published\n            publishedAt\n            slug\n            postMediaType\n            postMedia\n            author {\n                id\n                firstName\n                lastName\n                email\n                isActive\n                role\n            }\n        }\n    }\n}",
+								"variables": "{\n    \"page\": 4,\n    \"limit\": 5\n}"
 							}
 						},
 						"url": {
