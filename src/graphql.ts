@@ -159,6 +159,7 @@ export interface IQuery {
     findAllCategories(): CategoryResponseDto | Promise<CategoryResponseDto>;
     findOneCategory(id: number): CategoryResponseDto | Promise<CategoryResponseDto>;
     post(): Post[] | Promise<Post[]>;
+    list(page: number, limit: number): PostResponseDto | Promise<PostResponseDto>;
     findAllPosts(): PostResponseDto | Promise<PostResponseDto>;
     findOnePost(id: number): PostResponseDto | Promise<PostResponseDto>;
     searchPost(search: string): PostResponseDto | Promise<PostResponseDto>;

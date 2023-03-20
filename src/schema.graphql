@@ -109,6 +109,7 @@ type Query {
   findAllCategories: CategoryResponseDto!
   findOneCategory(id: Int!): CategoryResponseDto!
   post: [Post!]!
+  list(page: Int!, limit: Int!): PostResponseDto!
   findAllPosts: PostResponseDto!
   findOnePost(id: Int!): PostResponseDto!
   searchPost(search: String! = ""): PostResponseDto!

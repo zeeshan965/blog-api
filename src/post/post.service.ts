@@ -86,6 +86,13 @@ export class PostService {
    * @param search
    */
   async findAll(search?: string): Promise<Post[]> {
+    /*const posts = await this.postRepository.find({
+      where: {
+        title: ILike('%direct%'),
+      },
+    });
+    console.log(posts);
+    return posts;*/
     const posts = await this.postRepository
       .createQueryBuilder('p')
       .innerJoinAndSelect('p.author', 'u');
@@ -111,5 +118,20 @@ export class PostService {
         comments: true,
       },
     });
+  }
+
+  /**
+   * @param page
+   * @param limit
+   */
+  async paginate(page = 1, limit = 10) {
+    const skip = (page - 1) * limit;
+    return await this.postRepository
+      .createQueryBuilder('p')
+      .innerJoinAndSelect('p.author', 'u')
+      .offset(skip)
+      .limit(limit)
+      .orderBy('p.created_at', 'ASC')
+      .getMany();
   }
 }

@@ -18,6 +18,24 @@ export class PostResolver {
   constructor(private readonly postService: PostService) {}
 
   /**
+   * @param page
+   * @param limit
+   */
+  @Query(() => PostResponseDto)
+  async list(
+    @Args({ name: 'page', type: () => Int }) page = 1,
+    @Args({ name: 'limit', type: () => Int }) limit = 10,
+  ) {
+    const posts = await this.postService.paginate(page, limit);
+    return {
+      message: 'success!',
+      status: 200,
+      posts: posts,
+      total: posts.length,
+    };
+  }
+
+  /**
    * @param user
    * @param createPostInput
    */
