@@ -3,7 +3,7 @@ import { CreatePostInput } from './dto/create-post.input';
 import { UpdatePostInput } from './dto/update-post.input';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '../user/entity/user.entity';
-import { In, Like, Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { Post } from './entities/post.entity';
 import { Category } from './category/entities/category.entity';
 
@@ -86,20 +86,18 @@ export class PostService {
    * @param search
    */
   async findAll(search?: string): Promise<Post[]> {
+    const posts = await this.postRepository
+      .createQueryBuilder('p')
+      .innerJoinAndSelect('p.author', 'u');
     if (search && search != '') {
-      const posts = await this.postRepository
-        .createQueryBuilder('p')
-        .where('lower(p.title) like :search', {
-          search: '%' + search + '%',
-        })
-        //.orWhere()
-        .getMany();
-      console.log(posts);
-      return posts;
+      posts
+        .where('lower(p.title) like :s', { s: '%' + search + '%' })
+        .orWhere('lower(p.description) like :s', { s: '%' + search + '%' })
+        .orWhere('lower(u.first_name) like :s', { s: '%' + search + '%' })
+        .orWhere('lower(u.last_name) like :s', { s: '%' + search + '%' })
+        .orWhere('lower(u.email) like :s', { s: '%' + search + '%' });
     }
-    return this.postRepository.find({
-      relations: { author: true },
-    });
+    return posts.getMany();
   }
 
   /**

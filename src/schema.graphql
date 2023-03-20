@@ -60,6 +60,7 @@ type UserRegisterResponseDto {
   status: Float
   message: String
   deleted: Boolean
+  total: Int
   user: UserJwtPayloadDto
   token: String
 }
@@ -68,6 +69,7 @@ type UserLoginResponseDto {
   status: Float
   message: String
   deleted: Boolean
+  total: Int
   token: String!
 }
 
@@ -75,6 +77,7 @@ type PostResponseDto {
   status: Float
   message: String
   deleted: Boolean
+  total: Int
   post: Post
   posts: [Post!]
 }
@@ -83,6 +86,7 @@ type CategoryResponseDto {
   status: Float
   message: String
   deleted: Boolean
+  total: Int
   category: Category
   categories: [Category!]
 }
@@ -91,9 +95,9 @@ type CommentResponseDto {
   status: Float
   message: String
   deleted: Boolean
+  total: Int
   comment: Comment
   comments: [Comment!]
-  total: Int
 }
 
 type Query {

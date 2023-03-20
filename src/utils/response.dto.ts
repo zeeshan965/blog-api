@@ -1,4 +1,4 @@
-import { Field, ObjectType } from '@nestjs/graphql';
+import { Field, Int, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
 export class ResponseDto {
@@ -10,4 +10,7 @@ export class ResponseDto {
 
   @Field(() => Boolean, { nullable: true })
   deleted?: boolean;
+
+  @Field(() => Int, { nullable: true })
+  total?: number;
 }

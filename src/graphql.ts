@@ -110,6 +110,7 @@ export interface UserRegisterResponseDto {
     status?: Nullable<number>;
     message?: Nullable<string>;
     deleted?: Nullable<boolean>;
+    total?: Nullable<number>;
     user?: Nullable<UserJwtPayloadDto>;
     token?: Nullable<string>;
 }
@@ -118,6 +119,7 @@ export interface UserLoginResponseDto {
     status?: Nullable<number>;
     message?: Nullable<string>;
     deleted?: Nullable<boolean>;
+    total?: Nullable<number>;
     token: string;
 }
 
@@ -125,6 +127,7 @@ export interface PostResponseDto {
     status?: Nullable<number>;
     message?: Nullable<string>;
     deleted?: Nullable<boolean>;
+    total?: Nullable<number>;
     post?: Nullable<Post>;
     posts?: Nullable<Post[]>;
 }
@@ -133,6 +136,7 @@ export interface CategoryResponseDto {
     status?: Nullable<number>;
     message?: Nullable<string>;
     deleted?: Nullable<boolean>;
+    total?: Nullable<number>;
     category?: Nullable<Category>;
     categories?: Nullable<Category[]>;
 }
@@ -141,9 +145,9 @@ export interface CommentResponseDto {
     status?: Nullable<number>;
     message?: Nullable<string>;
     deleted?: Nullable<boolean>;
+    total?: Nullable<number>;
     comment?: Nullable<Comment>;
     comments?: Nullable<Comment[]>;
-    total?: Nullable<number>;
 }
 
 export interface IQuery {

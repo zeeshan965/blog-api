@@ -75,7 +75,12 @@ export class PostResolver {
     search: string,
   ) {
     const posts: Post[] = await this.postService.findAll(search);
-    return { message: 'success!', status: 200, posts: posts };
+    return {
+      message: 'success!',
+      status: 200,
+      posts: posts,
+      total: posts.length,
+    };
   }
 
   /*@Mutation(() => String)

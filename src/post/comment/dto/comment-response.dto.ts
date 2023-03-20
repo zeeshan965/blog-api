@@ -10,9 +10,6 @@ export class CommentResponseDto extends ResponseDto {
   @Field(() => [Comment], { nullable: true })
   comments?: Comment[];
 
-  @Field(() => Int, { nullable: true })
-  total?: number;
-
   @Field(() => Boolean, { nullable: true })
   deleted?: boolean;
 }
