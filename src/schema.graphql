@@ -129,6 +129,7 @@ type Mutation {
   createPost(createPostInput: CreatePostInput!): PostResponseDto!
   updatePost(updatePostInput: UpdatePostInput!): PostResponseDto!
   removePost(id: Int!): PostResponseDto!
+  uploadFile(file: Upload!): String!
   createComment(createCommentInput: CreateCommentInput!): CommentResponseDto!
   updateComment(updateCommentInput: UpdateCommentInput!): CommentResponseDto!
   removeComment(id: Int!): CommentResponseDto!
@@ -169,6 +170,9 @@ input UpdatePostInput {
   id: Int!
   slug: String!
 }
+
+"""The `Upload` scalar type represents a file upload."""
+scalar Upload
 
 input CreateCommentInput {
   message: String!

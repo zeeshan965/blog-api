@@ -179,10 +179,12 @@ export interface IMutation {
     createPost(createPostInput: CreatePostInput): PostResponseDto | Promise<PostResponseDto>;
     updatePost(updatePostInput: UpdatePostInput): PostResponseDto | Promise<PostResponseDto>;
     removePost(id: number): PostResponseDto | Promise<PostResponseDto>;
+    uploadFile(file: Upload): string | Promise<string>;
     createComment(createCommentInput: CreateCommentInput): CommentResponseDto | Promise<CommentResponseDto>;
     updateComment(updateCommentInput: UpdateCommentInput): CommentResponseDto | Promise<CommentResponseDto>;
     removeComment(id: number): CommentResponseDto | Promise<CommentResponseDto>;
 }
 
 export type DateTime = any;
+export type Upload = any;
 type Nullable<T> = T | null;

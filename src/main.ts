@@ -4,6 +4,7 @@ import configuration from './config/configuration-am';
 import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
 //import configuration from './config/configuration-mm';
 import * as compression from 'compression';
+import { graphqlUploadExpress } from 'graphql-upload-minimal';
 
 async function bootstrap() {
   const port = configuration().port;
@@ -11,6 +12,7 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
   app.use(compression());
   app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
+  app.use(graphqlUploadExpress());
 
   await app
     .listen(port)

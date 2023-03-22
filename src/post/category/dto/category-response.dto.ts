@@ -9,7 +9,4 @@ export class CategoryResponseDto extends ResponseDto {
 
   @Field(() => [Category], { nullable: true })
   categories?: Category[];
-
-  @Field(() => Boolean, { nullable: true })
-  deleted?: boolean;
 }
