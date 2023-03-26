@@ -8,8 +8,9 @@ import { GqlJwtAuthGuard } from '../guard/gql-jwt-auth.guard';
 import { CurrentUser } from '../utils/current-user.decorator';
 import { User } from '../user/entity/user.entity';
 import { PostResponseDto } from './dto/post-response.dto';
-import { FileInput } from './dto/file.input';
-import { GraphQLUpload } from 'graphql-upload-minimal';
+import { createWriteStream } from 'fs';
+import { FileUpload } from 'graphql-upload-minimal';
+import { UploadScalar } from '../utils/graphql-upload';
 
 @Resolver(() => Post)
 @UseGuards(GqlJwtAuthGuard)
@@ -103,14 +104,26 @@ export class PostResolver {
     };
   }
 
-  @Mutation(() => String)
+  /**
+   * @param file
+   */
+  @Mutation(() => Boolean)
   async uploadFile(
-    @Args({ name: 'file', type: () => GraphQLUpload }) file: any,
-  ) {
-    const { createReadStream, filename } = await file;
-    console.log(createReadStream);
-    console.log(filename);
+    @Args({ name: 'file', type: () => UploadScalar })
+    file: FileUpload,
+  ): Promise<boolean> {
+    console.log('Uploading file...');
     console.log(file);
-    return 'success';
+    const { createReadStream, filename } = await file;
+    const extension = filename.split('.')[1];
+    console.log(filename);
+    const path = `./uploads/${Date.now() / 1000}.${extension}`;
+    console.log(path);
+    return new Promise((resolve, reject) =>
+      createReadStream()
+        .pipe(createWriteStream(path))
+        .on('finish', () => resolve(true))
+        .on('error', () => reject(false)),
+    );
   }
 }

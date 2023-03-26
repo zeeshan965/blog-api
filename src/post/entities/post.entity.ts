@@ -14,7 +14,7 @@ import { AbstractEntity } from '../../utils/abstract-entity';
 import { User } from '../../user/entity/user.entity';
 import { Comment } from '../comment/entities/comment.entity';
 import { Category } from '../category/entities/category.entity';
-import * as slugify from 'slug';
+import slug from 'slug';
 import { Exclude, instanceToPlain } from 'class-transformer';
 import { UserJwtPayloadDto } from '../../user/dto/user-jwt-payload.dto';
 
@@ -78,7 +78,7 @@ export class Post extends AbstractEntity {
   @BeforeInsert()
   generateSlug() {
     this.slug =
-      slugify(this.title, { lower: true }) +
+      slug(this.title, { lower: true }) +
       '-' +
       ((Math.random() * Math.pow(36, 6)) | 0).toString(36);
   }

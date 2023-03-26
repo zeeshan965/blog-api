@@ -179,7 +179,7 @@ export interface IMutation {
     createPost(createPostInput: CreatePostInput): PostResponseDto | Promise<PostResponseDto>;
     updatePost(updatePostInput: UpdatePostInput): PostResponseDto | Promise<PostResponseDto>;
     removePost(id: number): PostResponseDto | Promise<PostResponseDto>;
-    uploadFile(file: Upload): string | Promise<string>;
+    uploadFile(file: Upload): boolean | Promise<boolean>;
     createComment(createCommentInput: CreateCommentInput): CommentResponseDto | Promise<CommentResponseDto>;
     updateComment(updateCommentInput: UpdateCommentInput): CommentResponseDto | Promise<CommentResponseDto>;
     removeComment(id: number): CommentResponseDto | Promise<CommentResponseDto>;

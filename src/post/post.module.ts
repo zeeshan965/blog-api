@@ -5,10 +5,15 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Post } from './entities/post.entity';
 import { Category } from './category/entities/category.entity';
 import { CategoryModule } from './category/category.module';
+import { graphqlUploadExpress } from 'graphql-upload-minimal';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Post, Category]), CategoryModule],
   providers: [PostResolver, PostService],
   exports: [PostService],
 })
-export class PostModule {}
+export class PostModule {
+  configure(consumer) {
+    consumer.apply(graphqlUploadExpress({ maxFiles: 10 })).forRoutes('graphql');
+  }
+}

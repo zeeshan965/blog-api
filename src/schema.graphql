@@ -129,7 +129,7 @@ type Mutation {
   createPost(createPostInput: CreatePostInput!): PostResponseDto!
   updatePost(updatePostInput: UpdatePostInput!): PostResponseDto!
   removePost(id: Int!): PostResponseDto!
-  uploadFile(file: Upload!): String!
+  uploadFile(file: Upload!): Boolean!
   createComment(createCommentInput: CreateCommentInput!): CommentResponseDto!
   updateComment(updateCommentInput: UpdateCommentInput!): CommentResponseDto!
   removeComment(id: Int!): CommentResponseDto!
