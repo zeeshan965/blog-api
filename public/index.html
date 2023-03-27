@@ -9,37 +9,9 @@
   <input type="file" id="file-input">
   <button type="button" id="upload-button">Upload File</button>
 </form>
+<!--https://www.jsdelivr.com/package/npm/graphql.js-->
+<script src="https://cdn.jsdelivr.net/npm/graphql.js@0.6.8/graphql.min.js"></script>
 
-<script>
-  document.querySelector("#upload-button").addEventListener("click", function() {
-    const fileInput = document.querySelector("#file-input");
-    const formData = new FormData();
-    console.log(fileInput.files);
-    const obj = {
-      "query": "mutation ($file: Upload!) { uploadFile(file: $file) }",
-      "variables": {
-        "file": null
-      }
-    };
-    formData.append("operations", JSON.stringify(obj));
-    const map = { "0": ["variables.file"] };
-    formData.append("map", JSON.stringify(map));
-    formData.append(0, fileInput.files[0]);
-
-    fetch("http://localhost:3000/graphql", {
-      method: "POST",
-      body: formData
-    })
-      .then(response => {
-        console.log(response)
-        return response.json()
-      })
-      .then(data => console.log(data))
-      .catch(error => console.error(error));
-  });
-
-
-</script>
+<script type="text/javascript" src="./main.js"></script>
 </body>
-
 </html>
