@@ -614,36 +614,103 @@ import {
 We can define global subscriber as well as module base subscriber
 
 ```typescript
-//Global Subscriber
-@EventSubscriber()
-export class AppGlobalSubscriber implements EntitySubscriberInterface {
-  afterLoad(entity: any) { console.log(`AFTER ENTITY LOADED: `, entity); }
-  beforeInsert(event: InsertEvent<any>) { console.log(`BEFORE ENTITY INSERTED: `); }
-  afterInsert(event: InsertEvent<any>) { console.log(`AFTER ENTITY INSERTED: `); }
-  beforeUpdate(event: UpdateEvent<any>) { console.log(`BEFORE ENTITY UPDATED: `); }
-  afterUpdate(event: UpdateEvent<any>) { console.log(`AFTER ENTITY UPDATED: `); }
-  beforeRemove(event: RemoveEvent<any>) { console.log(`BEFORE ENTITY WITH ID ${event.entityId} REMOVED: `, event.entity); }
-  afterRemove(event: RemoveEvent<any>) { console.log(`AFTER ENTITY WITH ID ${event.entityId} REMOVED: `, event.entity); }
-  beforeSoftRemove(event: SoftRemoveEvent<any>) { console.log(`BEFORE ENTITY WITH ID ${event.entityId} SOFT REMOVED: `, event.entity); }
-  afterSoftRemove(event: SoftRemoveEvent<any>) { console.log(`AFTER ENTITY WITH ID ${event.entityId} SOFT REMOVED: `, event.entity); }
-  beforeRecover(event: RecoverEvent<any>) { console.log(`BEFORE ENTITY WITH ID ${event.entityId} RECOVERED: `, event.entity); }
-  afterRecover(event: RecoverEvent<any>) { console.log(`AFTER ENTITY WITH ID ${event.entityId} RECOVERED: `, event.entity); }
-  beforeTransactionStart(event: TransactionStartEvent) { console.log(`BEFORE TRANSACTION STARTED: `); }
-  afterTransactionStart(event: TransactionStartEvent) { console.log(`AFTER TRANSACTION STARTED: `); }
-  beforeTransactionCommit(event: TransactionCommitEvent) { console.log(`BEFORE TRANSACTION COMMITTED: `); }
-  afterTransactionCommit(event: TransactionCommitEvent) { console.log(`AFTER TRANSACTION COMMITTED: `); }
-  beforeTransactionRollback(event: TransactionRollbackEvent) { console.log(`BEFORE TRANSACTION ROLLBACK: `); }
-  afterTransactionRollback(event: TransactionRollbackEvent) { console.log(`AFTER TRANSACTION ROLLBACK: `); }
-}
-
-//Module Subscriber
-export class PostSubscriber implements EntitySubscriberInterface<Post> {
-  listenTo() {
-    return Post;
+  //Global Subscriber
+  @EventSubscriber()
+  export class AppGlobalSubscriber implements EntitySubscriberInterface {
+      afterLoad(entity: any) { console.log(`AFTER ENTITY LOADED: `, entity); }
+      beforeInsert(event: InsertEvent<any>) { console.log(`BEFORE ENTITY INSERTED: `); }
+      afterInsert(event: InsertEvent<any>) { console.log(`AFTER ENTITY INSERTED: `); }
+      beforeUpdate(event: UpdateEvent<any>) { console.log(`BEFORE ENTITY UPDATED: `); }
+      afterUpdate(event: UpdateEvent<any>) { console.log(`AFTER ENTITY UPDATED: `); }
+      beforeRemove(event: RemoveEvent<any>) { console.log(`BEFORE ENTITY WITH ID ${event.entityId} REMOVED: `, event.entity); }
+      afterRemove(event: RemoveEvent<any>) { console.log(`AFTER ENTITY WITH ID ${event.entityId} REMOVED: `, event.entity); }
+      beforeSoftRemove(event: SoftRemoveEvent<any>) { console.log(`BEFORE ENTITY WITH ID ${event.entityId} SOFT REMOVED: `, event.entity); }
+      afterSoftRemove(event: SoftRemoveEvent<any>) { console.log(`AFTER ENTITY WITH ID ${event.entityId} SOFT REMOVED: `, event.entity); }
+      beforeRecover(event: RecoverEvent<any>) { console.log(`BEFORE ENTITY WITH ID ${event.entityId} RECOVERED: `, event.entity); }
+      afterRecover(event: RecoverEvent<any>) { console.log(`AFTER ENTITY WITH ID ${event.entityId} RECOVERED: `, event.entity); }
+      beforeTransactionStart(event: TransactionStartEvent) { console.log(`BEFORE TRANSACTION STARTED: `); }
+      afterTransactionStart(event: TransactionStartEvent) { console.log(`AFTER TRANSACTION STARTED: `); }
+      beforeTransactionCommit(event: TransactionCommitEvent) { console.log(`BEFORE TRANSACTION COMMITTED: `); }
+      afterTransactionCommit(event: TransactionCommitEvent) { console.log(`AFTER TRANSACTION COMMITTED: `); }
+      beforeTransactionRollback(event: TransactionRollbackEvent) { console.log(`BEFORE TRANSACTION ROLLBACK: `); }
+      afterTransactionRollback(event: TransactionRollbackEvent) { console.log(`AFTER TRANSACTION ROLLBACK: `); }
   }
 
-  beforeUpdate(event: UpdateEvent<Post>) {
-    console.log(`BEFORE POST UPDATE: `);
+    //Module Subscriber
+  export class PostSubscriber implements EntitySubscriberInterface<Post> {
+    listenTo() {
+      return Post;
+    }
+    
+    beforeUpdate(event: UpdateEvent<Post>) {
+      console.log(`BEFORE POST UPDATE: `);
+    }
+  }
+```
+
+## File Upload using GraphQL 
+```bash
+//pre-requisite graphql & apollo
+npm install graphql-scalars graphql-upload-minimal
+```
+First modify tsconfig.json and add the below.
+```typescript
+"target": "es2022",
+"moduleResolution": "node",
+"module": "NodeNext",
+```
+Include graphqlUploadExpress middleware in PostModule
+```typescript
+//Inside post module
+import { graphqlUploadExpress } from 'graphql-upload-minimal';
+
+export class PostModule {
+  configure(consumer) {
+    consumer.apply(graphqlUploadExpress({ maxFiles: 10 })).forRoutes('graphql');
   }
 }
+```
+
+### Post Resolver
+```typescript
+import { UploadScalar } from '../utils/graphql-upload';
+import { createWriteStream } from 'fs';
+
+@Mutation(() => Boolean)
+async uploadFile(
+  @Args({ name: 'file', type: () => UploadScalar })
+file: FileUpload,
+): Promise<boolean> {
+  const { createReadStream, filename } = await file;
+  const extension = filename.split('.')[1];
+  const path = `./uploads/${Date.now() / 1000}.${extension}`;
+  return new Promise((resolve, reject) =>
+    createReadStream()
+      .pipe(createWriteStream(path))
+      .on('finish', () => resolve(true))
+      .on('error', () => reject(false)),
+  );
+}
+```
+
+### Custom Scalar
+
+```typescript
+import { GraphQLScalarType } from 'graphql';
+import { Upload } from 'graphql-upload-minimal';
+
+export const UploadScalar = new GraphQLScalarType({
+  name: 'Upload',
+  description: 'The `Upload` scalar type represents a file upload.',
+  parseValue: (value: Upload) => {
+    return value.file;
+  },
+  parseLiteral: (ast) => {
+    throw new Error('Upload literal unsupported.');
+  },
+  serialize: (value) => {
+    throw new Error('Upload serialization unsupported.');
+  },
+});
+
 ```

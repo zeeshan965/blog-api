@@ -112,7 +112,6 @@ export class PostResolver {
     @Args({ name: 'file', type: () => UploadScalar })
     file: FileUpload,
   ): Promise<boolean> {
-    console.log('Uploading file...');
     console.log(file);
     const { createReadStream, filename } = await file;
     const extension = filename.split('.')[1];
