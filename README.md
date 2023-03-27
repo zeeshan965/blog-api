@@ -670,8 +670,13 @@ export class PostModule {
   }
 }
 ```
+The graphqlUploadExpress will send the request to processRequest.js and it will process the request and attach file data to request body. Then UploadScalar receives the file data and resolver function will read and write the file to upload folder.
+```js
+/node_modules/graphql-upload-minimal/public
+```
 
 ### Post Resolver
+
 ```typescript
 import { UploadScalar } from '../utils/graphql-upload';
 import { createWriteStream } from 'fs';
