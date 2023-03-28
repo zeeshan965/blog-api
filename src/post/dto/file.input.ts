@@ -1,6 +1,9 @@
 import { InputType, Field } from '@nestjs/graphql';
+import { FileUpload } from 'graphql-upload-minimal';
+import { UploadScalar } from '../../utils/graphql-upload';
 
 @InputType()
 export class FileInput {
-  file: any;
+  @Field(() => UploadScalar)
+  file: FileUpload;
 }

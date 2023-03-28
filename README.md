@@ -676,7 +676,7 @@ The graphqlUploadExpress will send the request to processRequest.js and it will 
 ```
 
 ### Post Resolver
-
+**Note:** We can use GraphQLUpload or UploadScalar both as decorator on `file` argument. UploadScalar is a custom decorator whereas GraphQLUpload comes with graphql-upload-minimal package.
 ```typescript
 import { UploadScalar } from '../utils/graphql-upload';
 import { createWriteStream } from 'fs';
@@ -684,6 +684,7 @@ import { createWriteStream } from 'fs';
 @Mutation(() => Boolean)
 async uploadFile(
   @Args({ name: 'file', type: () => UploadScalar })
+  //@Args({ name: 'file', type: () => GraphQLUpload })
 file: FileUpload,
 ): Promise<boolean> {
   const { createReadStream, filename } = await file;

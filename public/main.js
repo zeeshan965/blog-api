@@ -45,13 +45,14 @@ uploadButton.addEventListener('click', function () {
   const formData = new FormData();
   console.log(fileInput.files);
   const mutation = {
-    query: 'mutation ($file: Upload!) { uploadFile(file: $file) }',
+    query:
+      'mutation ($fileInput: FileInput!) { uploadFile(fileInput: $fileInput) }',
     variables: {
-      file: null,
+      fileInput: { file: null },
     },
   };
   formData.append('operations', JSON.stringify(mutation));
-  const map = { 0: ['variables.file'] };
+  const map = { 0: ['variables.fileInput.file'] };
   formData.append('map', JSON.stringify(map));
   formData.append(0, fileInput.files[0]);
 
