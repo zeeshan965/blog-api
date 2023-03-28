@@ -1,6 +1,8 @@
 import { InputType, Field, Int } from '@nestjs/graphql';
 import { IsEnum, IsNotEmpty } from 'class-validator';
 import { PostMedia } from '../entities/post.entity';
+import { UploadScalar } from '../../utils/graphql-upload';
+import { FileUpload } from 'graphql-upload-minimal';
 
 @InputType()
 export class CreatePostInput {
@@ -17,6 +19,12 @@ export class CreatePostInput {
 
   @Field(() => [Int], { nullable: true })
   categories?: number[];
+
+  @Field(() => String)
+  postMediaType?: string;
+
+  @Field(() => UploadScalar)
+  postMedia?: FileUpload;
   // @IsNotEmpty()
   // @Field(() => String)
   // postMedia: string;

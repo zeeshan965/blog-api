@@ -267,6 +267,54 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Post Image",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "operations",
+									"value": "{ \"query\": \"mutation ($fileInput: FileInput!) { uploadFile(fileInput: $fileInput) }\", \"variables\": { \"fileInput\": {\"file\": null} } }",
+									"type": "text"
+								},
+								{
+									"key": "map",
+									"value": "{\"0\": [\"variables.fileInput.file\"]}",
+									"type": "text"
+								},
+								{
+									"key": "0",
+									"type": "file",
+									"src": "/home/zeeshan-iqbaal/Pictures/Screenshots/Screenshot from 2023-03-13 18-50-40.png"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:3000/graphql",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -835,7 +883,7 @@
 				"body": {
 					"mode": "graphql",
 					"graphql": {
-						"query": "mutation Login($email: String!, $password: String!){\n  login(email: $email, password: $password) {\n  \ttoken\n    message\n    status\n  }\n}",
+						"query": "# mutation Login($email: String!, $password: String!){\n#     login(email: $email, password: $password) {\n#         token\n#         message\n#         status\n#     }\n# }\nmutation {\n    login(email: \"{{email}}\", password: \"{{password}}\") {\n        token\n        message\n        status\n    }\n}",
 						"variables": "{\n  \"email\": \"{{email}}\",\n  \"password\": \"{{password}}\"\n}"
 					}
 				},
@@ -1249,6 +1297,11 @@
 		},
 		{
 			"name": "Profile Image Upload",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"content-type": true
+				}
+			},
 			"request": {
 				"method": "POST",
 				"header": [
@@ -1259,7 +1312,7 @@
 					},
 					{
 						"key": "Content-Type",
-						"value": "application/json",
+						"value": "multipart/form-data",
 						"type": "text"
 					}
 				],
@@ -1268,7 +1321,7 @@
 					"formdata": [
 						{
 							"key": "operations",
-							"value": "{\"query\": \"mutation ($file: Upload!) { uploadFile(file: $file) }\", \"variables\": {\"file\": null}}",
+							"value": "{\"query\": \"mutation($file: Upload!){uploadFile(file: $file){id}}\",\"variables\":{\"file\": null}}",
 							"type": "text"
 						},
 						{
@@ -1279,7 +1332,7 @@
 						{
 							"key": "0",
 							"type": "file",
-							"src": "/home/zeeshan-iqbaal/Pictures/Screenshots/Screenshot from 2023-03-13 18-50-40.png"
+							"src": "/home/zeeshan-iqbaal/Documents/report.md"
 						}
 					]
 				},

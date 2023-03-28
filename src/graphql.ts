@@ -33,6 +33,8 @@ export interface CreatePostInput {
     description: string;
     published: boolean;
     categories?: Nullable<number[]>;
+    postMediaType: string;
+    postMedia: Upload;
 }
 
 export interface UpdatePostInput {
@@ -40,6 +42,8 @@ export interface UpdatePostInput {
     description?: Nullable<string>;
     published?: Nullable<boolean>;
     categories?: Nullable<number[]>;
+    postMediaType?: Nullable<string>;
+    postMedia?: Nullable<Upload>;
     id: number;
     slug: string;
 }

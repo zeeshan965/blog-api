@@ -6,6 +6,7 @@ import { User } from '../user/entity/user.entity';
 import { In, Repository } from 'typeorm';
 import { Post } from './entities/post.entity';
 import { Category } from './category/entities/category.entity';
+import { createWriteStream } from 'fs';
 
 @Injectable()
 export class PostService {
@@ -27,7 +28,8 @@ export class PostService {
     /** TODO: Alternate ways to create new post, But hooks will only work with save() method.
      * return this.postRepository.insert({ ...createPostInput, author: user });
      * const post = this.postRepository.create({ ...createPostInput, author: user }); */
-    const { categories, ...data } = createPostInput;
+    const { categories, postMedia, ...data } = createPostInput;
+    console.log(postMedia);
     const post = this.postRepository.create({
       ...data,
       author: user,
@@ -133,5 +135,18 @@ export class PostService {
       .limit(limit)
       .orderBy('p.created_at', 'ASC')
       .getMany();
+  }
+
+  private uploadFile(file) {
+    const { createReadStream, filename } = file;
+    const extension = filename.split('.')[1];
+    const path = `./uploads/${Date.now() / 1000}.${extension}`;
+    console.log(path);
+    return new Promise((resolve, reject) =>
+      createReadStream()
+        .pipe(createWriteStream(path))
+        .on('finish', () => resolve(true))
+        .on('error', () => reject(false)),
+    );
   }
 }
