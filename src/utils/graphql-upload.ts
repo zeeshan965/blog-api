@@ -4,8 +4,10 @@ import { Upload } from 'graphql-upload-minimal';
 export const UploadScalar = new GraphQLScalarType({
   name: 'Upload',
   description: 'The `Upload` scalar type represents a file upload.',
-  parseValue: (value: Upload) => {
-    console.log(value);
+  parseValue: async (value: Upload) => {
+    if (!value.file) {
+      return await value.promise;
+    }
     return value.file;
   },
   parseLiteral: (ast) => {

@@ -9,8 +9,6 @@ import { CurrentUser } from '../utils/current-user.decorator';
 import { User } from '../user/entity/user.entity';
 import { PostResponseDto } from './dto/post-response.dto';
 import { createWriteStream } from 'fs';
-import { FileUpload } from 'graphql-upload-minimal';
-import { UploadScalar } from '../utils/graphql-upload';
 import { FileInput } from './dto/file.input';
 
 @Resolver(() => Post)
@@ -109,10 +107,9 @@ export class PostResolver {
    * @param fileInput
    */
   @Mutation(() => Boolean)
-  uploadFile(@Args('fileInput') fileInput: FileInput): Promise<boolean> {
-    const { createReadStream, filename } = fileInput.file;
+  async uploadFile(@Args('fileInput') fileInput: FileInput): Promise<boolean> {
+    const { createReadStream, filename } = await fileInput.file;
     const extension = filename.split('.')[1];
-    console.log(filename);
     const path = `./uploads/${Date.now() / 1000}.${extension}`;
     console.log(path);
     return new Promise((resolve, reject) =>

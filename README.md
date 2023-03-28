@@ -335,6 +335,9 @@ app.use(compression());
 ```
 
 ## Throttling
+To check if route is REST or GraphQL 
+
+context.getType<GqlContextType>() === 'graphql'
 ```bash
 npm i --save @nestjs/throttler
 ```
