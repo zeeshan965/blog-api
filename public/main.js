@@ -65,3 +65,26 @@ uploadButton.addEventListener('click', function () {
     .then((data) => console.log(data?.data))
     .catch((error) => console.error(error));
 });
+
+const form = $('#postForm');
+form.on('submit', (e) => {
+  e.preventDefault();
+  const formData = new FormData();
+  $(e.target)
+    .serializeArray()
+    .forEach((item) => {
+      if (item.name !== 'categories') {
+        formData.append(item.name, item.value);
+      }
+    });
+  formData.append('categories', JSON.stringify($('#categories').val()));
+
+  fetch(uri, {
+    method: 'POST',
+    body: formData,
+    headers: { Authorization: `Bearer ${token}` },
+  })
+    .then((response) => response.json())
+    .then((data) => console.log(data?.data))
+    .catch((error) => console.error(error));
+});

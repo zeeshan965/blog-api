@@ -20,11 +20,13 @@ export class CreatePostInput {
   @Field(() => [Int], { nullable: true })
   categories?: number[];
 
-  @Field(() => String)
+  @IsEnum(PostMedia)
+  @Field(() => String, { nullable: true })
   postMediaType?: string;
 
-  @Field(() => UploadScalar)
+  @Field(() => UploadScalar, { nullable: true })
   postMedia?: FileUpload;
+
   // @IsNotEmpty()
   // @Field(() => String)
   // postMedia: string;

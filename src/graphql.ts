@@ -33,8 +33,8 @@ export interface CreatePostInput {
     description: string;
     published: boolean;
     categories?: Nullable<number[]>;
-    postMediaType: string;
-    postMedia: Upload;
+    postMediaType?: Nullable<string>;
+    postMedia?: Nullable<Upload>;
 }
 
 export interface UpdatePostInput {
