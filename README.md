@@ -378,6 +378,11 @@ providers: [
 ```
 ## Circular Dependency
 https://docs.nestjs.com/fundamentals/circular-dependency
+But it is recommended to do the implementation in such a way that Nest don't cause circular dependency issue. Let's take the example of User
+and Auth module. User needs authentication and authentication module needs some data from the user module then we should be only maintaining
+User module and implement auth implementation inside User module, Or we can define logical structure of both modules but physically maintain
+only one module file i.e users.module.ts
+
 ```typescript
   //inside auth module
   forwardRef(() => UserModule), 
