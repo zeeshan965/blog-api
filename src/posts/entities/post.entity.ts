@@ -11,12 +11,12 @@ import {
   AfterUpdate,
 } from 'typeorm';
 import { AbstractEntity } from '../../utils/abstract-entity';
-import { User } from '../../user/entity/user.entity';
-import { Comment } from '../comment/entities/comment.entity';
-import { Category } from '../category/entities/category.entity';
+import { User } from '../../users/entity/user.entity';
+import { Comment } from '../comments/entities/comment.entity';
+import { Category } from '../categories/entities/category.entity';
 import slug from 'slug';
 import { Exclude, instanceToPlain } from 'class-transformer';
-import { UserJwtPayloadDto } from '../../user/dto/user-jwt-payload.dto';
+import { UserJwtPayloadDto } from '../../users/dto/user-jwt-payload.dto';
 
 export enum PostMedia {
   IMAGE = 'image',

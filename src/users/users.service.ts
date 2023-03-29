@@ -5,7 +5,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { UserRegisterReqDto } from './dto/user-register-req.dto';
 
 @Injectable()
-export class UserService {
+export class UsersService {
   /**
    * @param userRepository
    */

@@ -11,18 +11,23 @@ import { ApolloDriver } from '@nestjs/apollo';
 import { join } from 'path';
 import { AppResolver } from './app.resolver';
 import { dataSourceOptions } from './dataSource';
-import { UserModule } from './user/user.module';
-import { AuthModule } from './user/auth/auth.module';
-import { PostModule } from './post/post.module';
-import { CommentsModule } from './post/comment/comments.module';
+import { UsersModule } from './users/users.module';
+import { AuthModule } from './users/auth/auth.module';
+import { PostsModule } from './posts/posts.module';
+import { CommentsModule } from './posts/comments/comments.module';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
-import { GqlThrottlerGuard } from './guard/gql.throttler.guard';
-import { CategoryModule } from './post/category/category.module';
+import { GqlThrottlerGuard } from './guards/gql.throttler.guard';
+import { CategoriesModule } from './posts/categories/categories.module';
 dotenv.config();
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+      load: [Configuration],
+      envFilePath: configuration().env === 'prod' ? 'prod.env' : '.env',
+    }),
     ThrottlerModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -30,11 +35,6 @@ dotenv.config();
         ttl: config.get('throttle_tl'),
         limit: config.get('throttle_limit'),
       }),
-    }),
-    ConfigModule.forRoot({
-      isGlobal: true,
-      load: [Configuration],
-      envFilePath: configuration().env === 'prod' ? 'prod.env' : '.env',
     }),
     GraphQLModule.forRoot({
       driver: ApolloDriver,
@@ -46,10 +46,10 @@ dotenv.config();
       context: ({ req, res }) => ({ req, res }),
     }),
     TypeOrmModule.forRoot(dataSourceOptions),
-    UserModule,
+    UsersModule,
     AuthModule,
-    CategoryModule,
-    PostModule,
+    CategoriesModule,
+    PostsModule,
     CommentsModule,
   ],
   providers: [{ provide: APP_GUARD, useClass: GqlThrottlerGuard }, AppResolver],

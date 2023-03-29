@@ -13,9 +13,9 @@ import { CreateCommentInput } from './dto/create-comment.input';
 import { UpdateCommentInput } from './dto/update-comment.input';
 import { CommentResponseDto } from './dto/comment-response.dto';
 import { UseGuards } from '@nestjs/common';
-import { GqlJwtAuthGuard } from '../../guard/gql-jwt-auth.guard';
+import { GqlJwtAuthGuard } from '../../guards/gql-jwt-auth.guard';
 import { CurrentUser } from '../../utils/current-user.decorator';
-import { User } from '../../user/entity/user.entity';
+import { User } from '../../users/entity/user.entity';
 
 @Resolver(() => Comment)
 @UseGuards(GqlJwtAuthGuard)

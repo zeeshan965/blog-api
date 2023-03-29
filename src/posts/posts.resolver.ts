@@ -1,23 +1,23 @@
 import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
-import { PostService } from './post.service';
+import { PostsService } from './posts.service';
 import { Post } from './entities/post.entity';
 import { CreatePostInput } from './dto/create-post.input';
 import { UpdatePostInput } from './dto/update-post.input';
 import { UseGuards } from '@nestjs/common';
-import { GqlJwtAuthGuard } from '../guard/gql-jwt-auth.guard';
+import { GqlJwtAuthGuard } from '../guards/gql-jwt-auth.guard';
 import { CurrentUser } from '../utils/current-user.decorator';
-import { User } from '../user/entity/user.entity';
+import { User } from '../users/entity/user.entity';
 import { PostResponseDto } from './dto/post-response.dto';
 import { createWriteStream } from 'fs';
 import { FileInput } from './dto/file.input';
 
 @Resolver(() => Post)
 @UseGuards(GqlJwtAuthGuard)
-export class PostResolver {
+export class PostsResolver {
   /**
    * @param postService
    */
-  constructor(private readonly postService: PostService) {}
+  constructor(private readonly postService: PostsService) {}
 
   /**
    * @param page

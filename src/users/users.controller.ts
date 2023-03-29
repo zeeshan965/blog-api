@@ -1,4 +1,4 @@
-import { UserService } from './user.service';
+import { UsersService } from './users.service';
 import {
   All,
   Body,
@@ -15,16 +15,16 @@ import { UserRegisterResponseDto } from './dto/user-register-response.dto';
 import { UserRegisterResponseInterface } from './interface/user-register-response.interface';
 import { AuthGuard as PassportGuard } from '@nestjs/passport';
 import { AuthService } from './auth/auth.service';
-import { GqlJwtAuthGuard } from "../guard/gql-jwt-auth.guard";
+import { GqlJwtAuthGuard } from '../guards/gql-jwt-auth.guard';
 
 @Controller('user')
-export class UserController {
+export class UsersController {
   /**
    * @param userService
    * @param authService
    */
   constructor(
-    private userService: UserService,
+    private userService: UsersService,
     private authService: AuthService,
   ) {}
 

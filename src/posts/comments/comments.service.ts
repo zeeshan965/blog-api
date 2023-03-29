@@ -4,7 +4,7 @@ import { UpdateCommentInput } from './dto/update-comment.input';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Equal, IsNull, Repository } from 'typeorm';
 import { Comment } from './entities/comment.entity';
-import { User } from '../../user/entity/user.entity';
+import { User } from '../../users/entity/user.entity';
 import { Post } from '../entities/post.entity';
 
 @Injectable()

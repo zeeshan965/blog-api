@@ -3,8 +3,8 @@ import { Field, ObjectType } from '@nestjs/graphql';
 import * as bcrypt from 'bcrypt';
 import { Exclude, instanceToPlain } from 'class-transformer';
 import { AbstractEntity } from '../../utils/abstract-entity';
-import { Post } from '../../post/entities/post.entity';
-import { Comment } from '../../post/comment/entities/comment.entity';
+import { Post } from '../../posts/entities/post.entity';
+import { Comment } from '../../posts/comments/entities/comment.entity';
 
 @Entity('users')
 export class User extends AbstractEntity {

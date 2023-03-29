@@ -2,8 +2,8 @@ import { ObjectType, Field, Int } from '@nestjs/graphql';
 import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 import { AbstractEntity } from '../../../utils/abstract-entity';
 import { Post } from '../../entities/post.entity';
-import { User } from '../../../user/entity/user.entity';
-import { UserJwtPayloadDto } from '../../../user/dto/user-jwt-payload.dto';
+import { User } from '../../../users/entity/user.entity';
+import { UserJwtPayloadDto } from '../../../users/dto/user-jwt-payload.dto';
 
 @Entity('comments')
 @ObjectType()

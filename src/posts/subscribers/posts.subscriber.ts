@@ -7,7 +7,7 @@ import {
 import { Post } from '../entities/post.entity';
 
 @EventSubscriber()
-export class PostSubscriber implements EntitySubscriberInterface<Post> {
+export class PostsSubscriber implements EntitySubscriberInterface<Post> {
   /**
    * Indicates that this subscriber only listen to Post events.
    */

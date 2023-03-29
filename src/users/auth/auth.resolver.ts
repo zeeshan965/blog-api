@@ -3,16 +3,16 @@ import { UserRegisterResponseDto } from '../dto/user-register-response.dto';
 import { UserRegisterReqDto } from '../dto/user-register-req.dto';
 import { UserLoginResponseDto } from '../dto/user-login-response.dto';
 import { Req, Request, UseGuards } from '@nestjs/common';
-import { AuthGuard } from '../../guard/auth.guard';
+import { AuthGuard } from '../../guards/auth.guard';
 import { User } from '../entity/user.entity';
 import * as jwt from 'jsonwebtoken';
-import { JwtGuard } from '../../guard/jwt.guard';
-import { RoleGuard, Roles } from '../../guard/role.guard';
-import { GqlLocalAuthGuard } from '../../guard/gql-local-auth.guard';
+import { JwtGuard } from '../../guards/jwt.guard';
+import { RoleGuard, Roles } from '../../guards/role.guard';
+import { GqlLocalAuthGuard } from '../../guards/gql-local-auth.guard';
 import { ConfigService } from '@nestjs/config';
-import { UserService } from '../user.service';
+import { UsersService } from '../users.service';
 import { AuthService } from './auth.service';
-import { GqlJwtAuthGuard } from '../../guard/gql-jwt-auth.guard';
+import { GqlJwtAuthGuard } from '../../guards/gql-jwt-auth.guard';
 import { CurrentUser } from '../../utils/current-user.decorator';
 import { UserJwtPayloadDto } from '../dto/user-jwt-payload.dto';
 import { UserUpdateProfileReqDto } from '../dto/user-update-profile-req.dto';
@@ -26,7 +26,7 @@ export class AuthResolver {
    */
   constructor(
     private configService: ConfigService,
-    private userService: UserService,
+    private userService: UsersService,
     private authService: AuthService,
   ) {}
 
