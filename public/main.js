@@ -69,15 +69,51 @@ uploadButton.addEventListener('click', function () {
 const form = $('#postForm');
 form.on('submit', (e) => {
   e.preventDefault();
-  const formData = new FormData();
-  $(e.target)
-    .serializeArray()
-    .forEach((item) => {
-      if (item.name !== 'categories') {
-        formData.append(item.name, item.value);
+
+  const title = $('#title').val();
+  const description = $('#description').val();
+  const postMediaType = $('#postMediaType').val();
+  const published = $('[name="published"]').val() === '1';
+  const mediaFile = document.querySelector('#mediaFile');
+  const data = {
+    title: title,
+    description: description,
+    mediaType: postMediaType,
+    published: published,
+    mediaFile: null,
+  };
+  const mutation = `
+    mutation createPost($createPostInput: CreatePostInput!) {
+      createPost(createPostInput: $createPostInput) {
+        status
+        message
+        post {
+          id
+          title
+          description
+          published
+          publishedAt
+          slug
+          postMediaType
+          postMedia
+          trashed
+          author {
+            id
+            firstName
+            lastName
+            email
+            isActive
+          }
+        }
       }
-    });
-  formData.append('categories', JSON.stringify($('#categories').val()));
+    }
+  `;
+  const operations = { query: mutation, variables: { createPostInput: data } };
+  const variables = { 0: ['variables.createPostInput.mediaFile'] };
+  const formData = new FormData();
+  formData.append('operations', JSON.stringify(operations));
+  formData.append('map', JSON.stringify(variables));
+  formData.append('0', mediaFile.files[0]);
 
   fetch(uri, {
     method: 'POST',

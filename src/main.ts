@@ -4,6 +4,7 @@ import configuration from './config/configuration-am';
 import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
 //import configuration from './config/configuration-mm';
 import compression from 'compression';
+import * as express from 'express';
 
 async function bootstrap() {
   const port = configuration().port;
@@ -17,6 +18,8 @@ async function bootstrap() {
 
   //Use this for the purpose of data sanitization to exclude properties from the response
   app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
+
+  app.use(express.static('public'));
 
   await app
     .listen(port)

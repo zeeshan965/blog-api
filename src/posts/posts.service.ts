@@ -28,10 +28,11 @@ export class PostsService {
     /** TODO: Alternate ways to create new post, But hooks will only work with save() method.
      * return this.postRepository.insert({ ...createPostInput, author: user });
      * const post = this.postRepository.create({ ...createPostInput, author: user }); */
-    const { categories, postMedia, ...data } = createPostInput;
-    console.log(postMedia);
+    const { categories, mediaFile, ...data } = createPostInput;
+    const postMedia = await this.uploadFile(await mediaFile);
     const post = this.postRepository.create({
       ...data,
+      postMedia,
       author: user,
     });
     if (categories && categories.length > 0) {
@@ -137,16 +138,21 @@ export class PostsService {
       .getMany();
   }
 
-  private uploadFile(file) {
+  /**
+   * @param file
+   * @private
+   */
+  private uploadFile(file): Promise<string> {
     const { createReadStream, filename } = file;
     const extension = filename.split('.')[1];
-    const path = `./uploads/${Date.now() / 1000}.${extension}`;
-    console.log(path);
+    const path =
+      process.cwd() + '/public/uploads/' + Date.now() / 1000 + '.' + extension;
+    const name = `/uploads/${Date.now() / 1000}.${extension}`;
     return new Promise((resolve, reject) =>
       createReadStream()
         .pipe(createWriteStream(path))
-        .on('finish', () => resolve(true))
-        .on('error', () => reject(false)),
+        .on('finish', () => resolve(name))
+        .on('error', () => reject('')),
     );
   }
 }

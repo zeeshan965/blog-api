@@ -22,16 +22,8 @@ export class CreatePostInput {
 
   @IsEnum(PostMedia)
   @Field(() => String, { nullable: true })
-  postMediaType?: string;
+  mediaType?: string;
 
   @Field(() => UploadScalar, { nullable: true })
-  postMedia?: FileUpload;
-
-  // @IsNotEmpty()
-  // @Field(() => String)
-  // postMedia: string;
-  //
-  // @IsEnum(PostMedia)
-  // @Field(() => String)
-  // postMediaType?: string;
+  mediaFile?: FileUpload;
 }

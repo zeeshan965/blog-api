@@ -6,6 +6,7 @@
 /dist
 /node_modules
 /uploads
+public/uploads
 
 # Logs
 logs
