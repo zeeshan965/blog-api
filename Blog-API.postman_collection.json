@@ -24,11 +24,24 @@
 							}
 						],
 						"body": {
-							"mode": "graphql",
-							"graphql": {
-								"query": "mutation createPost($createPostInput: CreatePostInput!){\n    createPost(createPostInput: $createPostInput) {\n        status\n        message\n        post {\n            id\n            title\n            description\n            published\n            publishedAt\n            slug\n            postMediaType\n            postMedia\n            trashed\n            author {\n                id\n                firstName\n                lastName\n                email\n                isActive\n            }\n        }\n    }\n}",
-								"variables": "{\n    \"createPostInput\": {\n      \"title\": \"{{$randomJobTitle}}\",\n      \"description\": \"{{$randomLoremParagraph}}\",\n      \"published\": true,\n      \"mediaType\": \"image\",\n      \"categories\": [1,3]\n    }\n}"
-							}
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "operations",
+									"value": "\"query\":\"mutation createPost($createPostInput: CreatePostInput!) { createPost(createPostInput: $createPostInput) { status }\",\n\"variables\":{\"createPostInput\":{\"title\":\"{{$randomJobTitle}}\",\"description\":\"{{$randomLoremParagraph}}\",\"mediaType\":\"image\",\"published\":true,\"mediaFile\":null}}}",
+									"type": "text"
+								},
+								{
+									"key": "map",
+									"value": "{\"0\":[\"variables.createPostInput.mediaFile\"]}",
+									"type": "text"
+								},
+								{
+									"key": "0",
+									"type": "file",
+									"src": "/home/zeeshan-iqbaal/Pictures/Screenshots/Screenshot from 2023-03-13 18-50-40.png"
+								}
+							]
 						},
 						"url": {
 							"raw": "http://localhost:3000/graphql",
