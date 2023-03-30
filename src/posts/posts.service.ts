@@ -29,10 +29,8 @@ export class PostsService {
      * return this.postRepository.insert({ ...createPostInput, author: user });
      * const post = this.postRepository.create({ ...createPostInput, author: user }); */
     const { categories, mediaFile, ...data } = createPostInput;
-    const postMedia = await this.uploadFile(await mediaFile);
     const post = this.postRepository.create({
       ...data,
-      postMedia,
       author: user,
     });
     if (categories && categories.length > 0) {
@@ -40,7 +38,9 @@ export class PostsService {
         where: { id: In(categories) },
       });
     }
-
+    if (mediaFile) {
+      post.postMedia = await this.uploadFile(await mediaFile);
+    }
     // const post = new Post();
     // post.title = createPostInput.title;
     // post.description = createPostInput.description;

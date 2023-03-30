@@ -11,6 +11,9 @@
 			"item": [
 				{
 					"name": "Create Post (GQL)",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
 					"request": {
 						"method": "POST",
 						"header": [
@@ -18,18 +21,13 @@
 								"key": "Authorization",
 								"value": "Bearer {{token}}",
 								"type": "text"
-							},
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"type": "text"
 							}
 						],
 						"body": {
 							"mode": "graphql",
 							"graphql": {
 								"query": "mutation createPost($createPostInput: CreatePostInput!){\n    createPost(createPostInput: $createPostInput) {\n        status\n        message\n        post {\n            id\n            title\n            description\n            published\n            publishedAt\n            slug\n            postMediaType\n            postMedia\n            trashed\n            author {\n                id\n                firstName\n                lastName\n                email\n                isActive\n            }\n        }\n    }\n}",
-								"variables": "{\n    \"createPostInput\": {\n      \"title\": \"{{$randomJobTitle}}\",\n      \"description\": \"{{$randomLoremParagraph}}\",\n      \"published\": true,\n      \"categories\": [1,3]\n    }\n}"
+								"variables": "{\n    \"createPostInput\": {\n      \"title\": \"{{$randomJobTitle}}\",\n      \"description\": \"{{$randomLoremParagraph}}\",\n      \"published\": true,\n      \"mediaType\": \"image\",\n      \"categories\": [1,3]\n    }\n}"
 							}
 						},
 						"url": {
@@ -1298,9 +1296,7 @@
 		{
 			"name": "Profile Image Upload",
 			"protocolProfileBehavior": {
-				"disabledSystemHeaders": {
-					"content-type": true
-				}
+				"disabledSystemHeaders": {}
 			},
 			"request": {
 				"method": "POST",
@@ -1309,11 +1305,6 @@
 						"key": "Authorization",
 						"value": "Bearer {{token}}",
 						"type": "text"
-					},
-					{
-						"key": "Content-Type",
-						"value": "multipart/form-data",
-						"type": "text"
 					}
 				],
 				"body": {
@@ -1321,18 +1312,19 @@
 					"formdata": [
 						{
 							"key": "operations",
-							"value": "{\"query\": \"mutation($file: Upload!){uploadFile(file: $file){id}}\",\"variables\":{\"file\": null}}",
+							"value": "{\"query\":\"mutation ($fileInput: FileInput!) { uploadFile(fileInput: $fileInput) }\", \"variables\":{\"fileInput\":{\"file\": null} }}",
 							"type": "text"
 						},
 						{
 							"key": "map",
-							"value": "{\"0\": [\"variables.file\"]}",
+							"value": "{\"0\":[\"variables.fileInput.file\"]}",
 							"type": "text"
 						},
 						{
 							"key": "0",
+							"contentType": "multipart/form-data",
 							"type": "file",
-							"src": "/home/zeeshan-iqbaal/Documents/report.md"
+							"src": "/home/zeeshan-iqbaal/Pictures/Screenshots/Screenshot from 2023-03-13 18-50-40.png"
 						}
 					]
 				},
