@@ -28,7 +28,7 @@
 							"formdata": [
 								{
 									"key": "operations",
-									"value": "\"query\":\"mutation createPost($createPostInput: CreatePostInput!) { createPost(createPostInput: $createPostInput) { status }\",\n\"variables\":{\"createPostInput\":{\"title\":\"{{$randomJobTitle}}\",\"description\":\"{{$randomLoremParagraph}}\",\"mediaType\":\"image\",\"published\":true,\"mediaFile\":null}}}",
+									"value": "{\"query\":\" mutation createPost($createPostInput: CreatePostInput!) { createPost(createPostInput: $createPostInput) { status message post { id title description published publishedAt slug postMediaType postMedia trashed author { id firstName lastName email isActive } } } }\",\"variables\":{\"createPostInput\":{\"title\":\"{{$randomJobTitle}}\",\"description\":\"{{$randomLoremParagraph}}\",\"mediaType\":\"image\",\"published\":true,\"mediaFile\":null}}}",
 									"type": "text"
 								},
 								{
