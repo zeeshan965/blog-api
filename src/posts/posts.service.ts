@@ -7,6 +7,8 @@ import { In, Repository } from 'typeorm';
 import { Post } from './entities/post.entity';
 import { Category } from './categories/entities/category.entity';
 import { createWriteStream } from 'fs';
+import { CloudinaryService } from './cloudinary.service';
+import { FileUpload } from 'graphql-upload-minimal';
 
 @Injectable()
 export class PostsService {
@@ -18,6 +20,7 @@ export class PostsService {
     @InjectRepository(Post) public readonly postRepository: Repository<Post>,
     @InjectRepository(Category)
     public readonly categoryRepository: Repository<Category>,
+    private readonly cloudinaryService: CloudinaryService,
   ) {}
 
   /**
@@ -39,7 +42,9 @@ export class PostsService {
       });
     }
     if (mediaFile) {
-      post.postMedia = await this.uploadFile(await mediaFile);
+      //post.postMedia = await this.uploadFile(await mediaFile);
+      post.postMedia = await this.cloudinaryService.uploadFile(await mediaFile);
+      console.log(post.postMedia);
     }
     // const post = new Post();
     // post.title = createPostInput.title;
@@ -142,7 +147,7 @@ export class PostsService {
    * @param file
    * @private
    */
-  uploadFile(file): Promise<string> {
+  uploadFile(file: FileUpload): Promise<string> {
     const { createReadStream, filename } = file;
     const extension = filename.split('.')[1];
     const path =

@@ -9,14 +9,19 @@ import { CurrentUser } from '../utils/current-user.decorator';
 import { User } from '../users/entity/user.entity';
 import { PostResponseDto } from './dto/post-response.dto';
 import { FileInput } from './dto/file.input';
+import { CloudinaryService } from './cloudinary.service';
 
 @Resolver(() => Post)
 @UseGuards(GqlJwtAuthGuard)
 export class PostsResolver {
   /**
    * @param postService
+   * @param cloudinaryService
    */
-  constructor(private readonly postService: PostsService) {}
+  constructor(
+    private readonly postService: PostsService,
+    private readonly cloudinaryService: CloudinaryService,
+  ) {}
 
   /**
    * @param page
@@ -107,6 +112,8 @@ export class PostsResolver {
    */
   @Mutation(() => String)
   async uploadFile(@Args('fileInput') fileInput: FileInput): Promise<string> {
-    return await this.postService.uploadFile(await fileInput.file);
+    return this.cloudinaryService.uploadFile(await fileInput.file);
+    //return this.cloudinaryService.uploadLargeFile(await fileInput.file);
+    //return await this.postService.uploadFile(await fileInput.file);
   }
 }
