@@ -1,4 +1,4 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
+import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { PostsService } from './posts.service';
 import { Post } from './entities/post.entity';
 import { CreatePostInput } from './dto/create-post.input';
@@ -8,7 +8,6 @@ import { GqlJwtAuthGuard } from '../guards/gql-jwt-auth.guard';
 import { CurrentUser } from '../utils/current-user.decorator';
 import { User } from '../users/entity/user.entity';
 import { PostResponseDto } from './dto/post-response.dto';
-import { createWriteStream } from 'fs';
 import { FileInput } from './dto/file.input';
 
 @Resolver(() => Post)
@@ -106,17 +105,8 @@ export class PostsResolver {
   /**
    * @param fileInput
    */
-  @Mutation(() => Boolean)
-  async uploadFile(@Args('fileInput') fileInput: FileInput): Promise<boolean> {
-    const { createReadStream, filename } = await fileInput.file;
-    const extension = filename.split('.')[1];
-    const path = `./uploads/${Date.now() / 1000}.${extension}`;
-    console.log(path);
-    return new Promise((resolve, reject) =>
-      createReadStream()
-        .pipe(createWriteStream(path))
-        .on('finish', () => resolve(true))
-        .on('error', () => reject(false)),
-    );
+  @Mutation(() => String)
+  async uploadFile(@Args('fileInput') fileInput: FileInput): Promise<string> {
+    return await this.postService.uploadFile(await fileInput.file);
   }
 }

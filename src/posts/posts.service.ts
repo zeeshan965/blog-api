@@ -142,7 +142,7 @@ export class PostsService {
    * @param file
    * @private
    */
-  private uploadFile(file): Promise<string> {
+  uploadFile(file): Promise<string> {
     const { createReadStream, filename } = file;
     const extension = filename.split('.')[1];
     const path =
