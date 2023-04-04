@@ -84,4 +84,17 @@ export class CloudinaryService {
       stream.pipe(streamLoad);
     });
   }
+
+  /**
+   * @param public_id
+   */
+  async removeFile(public_id: string) {
+    return cloudinary.uploader.destroy(public_id, (error, result) => {
+      if (error) {
+        console.error(error);
+      } else {
+        console.log(result);
+      }
+    });
+  }
 }

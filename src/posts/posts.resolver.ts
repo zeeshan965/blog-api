@@ -117,4 +117,14 @@ export class PostsResolver {
     //return this.cloudinaryService.uploadStream(await fileInput.file);
     //return this.cloudinaryService.uploadLargeFile(await fileInput.file);
   }
+
+  /**
+   * @param fileInput
+   */
+  @Query(() => String)
+  async removeFile(@Args('id', { type: () => ID }) id: number) {
+    return this.postService.removeFile(id);
+    //return this.cloudinaryService.uploadStream(await fileInput.file);
+    //return this.cloudinaryService.uploadLargeFile(await fileInput.file);
+  }
 }
