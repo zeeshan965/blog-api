@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { UploadApiOptions, v2 as cloudinary } from 'cloudinary';
+import { UploadApiErrorResponse, UploadApiOptions, UploadApiResponse, v2 as cloudinary } from 'cloudinary';
 import { FileUpload } from 'graphql-upload-minimal';
 import { generateRandomString } from '../utils/app.utils';
 import { join } from 'path';
@@ -25,7 +25,7 @@ export class CloudinaryService {
   /**
    * @param file
    */
-  async uploadStream(file: FileUpload): Promise<string> {
+  async uploadStream(file: FileUpload): Promise<UploadApiResponse> {
     const { createReadStream, filename } = file;
     const extension = filename.split('.')[1];
     this.options.filename_override = `${generateRandomString(
@@ -35,10 +35,10 @@ export class CloudinaryService {
     return await new Promise((resolve, reject) => {
       const streamLoad = cloudinary.uploader.upload_stream(
         this.options,
-        (error, result) => {
+        (error: UploadApiErrorResponse, result: UploadApiResponse) => {
           if (result) {
             console.log(result);
-            resolve(result.secure_url);
+            resolve(result);
           } else {
             console.log(error.message);
             reject(error.message);
@@ -90,8 +90,6 @@ export class CloudinaryService {
    */
   async removeFile(public_id: string) {
     console.log(public_id);
-    public_id =
-      'https://res.cloudinary.com/dccnwzbs1/image/upload/v1680607556/samples/people/U5QQnVt08y_1680607554973.png';
     return await new Promise((resolve, reject) => {
       cloudinary.uploader.destroy(public_id, (error, result) => {
         if (error) {

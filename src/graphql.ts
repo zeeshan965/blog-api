@@ -110,6 +110,7 @@ export interface Post {
     slug?: Nullable<string>;
     trashed?: Nullable<DateTime>;
     postMedia?: Nullable<string>;
+    mediaId?: Nullable<string>;
     postMediaType?: Nullable<string>;
     author?: Nullable<UserJwtPayloadDto>;
 }

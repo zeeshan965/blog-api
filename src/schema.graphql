@@ -52,6 +52,7 @@ type Post {
   slug: String
   trashed: DateTime
   postMedia: String
+  mediaId: String
   postMediaType: String
   author: UserJwtPayloadDto
 }

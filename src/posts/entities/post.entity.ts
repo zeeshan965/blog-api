@@ -55,6 +55,10 @@ export class Post extends AbstractEntity {
   @Field(() => String, { nullable: true })
   postMedia?: string;
 
+  @Column({ name: 'media_id', length: 255, nullable: true })
+  @Field(() => String, { nullable: true })
+  mediaId?: string;
+
   @Column({
     name: 'post_media_type',
     type: 'enum',

@@ -10,6 +10,7 @@ import { createWriteStream } from 'fs';
 import { CloudinaryService } from './cloudinary.service';
 import { FileUpload } from 'graphql-upload-minimal';
 import { generateRandomString } from '../utils/app.utils';
+import { UploadApiResponse } from 'cloudinary';
 
 @Injectable()
 export class PostsService {
@@ -45,9 +46,10 @@ export class PostsService {
     }
     if (mediaFile) {
       //post.postMedia = await this.uploadFile(await mediaFile);
-      post.postMedia = await this.cloudinaryService.uploadStream(
-        await mediaFile,
-      );
+      const result: UploadApiResponse =
+        await this.cloudinaryService.uploadStream(await mediaFile);
+      post.postMedia = result.secure_url;
+      post.mediaId = result.public_id;
       console.log(post.postMedia);
     }
     // const post = new Post();
@@ -101,7 +103,7 @@ export class PostsService {
     const post = await this.postRepository.findOneOrFail({
       where: { id: id },
     });
-    return this.cloudinaryService.removeFile(post.postMedia);
+    return this.cloudinaryService.removeFile(post.mediaId);
   }
 
   /**
