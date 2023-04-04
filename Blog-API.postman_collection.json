@@ -77,7 +77,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "mutation updatePost($updatePostInput: UpdatePostInput!){\n    updatePost(updatePostInput: $updatePostInput) {\n        post {\n            id\n            title\n            description\n            published\n            publishedAt\n            slug\n            postMediaType\n            postMedia\n            trashed\n            author {\n                id\n                firstName\n                lastName\n                email\n                isActive\n            }\n        }\n    }\n}",
-								"variables": "{\n    \"updatePostInput\": {\n      \"id\": 64,\n      \"slug\": \"global-accounts-planner-jv0nnr\",\n      \"title\": \"updating title {{$randomFileName}}\",\n      \"description\": \"updating description 1\",\n      \"published\": true\n    }\n}"
+								"variables": "{\n    \"updatePostInput\": {\n      \"id\": \"768ad4da-7991-44e9-9832-aadfe50f6e74\",\n      \"slug\": \"international-branding-officer-bemmsn\",\n      \"title\": \"updating title {{$randomFileName}}\",\n      \"description\": \"updating description 1\",\n      \"published\": true\n    }\n}"
 							}
 						},
 						"url": {
@@ -150,8 +150,8 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "query findOnePost($id: Int!) {\n    findOnePost(id: $id) {\n        status\n        message\n        post {\n            title\n            description\n            published\n            publishedAt\n            slug\n            postMediaType\n            postMedia\n            trashed\n            author {\n                id\n                firstName\n                lastName\n                email\n                isActive\n                createdAt\n                updatedAt\n            }\n        }\n    }\n}\n\n# query {\n#     findAll\n# }",
-								"variables": "{\n    \"id\": 64\n}"
+								"query": "query findOnePost($id: ID!) {\n    findOnePost(id: $id) {\n        status\n        message\n        post {\n            title\n            description\n            published\n            publishedAt\n            slug\n            postMediaType\n            postMedia\n            trashed\n            author {\n                id\n                firstName\n                lastName\n                email\n                isActive\n                createdAt\n                updatedAt\n            }\n        }\n    }\n}\n\n# query {\n#     findAll\n# }",
+								"variables": "{\n    \"id\": \"768ad4da-7991-44e9-9832-aadfe50f6e74\"\n}"
 							}
 						},
 						"url": {
@@ -187,8 +187,8 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "mutation removePost($id: Int!){\n    removePost(id: $id) {\n        status\n        message\n        deleted\n    }\n}",
-								"variables": "{\n    \"id\": 63\n}"
+								"query": "mutation removePost($id: ID!){\n    removePost(id: $id) {\n        status\n        message\n        deleted\n    }\n}",
+								"variables": "{\n    \"id\": \"f362ef6b-e1f8-4518-88f1-8babf225c21c\"\n}"
 							}
 						},
 						"url": {
@@ -262,7 +262,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "query list($page: Int!, $limit: Int!){\n    list(page: $page, limit: $limit) {\n        status\n        message\n        total\n        posts {\n            id\n            title\n            description\n            published\n            publishedAt\n            slug\n            postMediaType\n            postMedia\n            author {\n                id\n                firstName\n                lastName\n                email\n                isActive\n                role\n            }\n        }\n    }\n}",
-								"variables": "{\n    \"page\": 4,\n    \"limit\": 5\n}"
+								"variables": "{\n    \"page\": 1,\n    \"limit\": 5\n}"
 							}
 						},
 						"url": {
@@ -389,7 +389,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "mutation updateCategory($updateCategoryInput: UpdateCategoryInput!){\n    updateCategory(updateCategoryInput: $updateCategoryInput) {\n        status\n        message\n        category {\n            title\n            description\n        }\n    }\n}",
-								"variables": "{\n    \"updateCategoryInput\": {\n      \"id\": 6,\n      \"title\": \"IT\",\n      \"description\": \"updating description 1\"\n    }\n}"
+								"variables": "{\n    \"updateCategoryInput\": {\n      \"id\": \"4341fa2d-d76e-4376-b907-92ab3f334189\",\n      \"title\": \"IT\",\n      \"description\": \"updating description 1213123\"\n    }\n}"
 							}
 						},
 						"url": {
@@ -425,8 +425,8 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "mutation removeCategory($id: Int!){\n    removeCategory(id: $id) {\n        status\n        message\n        deleted\n    }\n}",
-								"variables": "{\n    \"id\": 2\n}"
+								"query": "mutation removeCategory($id: ID!){\n    removeCategory(id: $id) {\n        status\n        message\n        deleted\n    }\n}",
+								"variables": "{\n    \"id\": \"4341fa2d-d76e-4376-b907-92ab3f334189\"\n}"
 							}
 						},
 						"url": {
@@ -462,7 +462,7 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "query findAllCategories {\n    findAllCategories {\n        status\n        message\n        categories {\n            title\n            description\n        }\n    }\n}\n\n# query {\n#     findAll\n# }",
+								"query": "query findAllCategories {\n    findAllCategories {\n        status\n        message\n        categories {\n            id\n            title\n            description\n        }\n    }\n}\n\n# query {\n#     findAll\n# }",
 								"variables": ""
 							}
 						},
@@ -499,8 +499,8 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "query findOneCategory($id: Int!) {\n    findOneCategory(id: $id) {\n        status\n        message\n        category {\n            title\n            description\n            createdAt\n            updatedAt\n        }\n    }\n}\n\n# query {\n#     findAll\n# }",
-								"variables": "{\n    \"id\": 6\n}"
+								"query": "query findOneCategory($id: ID!) {\n    findOneCategory(id: $id) {\n        status\n        message\n        category {\n            title\n            description\n            createdAt\n            updatedAt\n        }\n    }\n}\n\n# query {\n#     findAll\n# }",
+								"variables": "{\n    \"id\": \"4341fa2d-d76e-4376-b907-92ab3f334189\"\n}"
 							}
 						},
 						"url": {
@@ -536,8 +536,8 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "mutation createPost($createPostInput: CreatePostInput!){\n  createPost(createPostInput: $createPostInput) {\n      post {\n          title\n          description\n          published\n          publishedAt\n          slug\n          postMediaType\n          postMedia\n          author {\n              id\n              firstName\n              lastName\n              email\n              isActive\n              role\n          }\n      }\n  }\n}",
-								"variables": "{\n    \"createPostInput\": {\n      \"title\": \"{{$randomJobTitle}}\",\n      \"description\": \"{{$randomLoremParagraph}}\",\n      \"published\": true\n    }\n}"
+								"query": "query searchCategories($search: String!){\n    searchCategories(search: $search) {\n        status\n        message\n        total\n        categories {\n            id\n            title\n            description\n        }\n    }\n}",
+								"variables": "{\n    \"search\": \"quam\"\n}"
 							}
 						},
 						"url": {
@@ -579,7 +579,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "mutation createComment($createCommentInput: CreateCommentInput!){\n    createComment(createCommentInput: $createCommentInput) {\n        status\n        message\n        comment {\n            id\n            message\n            createdAt\n            post {\n                title\n                description\n                published\n                author{\n                    id\n                    firstName\n                    lastName\n                    email\n                }\n            }\n            author {\n                id\n                firstName\n                lastName\n                email\n            }\n        }\n    }\n}",
-								"variables": "{\n    \"createCommentInput\": {\n      \"message\": \"{{$randomLoremSentences}}\",\n      \"postId\": 64\n    }\n}"
+								"variables": "{\n    \"createCommentInput\": {\n      \"message\": \"{{$randomLoremSentences}}\",\n      \"postId\": \"fcb3546c-e65d-449b-a1b5-5c847a930512\"\n    }\n}"
 							}
 						},
 						"url": {
@@ -616,7 +616,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "mutation createComment($createCommentInput: CreateCommentInput!){\n    createComment(createCommentInput: $createCommentInput) {\n        status\n        message\n        comment {\n            id\n            message\n            createdAt\n            post {\n                title\n                description\n                published\n                author{\n                    id\n                    firstName\n                    lastName\n                    email\n                }\n            }\n            author {\n                id\n                firstName\n                lastName\n                email\n            }\n        }\n    }\n}",
-								"variables": "{\n    \"createCommentInput\": {\n      \"message\": \"{{$randomLoremSentences}}\",\n      \"postId\": 64,\n      \"parentId\": 4\n    }\n}"
+								"variables": "{\n    \"createCommentInput\": {\n      \"message\": \"{{$randomLoremSentences}}\",\n      \"postId\": \"fcb3546c-e65d-449b-a1b5-5c847a930512\",\n      \"parentId\": \"99530ab5-0538-4700-9ca9-d5107b428ccc\"\n    }\n}"
 							}
 						},
 						"url": {
@@ -653,7 +653,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "mutation updateComment($updateCommentInput: UpdateCommentInput!){\n    updateComment(updateCommentInput: $updateCommentInput) {\n        status\n        message\n        comment {\n            id\n            message\n            post {\n                id\n                title\n            }\n            author {\n                id\n                firstName\n                lastName\n                email\n            }\n        }\n    }\n}",
-								"variables": "{\n    \"updateCommentInput\": {\n      \"id\": 10,\n      \"message\": \"IT\"\n    }\n}"
+								"variables": "{\n    \"updateCommentInput\": {\n      \"id\": \"99530ab5-0538-4700-9ca9-d5107b428ccc\",\n      \"message\": \"IT\"\n    }\n}"
 							}
 						},
 						"url": {
@@ -671,7 +671,7 @@
 					"response": []
 				},
 				{
-					"name": "Delete Category (GQL) Copy",
+					"name": "Delete Comment (GQL)",
 					"request": {
 						"method": "POST",
 						"header": [
@@ -689,8 +689,8 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "mutation removeComment($id: Int!){\n    removeComment(id: $id) {\n        status\n        message\n        deleted\n    }\n}",
-								"variables": "{\n    \"id\": 24\n}"
+								"query": "mutation removeComment($id: ID!){\n    removeComment(id: $id) {\n        status\n        message\n        deleted\n    }\n}",
+								"variables": "{\n    \"id\": \"fd15c4ad-a1df-471d-af82-a1442978f942\"\n}"
 							}
 						},
 						"url": {
@@ -726,8 +726,8 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "query findOneComment($id: Int!) {\n    findOneComment(id: $id) {\n        status\n        message\n        comment {\n            id\n            message\n            post {\n                id\n                title\n                description\n            }\n            author {\n                id\n                firstName\n                lastName\n                email\n            }\n        }\n    }\n}\n\n# query {\n#     findAll\n# }",
-								"variables": "{\n    \"id\": 11\n}"
+								"query": "query findOneComment($id: ID!) {\n    findOneComment(id: $id) {\n        status\n        message\n        comment {\n            id\n            message\n            post {\n                id\n                title\n                description\n            }\n            author {\n                id\n                firstName\n                lastName\n                email\n            }\n        }\n    }\n}\n\n# query {\n#     findAll\n# }",
+								"variables": "{\n    \"id\": \"cc97754d-a950-4681-bc3d-f2b83132d1b2\"\n}"
 							}
 						},
 						"url": {
@@ -763,8 +763,8 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "query getPostComments($postId: Int!) {\n    getPostComments(postId: $postId) {\n        status\n        message\n        total\n        comments {\n            id\n            replies {\n                id\n                replies {\n                    id\n                    replies {\n                        id\n                        replies {\n                            id\n                            replies {\n                                id\n                            }\n                        }\n                    }\n                }\n            }\n            reply {\n                id\n            }\n        }\n    }\n}\n\n# query {\n#     findAll\n# }",
-								"variables": "{\n    \"postId\": 64\n}"
+								"query": "query getPostComments($postId: ID!) {\n    getPostComments(postId: $postId) {\n        status\n        message\n        total\n        comments {\n            id\n            replies {\n                id\n                replies {\n                    id\n                    replies {\n                        id\n                        replies {\n                            id\n                            replies {\n                                id\n                            }\n                        }\n                    }\n                }\n            }\n            reply {\n                id\n            }\n        }\n    }\n}\n\n# query {\n#     findAll\n# }",
+								"variables": "{\n    \"postId\": \"fcb3546c-e65d-449b-a1b5-5c847a930512\"\n}"
 							}
 						},
 						"url": {
@@ -852,7 +852,7 @@
 				"body": {
 					"mode": "graphql",
 					"graphql": {
-						"query": "mutation Register($data: UserRegisterReqDto!){\n  register(data: $data){\n    status\n    message\n    user{\n      firstName\n      lastName\n      email\n      isActive\n      role\n      password\n    }\n  }\n}\n\n# query {\n#     Register($data: UserRegisterReqDto!) {\n#         register(data: $data){\n#             status\n#             message\n#             user {\n#                 firstName\n#                 lastName\n#                 email\n#             }\n#         }\n#     }\n# }",
+						"query": "mutation Register($data: UserRegisterReqDto!){\n    register(data: $data){\n        status\n        message\n        user {\n            id\n            firstName\n            lastName\n            email\n            isActive\n            role\n            password\n        }\n    }\n}\n\n# query {\n#     Register($data: UserRegisterReqDto!) {\n#         register(data: $data){\n#             status\n#             message\n#             user {\n#                 firstName\n#                 lastName\n#                 email\n#             }\n#         }\n#     }\n# }",
 						"variables": "{\n    \"data\": {\n        \"firstName\": \"{{$randomFirstName}}\",\n        \"lastName\": \"{{$randomLastName}}\",\n        \"email\": \"{{$randomEmail}}\",\n        \"password\":\"Password@123\",\n        \"confirmPassword\":\"Password@123\",\n        \"role\": \"NORMAL_USER\"\n    }\n}"
 					}
 				},
@@ -930,7 +930,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:3000/user/1",
+					"raw": "http://localhost:3000/user/881dc29b-a371-40da-a91b-83598ec13ce2",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -938,7 +938,7 @@
 					"port": "3000",
 					"path": [
 						"user",
-						"1"
+						"881dc29b-a371-40da-a91b-83598ec13ce2"
 					]
 				}
 			},
@@ -958,7 +958,7 @@
 				"body": {
 					"mode": "graphql",
 					"graphql": {
-						"query": "query getUser{\n  getUser {\n  \tuser {\n        firstName\n        lastName\n        email\n        isActive\n        role\n    }\n    message\n    status\n  }\n}\n\n# query {\n#     getUser{\n#         status\n#         message\n#         user{\n#             firstName\n#         }\n#     }\n# }",
+						"query": "query getUser{\n    getUser {\n        user {\n            id\n            firstName\n            lastName\n            email\n            isActive\n            role\n        }\n        message\n        status\n    }\n}\n\n# query {\n#     getUser{\n#         status\n#         message\n#         user{\n#             firstName\n#         }\n#     }\n# }",
 						"variables": ""
 					}
 				},
@@ -990,7 +990,7 @@
 				"body": {
 					"mode": "graphql",
 					"graphql": {
-						"query": "{\n  getAdmin{\n    status\n    user{\n      firstName\n      email\n      role\n    }\n    message\n  }\n}",
+						"query": "{\n    getAdmin{\n        status\n        user{\n        firstName\n        email\n        role\n        }\n        message\n    }\n}",
 						"variables": ""
 					}
 				},
@@ -1022,7 +1022,7 @@
 				"body": {
 					"mode": "graphql",
 					"graphql": {
-						"query": "{\n  getAuthLoggedUser{\n    status\n    user{\n      firstName\n      email\n      role\n    }\n    message\n  }\n}",
+						"query": "{\n    getAuthLoggedUser{\n        status\n        user{\n        firstName\n        email\n        role\n        }\n        message\n    }\n}",
 						"variables": ""
 					}
 				},
@@ -1192,7 +1192,7 @@
 				"body": {
 					"mode": "graphql",
 					"graphql": {
-						"query": "# mutation localStrategyLogin($username: String!, $password: String!){\n#   localStrategyLogin(username: $username, password: $password){\n#     status\n#     message\n#     user{\n#       firstName\n#       lastName\n#       email\n#       role\n#     }\n#   }\n# }\n\nmutation {\n    localStrategyLogin(username: \"{{email}}\", password: \"{{password}}\"){\n        status\n        message\n        user{\n            firstName\n            lastName\n            email\n            role\n            password\n        }\n    }\n}\n",
+						"query": "# mutation localStrategyLogin($username: String!, $password: String!){\n#   localStrategyLogin(username: $username, password: $password){\n#     status\n#     message\n#     user{\n#       firstName\n#       lastName\n#       email\n#       role\n#     }\n#   }\n# }\n\nmutation {\n    localStrategyLogin(username: \"{{email}}\", password: \"{{password}}\"){\n        status\n        message\n        user{\n            id\n            firstName\n            lastName\n            email\n            role\n            password\n        }\n    }\n}\n",
 						"variables": "{\n    \"username\": \"{{email}}\",\n    \"password\": \"{{password}}\"\n}"
 					}
 				},
@@ -1224,7 +1224,7 @@
 				"body": {
 					"mode": "graphql",
 					"graphql": {
-						"query": "# mutation localStrategyGetUser($username: String!, $password: String!){\n#   localStrategyGetUser(username: $username, password: $password){\n#     status\n#     message\n#     user{\n#       firstName\n#       lastName\n#       email\n#       role\n#     }\n#   }\n# }\n\nmutation {\n    localStrategyGetUser(username: \"{{email}}\", password: \"{{password}}\"){\n        user{\n            firstName\n            lastName\n            email\n            role\n            password\n        }\n    }\n}\n",
+						"query": "# mutation localStrategyGetUser($username: String!, $password: String!){\n#   localStrategyGetUser(username: $username, password: $password){\n#     status\n#     message\n#     user{\n#       firstName\n#       lastName\n#       email\n#       role\n#     }\n#   }\n# }\n\nmutation {\n    localStrategyGetUser(username: \"{{email}}\", password: \"{{password}}\"){\n        user{\n            id\n            firstName\n            lastName\n            email\n            role\n            password\n        }\n    }\n}\n",
 						"variables": "{\n    \"username\": \"{{email}}\",\n    \"password\": \"{{password}}\"\n}"
 					}
 				},
