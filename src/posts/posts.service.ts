@@ -9,12 +9,14 @@ import { Category } from './categories/entities/category.entity';
 import { createWriteStream } from 'fs';
 import { CloudinaryService } from './cloudinary.service';
 import { FileUpload } from 'graphql-upload-minimal';
+import { generateRandomString } from '../utils/app.utils';
 
 @Injectable()
 export class PostsService {
   /**
    * @param postRepository
    * @param categoryRepository
+   * @param cloudinaryService
    */
   constructor(
     @InjectRepository(Post) public readonly postRepository: Repository<Post>,
@@ -43,7 +45,9 @@ export class PostsService {
     }
     if (mediaFile) {
       //post.postMedia = await this.uploadFile(await mediaFile);
-      post.postMedia = await this.cloudinaryService.uploadFile(await mediaFile);
+      post.postMedia = await this.cloudinaryService.uploadStream(
+        await mediaFile,
+      );
       console.log(post.postMedia);
     }
     // const post = new Post();
@@ -150,9 +154,9 @@ export class PostsService {
   uploadFile(file: FileUpload): Promise<string> {
     const { createReadStream, filename } = file;
     const extension = filename.split('.')[1];
-    const path =
-      process.cwd() + '/public/uploads/' + Date.now() / 1000 + '.' + extension;
-    const name = `/uploads/${Date.now() / 1000}.${extension}`;
+    const name = `${generateRandomString(10)}_${Date.now()}.${extension}`;
+    const path = process.cwd() + '/public/uploads/' + name;
+
     return new Promise((resolve, reject) =>
       createReadStream()
         .pipe(createWriteStream(path))

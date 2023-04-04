@@ -1,4 +1,4 @@
-import { InputType, Field, Int } from '@nestjs/graphql';
+import { InputType, Field, ID } from '@nestjs/graphql';
 import { IsNotEmpty } from 'class-validator';
 
 @InputType()
@@ -8,9 +8,9 @@ export class CreateCommentInput {
   message: string;
 
   @IsNotEmpty()
-  @Field(() => Int, { nullable: true })
+  @Field(() => ID, { nullable: true })
   postId: number;
 
-  @Field(() => Int, { nullable: true })
+  @Field(() => ID, { nullable: true })
   parentId?: number;
 }

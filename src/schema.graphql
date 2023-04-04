@@ -3,7 +3,7 @@
 # ------------------------------------------------------
 
 type UserJwtPayloadDto {
-  id: Int
+  id: ID
   firstName: String
   lastName: String
   email: String
@@ -20,7 +20,7 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 scalar DateTime
 
 type Comment {
-  id: Int!
+  id: ID!
   createdAt: DateTime!
   updatedAt: DateTime
   message: String
@@ -34,7 +34,7 @@ type Comment {
 }
 
 type Category {
-  id: Int!
+  id: ID!
   createdAt: DateTime!
   updatedAt: DateTime
   title: String
@@ -42,7 +42,7 @@ type Category {
 }
 
 type Post {
-  id: Int!
+  id: ID!
   createdAt: DateTime!
   updatedAt: DateTime
   title: String!
@@ -107,14 +107,14 @@ type Query {
   getAuthLoggedUser: UserRegisterResponseDto!
   jwtStrategyGetUser: UserRegisterResponseDto!
   findAllCategories: CategoryResponseDto!
-  findOneCategory(id: Int!): CategoryResponseDto!
-  post: [Post!]!
+  findOneCategory(id: ID!): CategoryResponseDto!
+  searchCategories(search: String! = ""): CategoryResponseDto!
   list(page: Int!, limit: Int!): PostResponseDto!
   findAllPosts: PostResponseDto!
-  findOnePost(id: Int!): PostResponseDto!
+  findOnePost(id: ID!): PostResponseDto!
   searchPost(search: String! = ""): PostResponseDto!
-  findOneComment(id: Int!): CommentResponseDto!
-  getPostComments(postId: Int!): CommentResponseDto!
+  findOneComment(id: ID!): CommentResponseDto!
+  getPostComments(postId: ID!): CommentResponseDto!
 }
 
 type Mutation {
@@ -125,14 +125,14 @@ type Mutation {
   jwtLogin(username: String!, password: String!): UserRegisterResponseDto!
   createCategory(createCategoryInput: CreateCategoryInput!): CategoryResponseDto!
   updateCategory(updateCategoryInput: UpdateCategoryInput!): CategoryResponseDto!
-  removeCategory(id: Int!): CategoryResponseDto!
+  removeCategory(id: ID!): CategoryResponseDto!
   createPost(createPostInput: CreatePostInput!): PostResponseDto!
   updatePost(updatePostInput: UpdatePostInput!): PostResponseDto!
-  removePost(id: Int!): PostResponseDto!
+  removePost(id: ID!): PostResponseDto!
   uploadFile(fileInput: FileInput!): String!
   createComment(createCommentInput: CreateCommentInput!): CommentResponseDto!
   updateComment(updateCommentInput: UpdateCommentInput!): CommentResponseDto!
-  removeComment(id: Int!): CommentResponseDto!
+  removeComment(id: ID!): CommentResponseDto!
 }
 
 input UserRegisterReqDto {
@@ -152,7 +152,7 @@ input CreateCategoryInput {
 input UpdateCategoryInput {
   title: String
   description: String
-  id: Int!
+  id: ID!
 }
 
 input CreatePostInput {
@@ -174,7 +174,7 @@ input UpdatePostInput {
   categories: [Int!]
   mediaType: String
   mediaFile: Upload
-  id: Int!
+  id: ID!
   slug: String!
 }
 
@@ -184,13 +184,13 @@ input FileInput {
 
 input CreateCommentInput {
   message: String!
-  postId: Int
-  parentId: Int
+  postId: ID
+  parentId: ID
 }
 
 input UpdateCommentInput {
   message: String
-  postId: Int
-  parentId: Int
-  id: Int!
+  postId: ID
+  parentId: ID
+  id: ID!
 }

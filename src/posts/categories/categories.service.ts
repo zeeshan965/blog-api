@@ -2,7 +2,7 @@ import { HttpStatus, Injectable } from '@nestjs/common';
 import { CreateCategoryInput } from './dto/create-category.input';
 import { UpdateCategoryInput } from './dto/update-category.input';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { ILike, Repository } from 'typeorm';
 import { Category } from './entities/category.entity';
 
 @Injectable()
@@ -53,11 +53,15 @@ export class CategoriesService {
   }
 
   /**
-   *
+   * @param search
    */
-  findAll() {
+  async findAll(search?: string): Promise<Category[]> {
     return this.categoryRepository.find({
       relations: { posts: true },
+      where: [
+        { title: ILike(`%${search}%`) },
+        { description: ILike(`%${search}%`) },
+      ],
     });
   }
 

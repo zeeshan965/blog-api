@@ -6,12 +6,12 @@ import {
   BeforeUpdate,
 } from 'typeorm';
 import { Exclude } from 'class-transformer';
-import { Field, Int, ObjectType } from '@nestjs/graphql';
+import { Field, ID, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
 export abstract class AbstractEntity extends BaseEntity {
-  @PrimaryGeneratedColumn()
-  @Field(() => Int)
+  @PrimaryGeneratedColumn('uuid')
+  @Field(() => ID)
   id: number;
 
   @CreateDateColumn({

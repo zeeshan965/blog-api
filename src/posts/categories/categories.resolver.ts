@@ -1,4 +1,4 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, ID } from '@nestjs/graphql';
 import { CategoriesService } from './categories.service';
 import { Category } from './entities/category.entity';
 import { CreateCategoryInput } from './dto/create-category.input';
@@ -6,7 +6,6 @@ import { UpdateCategoryInput } from './dto/update-category.input';
 import { CategoryResponseDto } from './dto/category-response.dto';
 import { UseGuards } from '@nestjs/common';
 import { GqlJwtAuthGuard } from '../../guards/gql-jwt-auth.guard';
-import { Post } from '../entities/post.entity';
 
 @Resolver(() => Category)
 @UseGuards(GqlJwtAuthGuard)
@@ -44,7 +43,7 @@ export class CategoriesResolver {
    * @param id
    */
   @Mutation(() => CategoryResponseDto)
-  async removeCategory(@Args('id', { type: () => Int }) id: number) {
+  async removeCategory(@Args('id', { type: () => ID }) id: number) {
     const category = await this.categoryService.remove(id);
     return { message: 'success!', status: 200, deleted: category.affected };
   }
@@ -62,16 +61,25 @@ export class CategoriesResolver {
    * @param id
    */
   @Query(() => CategoryResponseDto)
-  async findOneCategory(@Args('id', { type: () => Int }) id: number) {
+  async findOneCategory(@Args('id', { type: () => ID }) id: number) {
     const category: Category = await this.categoryService.findOne(id);
     return { message: 'success!', status: 200, category: category };
   }
 
   /**
-   *
+   * @param search
    */
-  @Query(() => [Post], { name: 'post' })
-  searchCategories() {
-    return this.categoryService.findAll();
+  @Query(() => CategoryResponseDto)
+  async searchCategories(
+    @Args({ name: 'search', type: () => String, defaultValue: '' })
+    search: string,
+  ) {
+    const categories: Category[] = await this.categoryService.findAll(search);
+    return {
+      message: 'success!',
+      status: 200,
+      categories: categories,
+      total: categories.length,
+    };
   }
 }

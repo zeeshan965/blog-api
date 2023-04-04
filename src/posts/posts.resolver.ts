@@ -1,4 +1,4 @@
-import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, ID, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { PostsService } from './posts.service';
 import { Post } from './entities/post.entity';
 import { CreatePostInput } from './dto/create-post.input';
@@ -67,7 +67,7 @@ export class PostsResolver {
    * @param id
    */
   @Mutation(() => PostResponseDto)
-  async removePost(@Args('id', { type: () => Int }) id: number) {
+  async removePost(@Args('id', { type: () => ID }) id: number) {
     const post = await this.postService.remove(id);
     return { message: 'success!', status: 200, deleted: post.affected };
   }
@@ -85,7 +85,7 @@ export class PostsResolver {
    * @param id
    */
   @Query(() => PostResponseDto)
-  async findOnePost(@Args('id', { type: () => Int }) id: number) {
+  async findOnePost(@Args('id', { type: () => ID }) id: number) {
     const post: Post = await this.postService.findOne(id);
     return { message: 'success!', status: 200, post: post };
   }
@@ -112,8 +112,9 @@ export class PostsResolver {
    */
   @Mutation(() => String)
   async uploadFile(@Args('fileInput') fileInput: FileInput): Promise<string> {
-    return this.cloudinaryService.uploadFile(await fileInput.file);
+    const path = await this.postService.uploadFile(await fileInput.file);
+    return this.cloudinaryService.uploadFile(path);
+    //return this.cloudinaryService.uploadStream(await fileInput.file);
     //return this.cloudinaryService.uploadLargeFile(await fileInput.file);
-    //return await this.postService.uploadFile(await fileInput.file);
   }
 }

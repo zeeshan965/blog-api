@@ -40,6 +40,8 @@ export class AuthResolver {
     data: UserRegisterReqDto,
   ) {
     const user = await this.userService.registerUser(data);
+    //user.toJSON() will be an additional check to not send password information because it is excluded
+    //But its already been handled from the main.ts serializer
     return { user: user.toJSON(), message: 'success', status: 200 };
   }
   /** ------------------------------------------ End Normal Register Route ------------------------------------------- */

@@ -25,7 +25,7 @@ export interface CreateCategoryInput {
 export interface UpdateCategoryInput {
     title?: Nullable<string>;
     description?: Nullable<string>;
-    id: number;
+    id: string;
 }
 
 export interface CreatePostInput {
@@ -44,7 +44,7 @@ export interface UpdatePostInput {
     categories?: Nullable<number[]>;
     mediaType?: Nullable<string>;
     mediaFile?: Nullable<Upload>;
-    id: number;
+    id: string;
     slug: string;
 }
 
@@ -54,19 +54,19 @@ export interface FileInput {
 
 export interface CreateCommentInput {
     message: string;
-    postId?: Nullable<number>;
-    parentId?: Nullable<number>;
+    postId?: Nullable<string>;
+    parentId?: Nullable<string>;
 }
 
 export interface UpdateCommentInput {
     message?: Nullable<string>;
-    postId?: Nullable<number>;
-    parentId?: Nullable<number>;
-    id: number;
+    postId?: Nullable<string>;
+    parentId?: Nullable<string>;
+    id: string;
 }
 
 export interface UserJwtPayloadDto {
-    id?: Nullable<number>;
+    id?: Nullable<string>;
     firstName?: Nullable<string>;
     lastName?: Nullable<string>;
     email?: Nullable<string>;
@@ -78,7 +78,7 @@ export interface UserJwtPayloadDto {
 }
 
 export interface Comment {
-    id: number;
+    id: string;
     createdAt: DateTime;
     updatedAt?: Nullable<DateTime>;
     message?: Nullable<string>;
@@ -92,7 +92,7 @@ export interface Comment {
 }
 
 export interface Category {
-    id: number;
+    id: string;
     createdAt: DateTime;
     updatedAt?: Nullable<DateTime>;
     title?: Nullable<string>;
@@ -100,7 +100,7 @@ export interface Category {
 }
 
 export interface Post {
-    id: number;
+    id: string;
     createdAt: DateTime;
     updatedAt?: Nullable<DateTime>;
     title: string;
@@ -165,14 +165,14 @@ export interface IQuery {
     getAuthLoggedUser(): UserRegisterResponseDto | Promise<UserRegisterResponseDto>;
     jwtStrategyGetUser(): UserRegisterResponseDto | Promise<UserRegisterResponseDto>;
     findAllCategories(): CategoryResponseDto | Promise<CategoryResponseDto>;
-    findOneCategory(id: number): CategoryResponseDto | Promise<CategoryResponseDto>;
-    post(): Post[] | Promise<Post[]>;
+    findOneCategory(id: string): CategoryResponseDto | Promise<CategoryResponseDto>;
+    searchCategories(search: string): CategoryResponseDto | Promise<CategoryResponseDto>;
     list(page: number, limit: number): PostResponseDto | Promise<PostResponseDto>;
     findAllPosts(): PostResponseDto | Promise<PostResponseDto>;
-    findOnePost(id: number): PostResponseDto | Promise<PostResponseDto>;
+    findOnePost(id: string): PostResponseDto | Promise<PostResponseDto>;
     searchPost(search: string): PostResponseDto | Promise<PostResponseDto>;
-    findOneComment(id: number): CommentResponseDto | Promise<CommentResponseDto>;
-    getPostComments(postId: number): CommentResponseDto | Promise<CommentResponseDto>;
+    findOneComment(id: string): CommentResponseDto | Promise<CommentResponseDto>;
+    getPostComments(postId: string): CommentResponseDto | Promise<CommentResponseDto>;
 }
 
 export interface IMutation {
@@ -183,14 +183,14 @@ export interface IMutation {
     jwtLogin(username: string, password: string): UserRegisterResponseDto | Promise<UserRegisterResponseDto>;
     createCategory(createCategoryInput: CreateCategoryInput): CategoryResponseDto | Promise<CategoryResponseDto>;
     updateCategory(updateCategoryInput: UpdateCategoryInput): CategoryResponseDto | Promise<CategoryResponseDto>;
-    removeCategory(id: number): CategoryResponseDto | Promise<CategoryResponseDto>;
+    removeCategory(id: string): CategoryResponseDto | Promise<CategoryResponseDto>;
     createPost(createPostInput: CreatePostInput): PostResponseDto | Promise<PostResponseDto>;
     updatePost(updatePostInput: UpdatePostInput): PostResponseDto | Promise<PostResponseDto>;
-    removePost(id: number): PostResponseDto | Promise<PostResponseDto>;
+    removePost(id: string): PostResponseDto | Promise<PostResponseDto>;
     uploadFile(fileInput: FileInput): string | Promise<string>;
     createComment(createCommentInput: CreateCommentInput): CommentResponseDto | Promise<CommentResponseDto>;
     updateComment(updateCommentInput: UpdateCommentInput): CommentResponseDto | Promise<CommentResponseDto>;
-    removeComment(id: number): CommentResponseDto | Promise<CommentResponseDto>;
+    removeComment(id: string): CommentResponseDto | Promise<CommentResponseDto>;
 }
 
 export type DateTime = any;

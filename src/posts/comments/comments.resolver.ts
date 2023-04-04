@@ -3,9 +3,9 @@ import {
   Query,
   Mutation,
   Args,
-  Int,
   ResolveField,
   Parent,
+  ID,
 } from '@nestjs/graphql';
 import { CommentsService } from './comments.service';
 import { Comment } from './entities/comment.entity';
@@ -56,7 +56,7 @@ export class CommentsResolver {
    * @param id
    */
   @Mutation(() => CommentResponseDto)
-  async removeComment(@Args('id', { type: () => Int }) id: number) {
+  async removeComment(@Args('id', { type: () => ID }) id: number) {
     const comment = await this.commentsService.remove(id);
     return { message: 'success!', status: 200, deleted: comment.affected };
   }
@@ -65,7 +65,7 @@ export class CommentsResolver {
    * @param id
    */
   @Query(() => CommentResponseDto)
-  async findOneComment(@Args('id', { type: () => Int }) id: number) {
+  async findOneComment(@Args('id', { type: () => ID }) id: number) {
     const comment: Comment = await this.commentsService.findOne(id);
     return { message: 'success!', status: 200, comment: comment };
   }
@@ -74,7 +74,7 @@ export class CommentsResolver {
    * @param postId
    */
   @Query(() => CommentResponseDto)
-  async getPostComments(@Args('postId', { type: () => Int }) postId: number) {
+  async getPostComments(@Args('postId', { type: () => ID }) postId: number) {
     const comments: Comment[] = await this.commentsService.getPostComments(
       postId,
     );

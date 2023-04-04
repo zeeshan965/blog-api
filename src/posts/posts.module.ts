@@ -7,6 +7,7 @@ import { Category } from './categories/entities/category.entity';
 import { CategoriesModule } from './categories/categories.module';
 import { graphqlUploadExpress } from 'graphql-upload-minimal';
 import { CloudinaryService } from './cloudinary.service';
+import { NextFunction, Request, Response } from 'express';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Post, Category]), CategoriesModule],
@@ -15,6 +16,12 @@ import { CloudinaryService } from './cloudinary.service';
 })
 export class PostsModule {
   configure(consumer) {
+    consumer.apply(
+      (request: Request, response: Response, next: NextFunction) => {
+        //multer
+        next();
+      },
+    );
     consumer.apply(graphqlUploadExpress({ maxFiles: 10 })).forRoutes('graphql');
   }
 }
