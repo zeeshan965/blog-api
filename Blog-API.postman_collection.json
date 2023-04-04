@@ -206,6 +206,43 @@
 					"response": []
 				},
 				{
+					"name": "Remove Post Image (GQL)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query removeFile($id: ID!){\n    removeFile(id: $id)\n}",
+								"variables": "{\n    \"id\": \"f33ed84b-9e60-489b-874b-104f6140253d\"\n}"
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/graphql",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Search Posts (GQL)",
 					"request": {
 						"method": "POST",

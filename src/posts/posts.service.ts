@@ -95,6 +95,16 @@ export class PostsService {
   }
 
   /**
+   * @param id
+   */
+  async removeFile(id: number) {
+    const post = await this.postRepository.findOneOrFail({
+      where: { id: id },
+    });
+    return this.cloudinaryService.removeFile(post.postMedia);
+  }
+
+  /**
    * @param search
    */
   async findAll(search?: string): Promise<Post[]> {

@@ -58,7 +58,7 @@ export class CloudinaryService {
     this.options.filename_override = file;
     const path = join(process.cwd(), 'public/uploads/' + file);
     const result = await cloudinary.uploader.upload(path, this.options);
-
+    console.log(result);
     return result.secure_url;
   }
 
@@ -89,12 +89,19 @@ export class CloudinaryService {
    * @param public_id
    */
   async removeFile(public_id: string) {
-    return cloudinary.uploader.destroy(public_id, (error, result) => {
-      if (error) {
-        console.error(error);
-      } else {
-        console.log(result);
-      }
+    console.log(public_id);
+    public_id =
+      'https://res.cloudinary.com/dccnwzbs1/image/upload/v1680607556/samples/people/U5QQnVt08y_1680607554973.png';
+    return await new Promise((resolve, reject) => {
+      cloudinary.uploader.destroy(public_id, (error, result) => {
+        if (error) {
+          console.error(error);
+          reject(error.message);
+        } else {
+          console.log(result);
+          resolve(result);
+        }
+      });
     });
   }
 }

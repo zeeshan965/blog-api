@@ -119,12 +119,11 @@ export class PostsResolver {
   }
 
   /**
-   * @param fileInput
+   * @param id
    */
   @Query(() => String)
   async removeFile(@Args('id', { type: () => ID }) id: number) {
-    return this.postService.removeFile(id);
-    //return this.cloudinaryService.uploadStream(await fileInput.file);
-    //return this.cloudinaryService.uploadLargeFile(await fileInput.file);
+    const post = await this.postService.removeFile(id);
+    return 'success!';
   }
 }
