@@ -84,14 +84,13 @@ export class CloudinaryService {
   /**
    * @param public_id
    */
-  async removeFile(public_id: string) {
-    public_id = 'samples/people/SVtSIZhRUK_1680679367780';
+  async removeFile(public_id: string): Promise<boolean> {
     return await new Promise((resolve, reject) => {
       cloudinary.uploader.destroy(public_id, (error, result) => {
         if (error) {
           reject(error.message);
         } else {
-          resolve(result.result);
+          resolve(result.result === 'ok');
         }
       });
     });

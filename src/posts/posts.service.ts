@@ -102,7 +102,12 @@ export class PostsService {
     const post = await this.postRepository.findOneOrFail({
       where: { id: id },
     });
-    return this.cloudinaryService.removeFile(post.mediaId);
+    const status = await this.cloudinaryService.removeFile(post.mediaId);
+    if (status) {
+      post.postMedia = '';
+      await post.save();
+    }
+    return status;
   }
 
   /**

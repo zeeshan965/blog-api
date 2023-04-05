@@ -135,7 +135,7 @@ export class PostsResolver {
   /**
    * @param id
    */
-  @Query(() => String)
+  @Query(() => Boolean)
   async removeFile(@Args('id', { type: () => ID }) id: number) {
     return await this.postService.removeFile(id);
   }

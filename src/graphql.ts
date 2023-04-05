@@ -173,7 +173,7 @@ export interface IQuery {
     findOnePost(id: string): PostResponseDto | Promise<PostResponseDto>;
     searchPost(search: string): PostResponseDto | Promise<PostResponseDto>;
     getFiles(): string[] | Promise<string[]>;
-    removeFile(id: string): string | Promise<string>;
+    removeFile(id: string): boolean | Promise<boolean>;
     findOneComment(id: string): CommentResponseDto | Promise<CommentResponseDto>;
     getPostComments(postId: string): CommentResponseDto | Promise<CommentResponseDto>;
 }
