@@ -114,6 +114,7 @@ type Query {
   findAllPosts: PostResponseDto!
   findOnePost(id: ID!): PostResponseDto!
   searchPost(search: String! = ""): PostResponseDto!
+  getFiles: [String!]!
   removeFile(id: ID!): String!
   findOneComment(id: ID!): CommentResponseDto!
   getPostComments(postId: ID!): CommentResponseDto!

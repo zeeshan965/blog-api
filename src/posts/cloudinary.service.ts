@@ -1,5 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { UploadApiErrorResponse, UploadApiOptions, UploadApiResponse, v2 as cloudinary } from 'cloudinary';
+import {
+  UploadApiErrorResponse,
+  UploadApiOptions,
+  UploadApiResponse,
+  v2 as cloudinary,
+} from 'cloudinary';
 import { FileUpload } from 'graphql-upload-minimal';
 import { generateRandomString } from '../utils/app.utils';
 import { join } from 'path';
@@ -9,9 +14,6 @@ export class CloudinaryService {
   private options: UploadApiOptions = {
     folder: 'samples/people/',
     use_filename: true,
-    unique_filename: false,
-    overwrite: true,
-    discard_original_filename: true,
   };
 
   constructor() {
@@ -37,10 +39,8 @@ export class CloudinaryService {
         this.options,
         (error: UploadApiErrorResponse, result: UploadApiResponse) => {
           if (result) {
-            console.log(result);
             resolve(result);
           } else {
-            console.log(error.message);
             reject(error.message);
           }
         },
@@ -54,11 +54,9 @@ export class CloudinaryService {
    * @param file
    */
   async uploadFile(file: string): Promise<string> {
-    console.log(file);
     this.options.filename_override = file;
     const path = join(process.cwd(), 'public/uploads/' + file);
     const result = await cloudinary.uploader.upload(path, this.options);
-    console.log(result);
     return result.secure_url;
   }
 
@@ -73,10 +71,8 @@ export class CloudinaryService {
     return await new Promise((resolve, reject) => {
       const streamLoad = cloudinary.uploader.upload_stream((error, result) => {
         if (result) {
-          console.log(result);
           resolve(result.secure_url);
         } else {
-          console.log(error.message);
           reject(error.message);
         }
       });
@@ -89,17 +85,29 @@ export class CloudinaryService {
    * @param public_id
    */
   async removeFile(public_id: string) {
-    console.log(public_id);
+    public_id = 'samples/people/SVtSIZhRUK_1680679367780';
     return await new Promise((resolve, reject) => {
       cloudinary.uploader.destroy(public_id, (error, result) => {
         if (error) {
-          console.error(error);
           reject(error.message);
         } else {
-          console.log(result);
-          resolve(result);
+          resolve(result.result);
         }
       });
     });
+  }
+
+  /**
+   *
+   */
+  async getFolderResources() {
+    try {
+      const result = await cloudinary.search
+        .expression('folder:samples/people')
+        .execute();
+      return result.resources;
+    } catch (error) {
+      console.error(error);
+    }
   }
 }

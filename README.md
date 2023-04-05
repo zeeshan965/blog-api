@@ -674,6 +674,12 @@ import { graphqlUploadExpress } from 'graphql-upload-minimal';
 
 export class PostModule {
   configure(consumer) {
+    consumer.apply(
+      (request: Request, response: Response, next: NextFunction) => {
+        //custom middleware
+        next();
+      },
+    );
     consumer.apply(graphqlUploadExpress({ maxFiles: 10 })).forRoutes('graphql');
   }
 }
@@ -694,15 +700,17 @@ async uploadFile(
   @Args({ name: 'file', type: () => UploadScalar })
   //@Args({ name: 'file', type: () => GraphQLUpload })
 file: FileUpload,
-): Promise<boolean> {
-  const { createReadStream, filename } = await file;
+): Promise<string> {
+  const { createReadStream, filename } = file;
   const extension = filename.split('.')[1];
-  const path = `./uploads/${Date.now() / 1000}.${extension}`;
+  const name = `${generateRandomString(10)}_${Date.now()}.${extension}`;
+  const path = process.cwd() + '/public/uploads/' + name;
+
   return new Promise((resolve, reject) =>
     createReadStream()
       .pipe(createWriteStream(path))
-      .on('finish', () => resolve(true))
-      .on('error', () => reject(false)),
+      .on('finish', () => resolve(name))
+      .on('error', () => reject('')),
   );
 }
 ```
@@ -726,5 +734,45 @@ export const UploadScalar = new GraphQLScalarType({
     throw new Error('Upload serialization unsupported.');
   },
 });
+```
+### Cloudinary Service
+https://console.cloudinary.com/documentation/node_integration
 
+```typescript
+import { v2 as cloudinary } from 'cloudinary';
+
+//Cloudinary configs
+cloudinary.config({
+  cloud_name: 'your-cloud-name',
+  api_key: 'your-api-key',
+  api_secret: 'your-api-secret',
+});
+
+//options
+// /node_modules/cloudinary/types/index.d.ts Line: 484
+options: UploadApiOptions = {
+  folder: 'samples/',
+  use_filename: true,
+  unique_filename: false,
+  overwrite: true,
+  discard_original_filename: true,
+}
+
+//Mechanism to upload file as blob
+return await new Promise((resolve, reject) => {
+  const streamLoad = cloudinary.uploader.upload_stream(
+    this.options,
+    (error: UploadApiErrorResponse, result: UploadApiResponse) => {
+      if (result) {
+        console.log(result);
+        resolve(result);
+      } else {
+        console.log(error.message);
+        reject(error.message);
+      }
+    },
+  );
+
+  stream.pipe(streamLoad);
+});
 ```

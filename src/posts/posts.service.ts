@@ -45,7 +45,6 @@ export class PostsService {
       });
     }
     if (mediaFile) {
-      //post.postMedia = await this.uploadFile(await mediaFile);
       const result: UploadApiResponse =
         await this.cloudinaryService.uploadStream(await mediaFile);
       post.postMedia = result.secure_url;

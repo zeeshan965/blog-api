@@ -10,6 +10,7 @@ import { User } from '../users/entity/user.entity';
 import { PostResponseDto } from './dto/post-response.dto';
 import { FileInput } from './dto/file.input';
 import { CloudinaryService } from './cloudinary.service';
+import { UploadApiResponse } from 'cloudinary';
 
 @Resolver(() => Post)
 @UseGuards(GqlJwtAuthGuard)
@@ -119,11 +120,23 @@ export class PostsResolver {
   }
 
   /**
+   *
+   */
+  @Query(() => [String])
+  async getFiles(): Promise<string[]> {
+    const links: string[] = [];
+    const resources = await this.cloudinaryService.getFolderResources();
+    resources.forEach((item: UploadApiResponse) => {
+      links.push(item.public_id);
+    });
+    return links;
+  }
+
+  /**
    * @param id
    */
   @Query(() => String)
   async removeFile(@Args('id', { type: () => ID }) id: number) {
-    const post = await this.postService.removeFile(id);
-    return 'success!';
+    return await this.postService.removeFile(id);
   }
 }
