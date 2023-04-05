@@ -5,6 +5,9 @@ export default () => ({
   jwt_expiry: process.env.JWT_EXPIRY || '1d',
   throttle_tl: process.env.THROTTLE_TTL || 60,
   throttle_limit: process.env.THROTTLE_LIMIT || 10,
+  cloudinary_name: process.env.CLOUDINARY_NAME || '',
+  cloudinary_api_key: process.env.CLOUDINARY_API_KEY || '',
+  cloudinary_api_secret: process.env.CLOUDINARY_API_SECRET || '',
   database: {
     type: process.env.DB_DRIVER || 'postgres',
     host: process.env.DB_HOST || 'localhost',

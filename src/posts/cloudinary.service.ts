@@ -8,6 +8,7 @@ import {
 import { FileUpload } from 'graphql-upload-minimal';
 import { generateRandomString } from '../utils/app.utils';
 import { join } from 'path';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class CloudinaryService {
@@ -16,11 +17,14 @@ export class CloudinaryService {
     use_filename: true,
   };
 
-  constructor() {
+  /**
+   * @param configService
+   */
+  constructor(configService: ConfigService) {
     cloudinary.config({
-      cloud_name: 'dccnwzbs1',
-      api_key: '875942885728423',
-      api_secret: 'aTGpdkhcyE8H-iQ7sIAydQEa7Ts',
+      cloud_name: configService.get('cloudinary_name'),
+      api_key: configService.get('cloudinary_api_key'),
+      api_secret: configService.get('cloudinary_api_secret'),
     });
   }
 
