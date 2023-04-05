@@ -225,7 +225,44 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "query removeFile($id: ID!){\n    removeFile(id: $id)\n}",
-								"variables": "{\n    \"id\": \"f33ed84b-9e60-489b-874b-104f6140253d\"\n}"
+								"variables": "{\n    \"id\": \"7d22844a-4ddb-478d-8948-ff9f56084ba0\"\n}"
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/graphql",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all files (GQL)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query getFiles{\n    getFiles\n}",
+								"variables": "{\n    \"id\": \"cffe5277-e2f8-41bf-920f-0a2e8fc2f4c5\"\n}"
 							}
 						},
 						"url": {

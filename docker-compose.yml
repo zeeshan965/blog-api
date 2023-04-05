@@ -1,0 +1,57 @@
+version: '2'
+
+services:
+  blog_api:
+    build: ./deployment/
+    container_name: blog_api
+    ports:
+      - "3300:3300"
+      - "9230:9230"
+    command: sh -c "/bin/bash"
+    volumes:
+      - ./:/var/www/html/
+      - ./var/bash_history.log:/root/.bash_history
+      - ./var:/var/log/
+    networks:
+      static-network:
+        ipv4_address: 172.20.128.3
+    tty: true
+
+#  nginx:
+#    image: tutum/nginx
+#    container_name: nginx
+#    ports:
+#      - "127.0.0.1:80:80"
+#    volumes:
+#      - ./deployment/nginx.conf:/etc/nginx/sites-enabled/blog_api.conf
+#      - ./deployment/nginx.conf:/etc/nginx/sites-available/blog_api.conf
+#      - ./var/log:/var/log/nginx
+#      - ./:/var/www/html/
+#    networks:
+#      static-network:
+#        ipv4_address: 172.20.128.1
+
+#  elasticsearch:
+#    image: docker.elastic.co/elasticsearch/elasticsearch:7.2.1
+#    container_name: elasticsearch
+#    environment:
+#      - node.name=elasticsearch
+#      - cluster.initial_master_nodes=elasticsearch
+#      - cluster.name=docker-cluster
+#      - bootstrap.memory_lock=false
+#      - "ES_JAVA_OPTS=-Xms1g -Xmx1g"
+#      - TAKE_FILE_OWNERSHIP=true
+#    ports:
+#      - "9200:9200"
+#    volumes:
+#      - ../elasticsearch/data:/usr/share/elasticsearch/data
+#    networks:
+#      static-network:
+#        ipv4_address: 172.20.128.2
+
+networks:
+  static-network:
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+          ip_range: 172.28.0.0/24
