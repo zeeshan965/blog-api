@@ -1,4 +1,4 @@
-version: '2'
+version: '3'
 
 services:
   blog_api:
@@ -17,37 +17,46 @@ services:
         ipv4_address: 172.20.128.3
     tty: true
 
-#  nginx:
-#    image: tutum/nginx
-#    container_name: nginx
-#    ports:
-#      - "127.0.0.1:80:80"
-#    volumes:
-#      - ./deployment/nginx.conf:/etc/nginx/sites-enabled/blog_api.conf
-#      - ./deployment/nginx.conf:/etc/nginx/sites-available/blog_api.conf
-#      - ./var/log:/var/log/nginx
-#      - ./:/var/www/html/
-#    networks:
-#      static-network:
-#        ipv4_address: 172.20.128.1
+  nginx:
+    image: tutum/nginx
+    container_name: nginx
+    ports:
+      - "127.0.0.1:80:80"
+    volumes:
+      - ./deployment/nginx.conf:/etc/nginx/sites-enabled/blog_api.conf
+      - ./deployment/nginx.conf:/etc/nginx/sites-available/blog_api.conf
+      - ./var/log:/var/log/nginx
+      - ./:/var/www/html/
+    networks:
+      static-network:
+        ipv4_address: 172.20.128.1
 
-#  elasticsearch:
-#    image: docker.elastic.co/elasticsearch/elasticsearch:7.2.1
-#    container_name: elasticsearch
-#    environment:
-#      - node.name=elasticsearch
-#      - cluster.initial_master_nodes=elasticsearch
-#      - cluster.name=docker-cluster
-#      - bootstrap.memory_lock=false
-#      - "ES_JAVA_OPTS=-Xms1g -Xmx1g"
-#      - TAKE_FILE_OWNERSHIP=true
-#    ports:
-#      - "9200:9200"
-#    volumes:
-#      - ../elasticsearch/data:/usr/share/elasticsearch/data
-#    networks:
-#      static-network:
-#        ipv4_address: 172.20.128.2
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.13.4
+    container_name: elasticsearch
+    environment:
+      - discovery.type=single-node
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    volumes:
+      - ../elasticsearch/data:/usr/share/elasticsearch/data
+    networks:
+      static-network:
+        ipv4_address: 172.20.128.2
+
+  postgres:
+    image: postgres:13
+    container_name: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: blog-api
+    ports:
+      - "5433:5432"
+    volumes:
+      - ../postgres-data:/var/lib/postgresql/data
 
 networks:
   static-network:

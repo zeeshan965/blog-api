@@ -29,11 +29,20 @@ Blog application built on [Nest](https://github.com/nestjs/nest) framework TypeS
 ## Installation
 
 ```bash
-$ npm install
+- npm install
 - copy .env.example file and create .env file
 - configure DB credentials
 - configure JWT
 - Import the postman collections from root directory, Currently GQL and Rest endpoints are included in the postman collection.
+```
+## Docker base setup
+```typescript
+//please review deployment directory
+//commands
+apt install docker
+apt install docker.io
+apt install docker-compose
+docker-compose up --build -d
 ```
 
 ## Running the app
