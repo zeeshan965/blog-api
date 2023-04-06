@@ -31,20 +31,6 @@ services:
       static-network:
         ipv4_address: 172.20.128.1
 
-  elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.13.4
-    container_name: elasticsearch
-    environment:
-      - discovery.type=single-node
-    ports:
-      - "9200:9200"
-      - "9300:9300"
-    volumes:
-      - ../elasticsearch/data:/usr/share/elasticsearch/data
-    networks:
-      static-network:
-        ipv4_address: 172.20.128.2
-
   postgres:
     image: postgres:13
     container_name: postgres
@@ -57,6 +43,9 @@ services:
       - "5433:5432"
     volumes:
       - ../postgres-data:/var/lib/postgresql/data
+    networks:
+      static-network:
+        ipv4_address: 172.20.128.32
 
 networks:
   static-network:
