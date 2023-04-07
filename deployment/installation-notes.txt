@@ -1,0 +1,13 @@
+- apt install docker
+- apt install docker.io
+- apt install docker-compose
+- docker-compose up --build -d //docker-compose up --build --force-recreate --remove-orphans
+- docker inspect elasticsearch
+- docker ps
+- goto sudo nano /etc/hosts and paste this 127.0.0.1 elasticsearch
+
+
+- docker run --name elastic_search8 -p 9400:9400 -p 9500:9500 -t docker.elastic.co/elasticsearch/elasticsearch:8.6.2
+
+
+
