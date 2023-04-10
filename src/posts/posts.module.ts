@@ -8,9 +8,14 @@ import { CategoriesModule } from './categories/categories.module';
 import { graphqlUploadExpress } from 'graphql-upload-minimal';
 import { CloudinaryService } from './cloudinary.service';
 import { NextFunction, Request, Response } from 'express';
+import { ElasticsearchModule } from '../elasticsearch/elasticsearch.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Post, Category]), CategoriesModule],
+  imports: [
+    TypeOrmModule.forFeature([Post, Category]),
+    CategoriesModule,
+    ElasticsearchModule,
+  ],
   providers: [PostsResolver, PostsService, CloudinaryService],
   exports: [PostsService],
 })

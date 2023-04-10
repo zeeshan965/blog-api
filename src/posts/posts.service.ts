@@ -11,6 +11,7 @@ import { CloudinaryService } from './cloudinary.service';
 import { FileUpload } from 'graphql-upload-minimal';
 import { generateRandomString } from '../utils/app.utils';
 import { UploadApiResponse } from 'cloudinary';
+import { ElasticsearchService } from '../elasticsearch/elasticsearch.service';
 
 @Injectable()
 export class PostsService {
@@ -18,12 +19,14 @@ export class PostsService {
    * @param postRepository
    * @param categoryRepository
    * @param cloudinaryService
+   * @param elasticService
    */
   constructor(
     @InjectRepository(Post) public readonly postRepository: Repository<Post>,
     @InjectRepository(Category)
     public readonly categoryRepository: Repository<Category>,
     private readonly cloudinaryService: CloudinaryService,
+    private readonly elasticService: ElasticsearchService,
   ) {}
 
   /**
@@ -114,6 +117,8 @@ export class PostsService {
    * @param search
    */
   async findAll(search?: string): Promise<Post[]> {
+    await this.elasticService.search('', {});
+
     /*const posts = await this.postRepository.find({
       where: {
         title: ILike('%direct%'),
