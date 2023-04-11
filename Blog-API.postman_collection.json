@@ -858,6 +858,239 @@
 			]
 		},
 		{
+			"name": "Elastic",
+			"item": [
+				{
+					"name": "Register(Elastic)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Your test name\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    console.log(jsonData);",
+									"    pm.environment.set(\"email\", jsonData.user.email);",
+									"    pm.environment.set(\"password\", \"Password@123\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"firstName\": \"{{$randomFirstName}}\",\n    \"lastName\": \"{{$randomLastName}}\",\n    \"email\": \"{{$randomEmail}}\",\n    \"password\": \"Password@123\",\n    \"confirmPassword\": \"Password@123\",\n    \"role\": \"ADMIN\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:9200/posts/_doc",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9200",
+							"path": [
+								"posts",
+								"_doc"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Search Users",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Your test name\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    console.log(jsonData);",
+									"    pm.environment.set(\"email\", jsonData.user.email);",
+									"    pm.environment.set(\"password\", \"Password@123\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"firstName\": \"{{$randomFirstName}}\",\n    \"lastName\": \"{{$randomLastName}}\",\n    \"email\": \"{{$randomEmail}}\",\n    \"password\": \"Password@123\",\n    \"confirmPassword\": \"Password@123\",\n    \"role\": \"ADMIN\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:9200/posts/_search?q=title:zeeshan",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9200",
+							"path": [
+								"posts",
+								"_search"
+							],
+							"query": [
+								{
+									"key": "q",
+									"value": "title:zeeshan"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Your test name\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    console.log(jsonData);",
+									"    pm.environment.set(\"email\", jsonData.user.email);",
+									"    pm.environment.set(\"password\", \"Password@123\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:9200/posts/_doc/KeX4b4cBvBISYy_gOQzW",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9200",
+							"path": [
+								"posts",
+								"_doc",
+								"KeX4b4cBvBISYy_gOQzW"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update profile",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Your test name\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    console.log(jsonData);",
+									"    pm.environment.set(\"email\", jsonData.user.email);",
+									"    pm.environment.set(\"password\", \"Password@123\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"firstName\": \"zeeshan123\",\n    \"lastName\": \"iqbal\",\n    \"email\": \"zeeshan.iqbal@kwanso.com\",\n    \"password\": \"Password@123\",\n    \"confirmPassword\": \"Password@123\",\n    \"role\": \"ADMIN\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:9200/posts/_doc/KuX7b4cBvBISYy_gzQyL",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9200",
+							"path": [
+								"posts",
+								"_doc",
+								"KuX7b4cBvBISYy_gzQyL"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Partial Update profile",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Your test name\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    console.log(jsonData);",
+									"    pm.environment.set(\"email\", jsonData.user.email);",
+									"    pm.environment.set(\"password\", \"Password@123\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"doc\": {\n        \"password\": \"warrrrrr!\",\n        \"role\": \"ADMIN\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:9200/posts/_update/KuX7b4cBvBISYy_gzQyL",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9200",
+							"path": [
+								"posts",
+								"_update",
+								"KuX7b4cBvBISYy_gzQyL"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "Register(Rest)",
 			"event": [
 				{

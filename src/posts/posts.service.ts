@@ -60,8 +60,9 @@ export class PostsService {
     // post.published = createPostInput.published;
     // post.author = user;
     // post.save();
-
-    return post.save();
+    const entity = await post.save();
+    await this.elasticService.save(entity, user);
+    return entity;
   }
 
   /**
@@ -117,7 +118,7 @@ export class PostsService {
    * @param search
    */
   async findAll(search?: string): Promise<Post[]> {
-    await this.elasticService.search('', {});
+    //await this.elasticService.search('', {});
 
     /*const posts = await this.postRepository.find({
       where: {

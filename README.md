@@ -785,3 +785,77 @@ return await new Promise((resolve, reject) => {
   stream.pipe(streamLoad);
 });
 ```
+
+## ElasticSearch
+```javascript
+//to check all available indexes
+GET _cat/indices
+
+GET _cat/indices?v=true
+
+GET _cat/indices?help
+
+//to create new indexes
+PUT blog-api
+
+//to create new mappings
+POST blog-api/_mapping
+{
+  "properties": {
+    "firstName": {
+      "type": "text"
+    },
+    "lastName": {
+      "type": "text"
+    },
+    "email": {
+      "type": "keyword"
+    },
+    "password": {
+      "type": "text"
+    },
+    "role": {
+      "type": "text"
+    }
+  }
+}
+
+//get mappings
+GET blog-api/_mapping
+
+//create record
+POST blog-api/_doc/
+{
+  "firstName": "hello world!",
+  "lastName": "zeeshan",
+  "email": "zeeshan.iqbal@kwanso.com",
+  "password": "1231231"
+}
+
+//update record
+POST blog-api/_doc/K-X-b4cBvBISYy_grgyx
+{
+  "firstName": "zeeshan",
+  "lastName": "iqbal",
+  "email": "zeeshan.iqbal@kwanso.com",
+  "password": "1231231"
+}
+
+//partial update record
+POST blog-api/_update/K-X-b4cBvBISYy_grgyx
+{
+  "doc": {
+    "password": "12345678"
+  }
+}
+
+//search record
+GET blog-api/_search?q=password:Password
+GET blog-api/_search
+{
+  "firstName": "zeeshan"
+}
+
+//delete record
+DELETE blog-api/_doc/2
+```
