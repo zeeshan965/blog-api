@@ -77,7 +77,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "mutation updatePost($updatePostInput: UpdatePostInput!){\n    updatePost(updatePostInput: $updatePostInput) {\n        post {\n            id\n            title\n            description\n            published\n            publishedAt\n            slug\n            postMediaType\n            postMedia\n            trashed\n            author {\n                id\n                firstName\n                lastName\n                email\n                isActive\n            }\n        }\n    }\n}",
-								"variables": "{\n    \"updatePostInput\": {\n      \"id\": \"768ad4da-7991-44e9-9832-aadfe50f6e74\",\n      \"slug\": \"international-branding-officer-bemmsn\",\n      \"title\": \"updating title {{$randomFileName}}\",\n      \"description\": \"updating description 1\",\n      \"published\": true\n    }\n}"
+								"variables": "{\n    \"updatePostInput\": {\n      \"id\": \"b4b10a57-88d9-4ea1-b2ff-b69f9081acf0\",\n      \"slug\": \"district-research-supervisor-xl2yyo\",\n      \"title\": \"updating title {{$randomFileName}}\",\n      \"description\": \"updating description 1\",\n      \"published\": true\n    }\n}"
 							}
 						},
 						"url": {
@@ -907,6 +907,60 @@
 				},
 				{
 					"name": "Search Users",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Your test name\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    console.log(jsonData);",
+									"    pm.environment.set(\"email\", jsonData.user.email);",
+									"    pm.environment.set(\"password\", \"Password@123\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"firstName\": \"{{$randomFirstName}}\",\n    \"lastName\": \"{{$randomLastName}}\",\n    \"email\": \"{{$randomEmail}}\",\n    \"password\": \"Password@123\",\n    \"confirmPassword\": \"Password@123\",\n    \"role\": \"ADMIN\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:9200/posts/_search?q=title:zeeshan",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9200",
+							"path": [
+								"posts",
+								"_search"
+							],
+							"query": [
+								{
+									"key": "q",
+									"value": "title:zeeshan"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Search Queries",
 					"event": [
 						{
 							"listen": "test",

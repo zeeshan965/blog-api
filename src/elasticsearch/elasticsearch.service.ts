@@ -9,7 +9,7 @@ export class ElasticsearchService {
   /**
    * @private
    */
-  private indexName = 'posts';
+  private indexName = 'blog-api';
 
   /**
    * @param elasticsearchService
@@ -35,11 +35,26 @@ export class ElasticsearchService {
     };
     const res = await this.elasticsearchService.index({
       index: this.indexName,
-      document: {
-        first_name: user.firstName,
-        last_name: user.lastName,
-        email: user.email,
-      },
+      id: post.id.toString(),
+      document: data,
+    });
+    console.log(res);
+  }
+
+  /**
+   * @param post
+   */
+  async update(post: Post): Promise<void> {
+    const data = {
+      postTitle: post?.title,
+      postDescription: post?.description,
+      updatedAt: post?.updatedAt,
+    };
+    console.log(data);
+    const res = await this.elasticsearchService.update({
+      index: this.indexName,
+      id: post.id.toString(),
+      doc: data,
     });
     console.log(res);
   }
@@ -47,20 +62,28 @@ export class ElasticsearchService {
   /**
    * @param queryString
    */
-  async search(queryString: string): Promise<any[]> {
+  async search(queryString: string): Promise<string[]> {
     try {
       const result: any = await this.elasticsearchService.search({
         index: this.indexName,
-        body: {
-          query: {
-            query_string: {
-              query: queryString,
-              fields: ['firstName', 'lastName'],
-            },
+        query: {
+          multi_match: {
+            query: queryString,
+            fields: ['postTitle', 'postDescription', 'firstName', 'lastName'],
           },
         },
       });
-      return result?.hits?.hits?.map((item: any) => item?._source);
+
+      /*await this.elasticsearchService.search({
+        index: this.indexName,
+        query: {
+          query_string: {
+            query: queryString,
+            fields: ['postTitle', 'postDescription'],
+          },
+        },
+      });*/
+      return result?.hits?.hits?.map((item: any) => item?._source?.id);
     } catch (error) {
       throw error;
     }

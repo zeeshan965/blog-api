@@ -858,4 +858,118 @@ GET blog-api/_search
 
 //delete record
 DELETE blog-api/_doc/2
+
+//query
+GET kibana_sample_data_flights/_search
+{
+  "query": {
+  "match": {"OriginCityName": "Venice"}
+  }
+}
+
+//query
+GET kibana_sample_data_flights/_search
+{
+  "query": {
+    "bool": {
+      "must": [{ 
+        "match": { "OriginWeather": "Rain" } 
+      }],
+      "should": [{ 
+        "match": { "OriginCityName": "Venice" }
+      }],
+      "must_not": [{
+        "match": { "DestWeather": "Cloudy" } 
+      }];
+    }
+  }
+}
+
+//query
+GET kibana_sample_data_flights/_search
+{
+  "query": {
+    "multi_match": {
+      "query": "Sunny",
+      "fields": ["OriginWeather", "DestWeather"]
+    }
+  }
+}
+
+//bucket aggregation
+//aggregation
+
+GET kibana_sample_data_flights/_search
+{
+  "size": 0,
+  "aggs": {
+    "OriginWeather": {
+      "terms": {"field": "OriginWeather", "size": 100}
+    }
+  }
+}
+
+//multi aggs
+GET kibana_sample_data_flights/_search
+{
+  "size": 0,
+  "aggs": {
+    "OriginWeather": {
+      "terms": {"field": "OriginWeather", "size": 100},
+      "aggs": {
+        "OriginCityName": {
+            "terms": {"field": "OriginCityName", "size": 100}
+        }
+      }
+    }
+  }
+}
+
+//bucket + metric aggs
+GET kibana_sample_data_ecommerce/_search
+{
+  "size": 0,
+  "aggs": {
+    "NAME": {
+      "terms": {
+        "field": "day_of_week",
+          "size": 100
+      }
+      "aggs": {
+        "NAME": {
+          "sum": {
+            "field": "products.price"
+          }
+        }
+      }
+    }
+  }
+}
+
+//stats
+GET kibana_sample_data_ecommerce/_search
+{
+  "size": 0, 
+  "aggs": {
+    "aggs_stats": {
+      "stats": {
+        "field": "products.base_price"
+      }
+    }
+  }
+}
+
+//date_histogram
+GET kibana_sample_data_ecommerce/_search
+{
+  "size": 0,
+  "aggs": {
+    "Name": {
+      "date_histogram": {
+        "field": "order_date",
+        "calendar_interval": "1M"
+      }
+    }
+  }
+}
 ```

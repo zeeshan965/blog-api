@@ -99,7 +99,8 @@ export class PostsResolver {
     @Args({ name: 'search', type: () => String, defaultValue: '' })
     search: string,
   ) {
-    const posts: Post[] = await this.postService.findAll(search);
+    const posts: Post[] = await this.postService.searchPosts(search);
+    //const posts: Post[] = await this.postService.findAll(search);
     return {
       message: 'success!',
       status: 200,

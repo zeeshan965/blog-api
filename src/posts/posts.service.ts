@@ -81,7 +81,7 @@ export class PostsService {
         },
       });
     }
-
+    await this.elasticService.update(post);
     return this.postRepository.save(Object.assign(post, updates));
 
     /*return this.postRepository.save({
@@ -118,8 +118,6 @@ export class PostsService {
    * @param search
    */
   async findAll(search?: string): Promise<Post[]> {
-    //await this.elasticService.search('', {});
-
     /*const posts = await this.postRepository.find({
       where: {
         title: ILike('%direct%'),
@@ -139,6 +137,14 @@ export class PostsService {
         .orWhere('lower(u.email) like :s', { s: '%' + search + '%' });
     }
     return posts.getMany();
+  }
+
+  /**
+   * @param search
+   */
+  async searchPosts(search?: string): Promise<Post[]> {
+    const ids: string[] = await this.elasticService.search(search);
+    return this.postRepository.find({ where: { id: In(ids) } });
   }
 
   /**
