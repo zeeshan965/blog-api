@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { ElasticsearchService as NestElasticsearchService } from '@nestjs/elasticsearch';
 import { Post } from '../posts/entities/post.entity';
 import { User } from '../users/entity/user.entity';
-import { PostSearchBody } from '../posts/interface/elastic.interface';
 
 @Injectable()
 export class ElasticsearchService {
@@ -50,13 +49,11 @@ export class ElasticsearchService {
       postDescription: post?.description,
       updatedAt: post?.updatedAt,
     };
-    console.log(data);
-    const res = await this.elasticsearchService.update({
+    await this.elasticsearchService.update({
       index: this.indexName,
       id: post.id.toString(),
       doc: data,
     });
-    console.log(res);
   }
 
   /**
@@ -84,6 +81,20 @@ export class ElasticsearchService {
         },
       });*/
       return result?.hits?.hits?.map((item: any) => item?._source?.id);
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  /**
+   * @param id
+   */
+  async remove(id: number): Promise<void> {
+    try {
+      await this.elasticsearchService.delete({
+        index: this.indexName,
+        id: id.toString(),
+      });
     } catch (error) {
       throw error;
     }

@@ -95,7 +95,8 @@ export class PostsService {
   /**
    * @param id
    */
-  remove(id: number) {
+  async remove(id: number) {
+    await this.elasticService.remove(id);
     return this.postRepository.delete(id);
   }
 
