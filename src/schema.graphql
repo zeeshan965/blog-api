@@ -116,6 +116,7 @@ type Query {
   searchPost(search: String! = ""): PostResponseDto!
   getFiles: [String!]!
   removeFile(id: ID!): Boolean!
+  elasticSearchMigration: String!
   findOneComment(id: ID!): CommentResponseDto!
   getPostComments(postId: ID!): CommentResponseDto!
 }

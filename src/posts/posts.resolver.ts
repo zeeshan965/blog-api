@@ -140,4 +140,13 @@ export class PostsResolver {
   async removeFile(@Args('id', { type: () => ID }) id: number) {
     return await this.postService.removeFile(id);
   }
+
+  /**
+   *
+   */
+  @Query(() => String)
+  async elasticSearchMigration(): Promise<string> {
+    await this.postService.elasticSearchMigration();
+    return 'success!';
+  }
 }

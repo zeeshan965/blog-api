@@ -174,6 +174,7 @@ export interface IQuery {
     searchPost(search: string): PostResponseDto | Promise<PostResponseDto>;
     getFiles(): string[] | Promise<string[]>;
     removeFile(id: string): boolean | Promise<boolean>;
+    elasticSearchMigration(): string | Promise<string>;
     findOneComment(id: string): CommentResponseDto | Promise<CommentResponseDto>;
     getPostComments(postId: string): CommentResponseDto | Promise<CommentResponseDto>;
 }

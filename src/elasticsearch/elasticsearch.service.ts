@@ -2,20 +2,83 @@ import { Injectable } from '@nestjs/common';
 import { ElasticsearchService as NestElasticsearchService } from '@nestjs/elasticsearch';
 import { Post } from '../posts/entities/post.entity';
 import { User } from '../users/entity/user.entity';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class ElasticsearchService {
   /**
    * @private
    */
-  private indexName = 'blog-api';
+  private readonly indexName: string;
 
   /**
    * @param elasticsearchService
+   * @param configService
    */
   constructor(
     private readonly elasticsearchService: NestElasticsearchService,
-  ) {}
+    configService: ConfigService,
+  ) {
+    this.indexName = configService.get('elastic_search_index');
+  }
+
+  /**
+   * @param posts
+   */
+  async indexData(posts: Post[]) {
+    try {
+      // Create an Elasticsearch index with mapping
+      await this.elasticsearchService.indices.create({
+        index: this.indexName,
+        mappings: {
+          properties: {
+            id: {
+              type: 'text',
+              fields: { keyword: { type: 'keyword', ignore_above: 256 } },
+            },
+            userId: {
+              type: 'text',
+              fields: { keyword: { type: 'keyword', ignore_above: 256 } },
+            },
+            firstName: { type: 'text' },
+            lastName: { type: 'text' },
+            postDescription: {
+              type: 'text',
+              fields: { keyword: { type: 'keyword', ignore_above: 256 } },
+            },
+            postTitle: {
+              type: 'text',
+              fields: { keyword: { type: 'keyword', ignore_above: 256 } },
+            },
+            createdAt: { type: 'date' },
+            updatedAt: { type: 'date' },
+          },
+        },
+      });
+
+      // Transform data into Elasticsearch format
+      const bulkData = posts.flatMap((post) => [
+        { index: { _index: this.indexName, _id: post.id.toString() } },
+        {
+          userId: post.author?.id,
+          firstName: post.author?.firstName,
+          lastName: post.author?.lastName,
+          id: post.id.toString(),
+          postTitle: post?.title,
+          postDescription: post?.description,
+          createdAt: post?.createdAt,
+          updatedAt: post?.updatedAt,
+        },
+      ]);
+
+      // Index data in Elasticsearch
+      await this.elasticsearchService.bulk({
+        operations: bulkData,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   /**
    * @param post

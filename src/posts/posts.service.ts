@@ -193,4 +193,13 @@ export class PostsService {
         .on('error', () => reject('')),
     );
   }
+
+  /**
+   *
+   */
+  async elasticSearchMigration(): Promise<void> {
+    const posts: Post[] = await this.postRepository.find();
+    await this.elasticService.indexData(posts);
+    console.log(posts.length);
+  }
 }

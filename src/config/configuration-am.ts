@@ -6,6 +6,7 @@ export default () => ({
   throttle_tl: process.env.THROTTLE_TTL || 60,
   throttle_limit: process.env.THROTTLE_LIMIT || 10,
   elastic_search: process.env.ELASTIC_SEARCH || '',
+  elastic_search_index: process.env.ELASTIC_SEARCH_INDEX || '',
   cloudinary_name: process.env.CLOUDINARY_NAME || '',
   cloudinary_api_key: process.env.CLOUDINARY_API_KEY || '',
   cloudinary_api_secret: process.env.CLOUDINARY_API_SECRET || '',
