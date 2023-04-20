@@ -169,6 +169,43 @@
 					"response": []
 				},
 				{
+					"name": "Post ElasticSearch (GQL)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query elasticSearchMigration {\n    elasticSearchMigration\n}\n\n# query {\n#     findAll\n# }",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/graphql",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Delete Post (GQL)",
 					"request": {
 						"method": "POST",
@@ -188,7 +225,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "mutation removePost($id: ID!){\n    removePost(id: $id) {\n        status\n        message\n        deleted\n    }\n}",
-								"variables": "{\n    \"id\": \"f362ef6b-e1f8-4518-88f1-8babf225c21c\"\n}"
+								"variables": "{\n    \"id\": \"a5dc6270-d331-45cf-93fc-6139e1a2d51a\"\n}"
 							}
 						},
 						"url": {
@@ -225,7 +262,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "query removeFile($id: ID!){\n    removeFile(id: $id)\n}",
-								"variables": "{\n    \"id\": \"7d22844a-4ddb-478d-8948-ff9f56084ba0\"\n}"
+								"variables": "{\n    \"id\": \"a5dc6270-d331-45cf-93fc-6139e1a2d51a\"\n}"
 							}
 						},
 						"url": {
