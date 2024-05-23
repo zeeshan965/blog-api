@@ -13,7 +13,7 @@ export const dataSourceOptions: DataSourceOptions = {
   entities: ['dist/**/*.entity{.ts,.js}'],
   synchronize: process.env.DB_SYNC === 'true',
   logging: process.env.DB_LOGGING === 'true',
-  subscribers: ['dist/**/*.subscriber{.ts,.js}'],
+  // subscribers: ['dist/**/*.subscriber{.ts,.js}'],
 };
 
 const dataSource = new DataSource(dataSourceOptions);

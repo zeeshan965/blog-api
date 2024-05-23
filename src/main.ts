@@ -22,7 +22,7 @@ async function bootstrap() {
   app.use(express.static('public'));
 
   await app
-    .listen(port)
+    .listen(3003)
     .then(() => console.log(`App is running on port ${port}`))
     .catch((error: Error) => console.log(error));
 }

@@ -1,4 +1,4 @@
-version: '3'
+version: '3.7'
 
 services:
   blog_api:
@@ -15,12 +15,11 @@ services:
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
     networks:
-      static-network:
-        ipv4_address: 172.20.128.3
+      - blog-network
     tty: true
 
   nginx:
-    image: tutum/nginx
+    image: nginx:latest
     container_name: nginx
     ports:
       - "127.0.0.1:80:80"
@@ -32,8 +31,7 @@ services:
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
     networks:
-      static-network:
-        ipv4_address: 172.20.128.1
+      - blog-network
 
   postgres:
     image: postgres:13
@@ -46,12 +44,11 @@ services:
     ports:
       - "5433:5432"
     volumes:
-      - ../postgres-data:/var/lib/postgresql/data
+      - ../postgres-db-data:/var/lib/postgresql/data
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
     networks:
-      static-network:
-        ipv4_address: 172.20.128.32
+      - blog-network
 
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:8.6.2
@@ -69,8 +66,7 @@ services:
         soft: -1
         hard: -1
     networks:
-      static-network:
-        ipv4_address: 172.20.128.43
+      - blog-network
 
   kibana:
       depends_on:
@@ -85,8 +81,7 @@ services:
       environment:
         - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
       networks:
-        static-network:
-          ipv4_address: 172.20.128.42
+        - blog-network
 
 volumes:
   elasticsearch-data:
@@ -95,8 +90,5 @@ volumes:
       driver: local
 
 networks:
-  static-network:
-    ipam:
-      config:
-        - subnet: 172.20.0.0/16
-          ip_range: 172.28.0.0/24
+  blog-network:
+      

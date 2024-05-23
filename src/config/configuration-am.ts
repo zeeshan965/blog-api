@@ -21,4 +21,5 @@ export default () => ({
     synchronize: process.env.DB_SYNC === 'true',
     logging: process.env.DB_LOGGING === 'true',
   },
+  slack_bot_token: process.env.SLACK_BOT_TOKEN || 'xxx-jwt-xxxx-secret-xxx-key',
 });

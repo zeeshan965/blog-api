@@ -8,10 +8,10 @@ import { Comment } from '../../posts/comments/entities/comment.entity';
 
 @Entity('users')
 export class User extends AbstractEntity {
-  @Column({ name: 'first_name', length: 191, nullable: false })
+  @Column({ name: 'first_name', length: 191, nullable: true })
   firstName: string;
 
-  @Column({ name: 'last_name', length: 191, nullable: false })
+  @Column({ name: 'last_name', length: 191, nullable: true })
   lastName: string;
 
   @Column({ name: 'email', unique: true, length: 191, nullable: false })

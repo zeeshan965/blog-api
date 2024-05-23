@@ -25,4 +25,5 @@ export default () => ({
     },
     synchronize: false,
   },
+  slack_bot_token: process.env.SLACK_BOT_TOKEN || 'xxx-jwt-xxxx-secret-xxx-key',
 });

@@ -20,6 +20,8 @@ import { APP_GUARD } from '@nestjs/core';
 import { GqlThrottlerGuard } from './guards/gql.throttler.guard';
 import { CategoriesModule } from './posts/categories/categories.module';
 import { HttpModule } from '@nestjs/axios';
+import { MessagingModule } from './messaging/messaging.module';
+import { AppController } from './app.controller';
 dotenv.config();
 
 @Module({
@@ -52,8 +54,10 @@ dotenv.config();
     CategoriesModule,
     PostsModule,
     CommentsModule,
+    MessagingModule,
     HttpModule,
   ],
+  controllers: [AppController],
   providers: [{ provide: APP_GUARD, useClass: GqlThrottlerGuard }, AppResolver],
 })
 export class AppModule {}
